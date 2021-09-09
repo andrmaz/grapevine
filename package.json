@@ -1,0 +1,29 @@
+{
+	"name": "grapevine",
+	"version": "1.0.0",
+	"description": "Web-based marketing software application",
+	"main": "index.js",
+	"engineStrict": true,
+	"engines": {
+		"node": ">=14.17.4"
+	},
+	"dependencies": {
+		"semver": "^7.3.5"
+	},
+	"devDependencies": {},
+	"scripts": {
+		"requirements-check": "node scripts/check_node_version.js",
+		"postinstall": "npm run requirements-check"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/andrmaz/grapevine.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/andrmaz/grapevine/issues"
+	},
+	"homepage": "https://github.com/andrmaz/grapevine#readme"
+}
