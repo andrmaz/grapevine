@@ -10,10 +10,18 @@
 	"dependencies": {
 		"semver": "^7.3.5"
 	},
-	"devDependencies": {},
+	"devDependencies": {
+		"@commitlint/cli": "^13.1.0",
+		"@commitlint/config-conventional": "^13.1.0",
+		"commitizen": "^4.2.4",
+		"cz-conventional-changelog": "^3.3.0",
+		"husky": "^7.0.2"
+	},
 	"scripts": {
 		"requirements-check": "node scripts/check_node_version.js",
-		"postinstall": "npm run requirements-check"
+		"prepare": "husky install",
+		"postinstall": "npm run requirements-check",
+		"commit": "cz"
 	},
 	"repository": {
 		"type": "git",
@@ -25,5 +33,10 @@
 	"bugs": {
 		"url": "https://github.com/andrmaz/grapevine/issues"
 	},
-	"homepage": "https://github.com/andrmaz/grapevine#readme"
+	"homepage": "https://github.com/andrmaz/grapevine#readme",
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog"
+		}
+	}
 }
