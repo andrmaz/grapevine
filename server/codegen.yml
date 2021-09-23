@@ -1,0 +1,20 @@
+overwrite: true
+schema:  'src/schema.ts'
+documents: null
+generates:
+  src/generated/graphql.ts:
+    hooks:
+      afterOneFileWrite:
+        - prettier --write
+    plugins:
+      - 'typescript'
+      - 'typescript-resolvers'
+      - 'typescript-mongodb'
+      - 'typescript-document-nodes'
+    config:
+      useTypeImports: true
+  ./graphql.schema.json:
+    plugins:
+      - 'introspection'
+require:
+  - ts-node/register
