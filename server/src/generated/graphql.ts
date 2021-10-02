@@ -17,11 +17,6 @@ export type Scalars = {
   Float: number
 }
 
-export type AdditionalEntityFields = {
-  path?: Maybe<Scalars['String']>
-  type?: Maybe<Scalars['String']>
-}
-
 export type Query = {
   __typename?: 'Query'
   /** Query to get a list of specialists for the dashboard page */
@@ -152,110 +147,21 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  AdditionalEntityFields: AdditionalEntityFields
-  String: ResolverTypeWrapper<Scalars['String']>
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>
+  ID: ResolverTypeWrapper<Scalars['ID']>
   Query: ResolverTypeWrapper<{}>
   Specialist: ResolverTypeWrapper<Specialist>
-  ID: ResolverTypeWrapper<Scalars['ID']>
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>
+  String: ResolverTypeWrapper<Scalars['String']>
 }
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  AdditionalEntityFields: AdditionalEntityFields
-  String: Scalars['String']
+  Boolean: Scalars['Boolean']
+  ID: Scalars['ID']
   Query: {}
   Specialist: Specialist
-  ID: Scalars['ID']
-  Boolean: Scalars['Boolean']
+  String: Scalars['String']
 }
-
-export type UnionDirectiveArgs = {
-  discriminatorField?: Maybe<Scalars['String']>
-  additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>
-}
-
-export type UnionDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = UnionDirectiveArgs
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>
-
-export type AbstractEntityDirectiveArgs = {
-  discriminatorField: Scalars['String']
-  additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>
-}
-
-export type AbstractEntityDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = AbstractEntityDirectiveArgs
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>
-
-export type EntityDirectiveArgs = {
-  embedded?: Maybe<Scalars['Boolean']>
-  additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>
-}
-
-export type EntityDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = EntityDirectiveArgs
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>
-
-export type ColumnDirectiveArgs = {
-  overrideType?: Maybe<Scalars['String']>
-}
-
-export type ColumnDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = ColumnDirectiveArgs
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>
-
-export type IdDirectiveArgs = {}
-
-export type IdDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = IdDirectiveArgs
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>
-
-export type LinkDirectiveArgs = {
-  overrideType?: Maybe<Scalars['String']>
-}
-
-export type LinkDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = LinkDirectiveArgs
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>
-
-export type EmbeddedDirectiveArgs = {}
-
-export type EmbeddedDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = EmbeddedDirectiveArgs
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>
-
-export type MapDirectiveArgs = {
-  path: Scalars['String']
-}
-
-export type MapDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = MapDirectiveArgs
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
 export type QueryResolvers<
   ContextType = any,
@@ -284,15 +190,4 @@ export type SpecialistResolvers<
 export type Resolvers<ContextType = any> = {
   Query?: QueryResolvers<ContextType>
   Specialist?: SpecialistResolvers<ContextType>
-}
-
-export type DirectiveResolvers<ContextType = any> = {
-  union?: UnionDirectiveResolver<any, any, ContextType>
-  abstractEntity?: AbstractEntityDirectiveResolver<any, any, ContextType>
-  entity?: EntityDirectiveResolver<any, any, ContextType>
-  column?: ColumnDirectiveResolver<any, any, ContextType>
-  id?: IdDirectiveResolver<any, any, ContextType>
-  link?: LinkDirectiveResolver<any, any, ContextType>
-  embedded?: EmbeddedDirectiveResolver<any, any, ContextType>
-  map?: MapDirectiveResolver<any, any, ContextType>
 }

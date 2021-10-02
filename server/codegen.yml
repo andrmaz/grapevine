@@ -9,7 +9,6 @@ generates:
     plugins:
       - 'typescript'
       - 'typescript-resolvers'
-      - 'typescript-mongodb'
       - 'typescript-document-nodes'
     config:
       useTypeImports: true
