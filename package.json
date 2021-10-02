@@ -8,6 +8,7 @@
     "node": ">=14.17.4"
   },
   "dependencies": {
+    "concurrently": "^6.3.0",
     "semver": "^7.3.5"
   },
   "devDependencies": {
@@ -34,7 +35,8 @@
     "cm": "cz",
     "lint": "eslint --ext js,jsx,ts,tsx --fix",
     "format": "prettier --write .",
-    "type-check": "tsc --build --verbose"
+    "type-check": "tsc --build --verbose",
+    "start": "concurrently \"cd client && npm run dev\" \"cd server && npm start\""
   },
   "repository": {
     "type": "git",
