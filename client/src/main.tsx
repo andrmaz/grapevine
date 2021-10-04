@@ -10,7 +10,7 @@ import {ThemeProvider} from '@emotion/react'
 import {theme} from '@/styles/theme'
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000',
+  uri: import.meta.env.VITE_API_URL as string,
   cache: new InMemoryCache(),
 })
 
