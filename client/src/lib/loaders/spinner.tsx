@@ -1,12 +1,12 @@
-/** @jsx jsx */
-import {css, jsx} from '@emotion/react'
+import * as React from 'react'
 
 import styled from '@emotion/styled'
+import {theme} from '@/styles/theme'
 
 interface SpinnerProps {
   testid?: string
   size?: 'large' | 'small'
-  theme?: string
+  color?: string
 }
 
 const SpinnerContainer = styled.div`
@@ -18,32 +18,27 @@ const SpinnerContainer = styled.div`
 `
 
 const LoadingSpinner = styled.div<SpinnerProps>`
-  border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #3498db; /* Blue */
+  border: 16px solid ${theme.colors.gray};
+  border-top: 16px solid
+    ${props => (props.color ? props.color : theme.colors.blue)};
   border-radius: 50%;
   width: ${props => (props.size === 'small' ? '60px' : '120px')};
   height: ${props => (props.size === 'small' ? '60px' : '120px')};
   animation: spin 2s linear infinite;
-  color: ${props => (props.theme ? props.theme : 'grayscale')};
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 `
 
 export default function Spinner(props: SpinnerProps): JSX.Element {
   return (
     <SpinnerContainer>
-      <LoadingSpinner
-        css={css`
-          spin {
-            0% {
-              transform: rotate(0deg);
-            }
-            100% {
-              transform: rotate(360deg);
-            }
-          }
-        `}
-        {...props}
-        testid='spinner'
-      />
+      <LoadingSpinner {...props} testid='spinner' />
     </SpinnerContainer>
   )
 }
