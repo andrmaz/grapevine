@@ -22,6 +22,9 @@
     "types": ["vite/client"],
     "typeRoots": ["./node_modules/@types", "src/types"],
     "sourceMap": true,
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules, __generated__, **/__generated__"],
