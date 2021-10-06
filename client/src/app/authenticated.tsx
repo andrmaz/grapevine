@@ -1,25 +1,22 @@
 import * as React from 'react'
 
-import {Link, BrowserRouter as Router} from 'react-router-dom'
-
 import AuthRoutes from '@/routes/auth'
+import Header from '@/lib/headers'
+import {BrowserRouter as Router} from 'react-router-dom'
+import styled from '@emotion/styled'
+
+const Container = styled.div`
+  height: 100vh;
+  width: 100%;
+`
 
 export default function AuthenticatedApp(): JSX.Element {
   return (
     <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to='/'>Dashboard</Link>
-            </li>
-            <li>
-              <Link to='/about'>About</Link>
-            </li>
-          </ul>
-        </nav>
+      <Container>
+        <Header />
         <AuthRoutes />
-      </div>
+      </Container>
     </Router>
   )
 }
