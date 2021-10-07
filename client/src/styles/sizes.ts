@@ -6,6 +6,6 @@ enum Widths {
   header = 768,
 }
 
-export const Sizes = {
+export const sizes = {
   header: {height: Heights.header, width: Widths.header},
 }

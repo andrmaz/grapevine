@@ -1,15 +1,15 @@
 import * as React from 'react'
 
 import {Link} from 'react-router-dom'
-import {Sizes} from '@/styles/sizes'
+import {sizes} from '@/styles/sizes'
 import styled from '@emotion/styled'
 
 const Navigation = styled.nav`
   position: sticky;
   top: 0;
   margin: auto;
-  width: ${Sizes.header.width}px;
-  height: ${Sizes.header.height}px;
+  width: ${sizes.header.width}px;
+  height: ${sizes.header.height}px;
   border: 1px solid black;
 `
 const List = styled.ul`
