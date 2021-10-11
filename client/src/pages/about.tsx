@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 
 const Container = styled.div`
   width: ${sizes.header.width}px;
-  height: calc(100vh - ${sizes.header.height}px - 3px);
+  min-height: calc(100vh - ${sizes.header.height}px - 3px);
   margin: auto;
   border-style: solid;
   border-width: 0 1px;
