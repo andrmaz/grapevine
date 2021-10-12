@@ -46,7 +46,7 @@ const Grid = styled.div`
   margin: 8px 0;
 `
 
-const Card = styled.div`
+const Item = styled.div`
   width: 180px;
   height: 200px;
   background-color: tomato;
@@ -59,21 +59,21 @@ export default function Dashboard(): JSX.Element {
       <Wrapper>
         <SearchBar />
         <Grid>
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
+          <Item />
+          <Item />
+          <Item />
+          <Item />
+          <Item />
+          <Item />
+          <Item />
+          <Item />
+          <Item />
+          <Item />
+          <Item />
+          <Item />
+          <Item />
+          <Item />
+          <Item />
         </Grid>
       </Wrapper>
     </Container>
