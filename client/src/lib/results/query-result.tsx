@@ -25,8 +25,5 @@ export default function QueryResult<P>({
   if (!data) {
     return <p>Nothing to show...</p>
   }
-  if (data) {
-    return children as JSX.Element
-  }
-  return <React.Fragment></React.Fragment>
+  return children as JSX.Element
 }
