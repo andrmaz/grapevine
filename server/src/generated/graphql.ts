@@ -19,6 +19,8 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query'
+  /** Query to get the information about a specific specialist */
+  specialistForAbout: Specialist
   /** Query to get a list of specialists for the dashboard page */
   specialistsForDashboard: Array<Specialist>
 }
@@ -26,6 +28,8 @@ export type Query = {
 /** A specialist is a member of a profession or any person who earns a living from a specified professional activity. */
 export type Specialist = {
   __typename?: 'Specialist'
+  /** An icon, graphic, or other image by which the specialist represents himself or herself */
+  avatar: Scalars['String']
   /** the name by which people know the business of the specialist */
   company: Scalars['String']
   /** the business email address of the specialist */
@@ -167,6 +171,11 @@ export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = {
+  specialistForAbout?: Resolver<
+    ResolversTypes['Specialist'],
+    ParentType,
+    ContextType
+  >
   specialistsForDashboard?: Resolver<
     Array<ResolversTypes['Specialist']>,
     ParentType,
@@ -178,6 +187,7 @@ export type SpecialistResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Specialist'] = ResolversParentTypes['Specialist']
 > = {
+  avatar?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   company?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>

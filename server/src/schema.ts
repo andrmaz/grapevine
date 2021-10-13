@@ -16,11 +16,15 @@ const typeDefs = gql`
     industry: String!
     "the place where the specialist works"
     location: String!
+    "An icon, graphic, or other image by which the specialist represents himself or herself"
+    avatar: String!
   }
   type Query {
     # Queries go here
     "Query to get a list of specialists for the dashboard page"
     specialistsForDashboard: [Specialist!]!
+    "Query to get the information about a specific specialist"
+    specialistForAbout: Specialist!
   }
 `
 export default typeDefs
