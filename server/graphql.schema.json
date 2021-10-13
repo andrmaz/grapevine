@@ -32,6 +32,22 @@
         "description": null,
         "fields": [
           {
+            "name": "specialistForAbout",
+            "description": "Query to get the information about a specific specialist",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Specialist",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "specialistsForDashboard",
             "description": "Query to get a list of specialists for the dashboard page",
             "args": [],
@@ -66,6 +82,22 @@
         "name": "Specialist",
         "description": "A specialist is a member of a profession or any person who earns a living from a specified professional activity.",
         "fields": [
+          {
+            "name": "avatar",
+            "description": "An icon, graphic, or other image by which the specialist represents himself or herself",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "company",
             "description": "the name by which people know the business of the specialist",
