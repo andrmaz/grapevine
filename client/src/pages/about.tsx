@@ -25,24 +25,39 @@ const Contact = styled.aside`
   background-color: yellow;
 `
 
-const Picture = styled.aside`
-  height: 100%;
+const Column = styled.aside`
+  height: 90%;
   width: 40%;
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `
+
+const Picture = styled.section`
+  height: 250px;
+  width: 100%;
+  background-color: red;
+  z-index: 999;
+`
+
+const Box = styled.div`
+  height: 280px;
+  width: 100%;
+  margin-left: -24px;
+`
+
+const Map = styled.div`
+  height: 100%;
+  width: 100%;
+  background-color: green;
+`
+
 const Info = styled.article`
   height: 100%;
   width: 60%;
   padding: 16px;
   padding-top: 200px;
   display: flex;
-`
-
-const Image = styled.section`
-  height: 250px;
-  width: 100%;
-  background-color: red;
-  z-index: 999;
 `
 
 const Card = styled.section`
@@ -55,16 +70,21 @@ const Card = styled.section`
 `
 
 export default function About(): JSX.Element {
+  // Only editable to Specialist owner'
   return (
     <Container>
       <Wrapper>
-        <Picture>
-          <Image />
-        </Picture>
+        <Column>
+          <Picture />
+          <Box>
+            <Map />
+          </Box>
+        </Column>
         <Info>
           <Card />
         </Info>
       </Wrapper>
+      {/* Only visible to Customer */}
       <Contact />
     </Container>
   )
