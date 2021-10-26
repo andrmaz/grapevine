@@ -5,6 +5,7 @@
         "eamodio.gitlens",
         "streetsidesoftware.code-spell-checker",
         "christian-kohler.path-intellisense",
-        "2gua.rainbow-brackets"
+        "2gua.rainbow-brackets",
+        "jpoissonnier.vscode-styled-components"
     ]
 }

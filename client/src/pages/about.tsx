@@ -1,7 +1,25 @@
 import * as React from 'react'
 
+import {gql, useQuery} from '@apollo/client'
+
+import QueryResult from '@/lib/results/query-result'
+import {getSpecialist} from '/__generated__/getSpecialist'
 import {sizes} from '@/styles/sizes'
 import styled from '@emotion/styled'
+
+const GET_SPECIALIST = gql`
+  query getSpecialist {
+    specialistForAbout {
+      id
+      name
+      company
+      industry
+      location
+      avatar
+      email
+    }
+  }
+`
 
 const Container = styled.div`
   width: ${sizes.header.width}px;
@@ -13,6 +31,7 @@ const Container = styled.div`
 `
 
 const Wrapper = styled.main`
+  isolation: isolate;
   height: 800px;
   width: 100%;
   display: flex;
@@ -37,7 +56,7 @@ const Picture = styled.section`
   height: 250px;
   width: 100%;
   background-color: red;
-  z-index: 999;
+  z-index: 2;
 `
 
 const Box = styled.div`
@@ -64,26 +83,30 @@ const Card = styled.section`
   height: 100%;
   width: 100%;
   padding: 32px;
-  margin: 0 -32px;
+  margin: 0;
+  margin-left: -32px;
   background-color: orange;
   z-index: 1;
 `
 
 export default function About(): JSX.Element {
+  const {loading, error, data} = useQuery<getSpecialist>(GET_SPECIALIST)
   // Only editable to Specialist owner'
   return (
     <Container>
-      <Wrapper>
-        <Column>
-          <Picture />
-          <Box>
-            <Map />
-          </Box>
-        </Column>
-        <Info>
-          <Card />
-        </Info>
-      </Wrapper>
+      <QueryResult loading={loading} error={error} data={data}>
+        <Wrapper>
+          <Column>
+            <Picture />
+            <Box>
+              <Map />
+            </Box>
+          </Column>
+          <Info>
+            <Card />
+          </Info>
+        </Wrapper>
+      </QueryResult>
       {/* Only visible to Customer */}
       <Contact />
     </Container>
