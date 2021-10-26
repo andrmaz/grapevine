@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import {Query_specialistsForDashboard} from '/__generated__/Query'
+import {getSpecialist_specialistForAbout} from '/__generated__/getSpecialist'
 import styled from '@emotion/styled'
 
 const Item = styled.div`
@@ -14,8 +14,12 @@ const SpecialistItem = ({
   name,
   company,
   industry,
-}: Query_specialistsForDashboard): JSX.Element => {
-  return <Item>{JSON.stringify({id, name, company, industry}, null, 2)}</Item>
+  location,
+  avatar,
+  email,
+}: getSpecialist_specialistForAbout): JSX.Element => {
+  console.log({id, name, company, industry, location, avatar, email})
+  return <Item />
 }
 
 export default SpecialistItem

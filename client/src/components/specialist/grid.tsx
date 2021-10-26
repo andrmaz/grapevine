@@ -2,19 +2,21 @@ import * as React from 'react'
 
 import {gql, useQuery} from '@apollo/client'
 
-import {Query} from '/__generated__/Query'
 import QueryResult from '@/lib/results/query-result'
 import SpecialistItem from '@/components/specialist/item'
+import {getSpecialists} from '/__generated__/getSpecialists'
 import styled from '@emotion/styled'
 
 const GET_SPECIALISTS = gql`
-  query Query {
+  query getSpecialists {
     specialistsForDashboard {
       id
       name
       company
       industry
       avatar
+      email
+      location
     }
   }
 `
@@ -33,7 +35,7 @@ const Grid = styled.div`
 `
 
 const SpecialistGrid = (): JSX.Element => {
-  const {loading, error, data} = useQuery<Query>(GET_SPECIALISTS)
+  const {loading, error, data} = useQuery<getSpecialists>(GET_SPECIALISTS)
   return (
     <Grid>
       <QueryResult loading={loading} error={error} data={data}>
