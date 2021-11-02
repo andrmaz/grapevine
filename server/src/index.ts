@@ -1,10 +1,16 @@
 import {ApolloServer} from 'apollo-server'
-import mocks from './mocks/mocks'
+import SpecialistAPI from './datasources/specialist-api'
+import resolvers from './resolvers'
 import typeDefs from './schema'
 
 const server = new ApolloServer({
   typeDefs,
-  mocks,
+  resolvers,
+  dataSources: () => {
+    return {
+      specialistAPI: new SpecialistAPI(),
+    }
+  },
 })
 
 server.listen().then(() => {

@@ -8,6 +8,9 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
   [SubKey in K]: Maybe<T[SubKey]>
 }
+export type RequireFields<T, K extends keyof T> = {
+  [X in Exclude<keyof T, K>]?: T[X]
+} & {[P in K]-?: NonNullable<T[P]>}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
@@ -15,6 +18,33 @@ export type Scalars = {
   Boolean: boolean
   Int: number
   Float: number
+}
+
+/** the name and address of the person or business */
+export type Address = {
+  __typename?: 'Address'
+  city: Scalars['String']
+  geo?: Maybe<Geo>
+  street?: Maybe<Scalars['String']>
+  suite?: Maybe<Scalars['String']>
+  zipcode?: Maybe<Scalars['String']>
+}
+
+export type Company = {
+  __typename?: 'Company'
+  /** the sector of the economy the specialist operates in */
+  bs: Scalars['String']
+  /** an expression consisting of one or more words slogan a favorite saying of a sector */
+  catchPhrase?: Maybe<Scalars['String']>
+  /** the name by which people know the business of the specialist */
+  name: Scalars['String']
+}
+
+/** the coordinates at geographic coordinate system */
+export type Geo = {
+  __typename?: 'Geo'
+  lat?: Maybe<Scalars['String']>
+  lng?: Maybe<Scalars['String']>
 }
 
 export type Query = {
@@ -25,23 +55,29 @@ export type Query = {
   specialistsForDashboard: Array<Specialist>
 }
 
-/** A specialist is a member of a profession or any person who earns a living from a specified professional activity. */
+export type QuerySpecialistForAboutArgs = {
+  id: Scalars['ID']
+}
+
+/** a member of a profession or any person who earns a living from a specified professional activity */
 export type Specialist = {
   __typename?: 'Specialist'
-  /** An icon, graphic, or other image by which the specialist represents himself or herself */
-  avatar: Scalars['String']
-  /** the name by which people know the business of the specialist */
-  company: Scalars['String']
+  /** the place where the specialist works */
+  address: Address
+  /** an icon, graphic, or other image by which the specialist represents himself or herself */
+  avatar?: Maybe<Scalars['String']>
+  /** a business organization that makes, buys, or sells goods or provides services in exchange for money */
+  company: Company
   /** the business email address of the specialist */
   email: Scalars['String']
   /** the unique identifier of the specialist */
   id: Scalars['ID']
-  /** the sector of the economy the specialist operates in */
-  industry: Scalars['String']
-  /** the place where the specialist works */
-  location: Scalars['String']
   /** the first and last name of the specialist */
   name: Scalars['String']
+  /** the business phone number of the specialist */
+  phone?: Maybe<Scalars['String']>
+  /** a central location of web pages that are related and accessed using a browser */
+  website?: Maybe<Scalars['String']>
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -151,7 +187,10 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  Address: ResolverTypeWrapper<Address>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
+  Company: ResolverTypeWrapper<Company>
+  Geo: ResolverTypeWrapper<Geo>
   ID: ResolverTypeWrapper<Scalars['ID']>
   Query: ResolverTypeWrapper<{}>
   Specialist: ResolverTypeWrapper<Specialist>
@@ -160,11 +199,49 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  Address: Address
   Boolean: Scalars['Boolean']
+  Company: Company
+  Geo: Geo
   ID: Scalars['ID']
   Query: {}
   Specialist: Specialist
   String: Scalars['String']
+}
+
+export type AddressResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Address'] = ResolversParentTypes['Address']
+> = {
+  city?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  geo?: Resolver<Maybe<ResolversTypes['Geo']>, ParentType, ContextType>
+  street?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  suite?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  zipcode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type CompanyResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Company'] = ResolversParentTypes['Company']
+> = {
+  bs?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  catchPhrase?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type GeoResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Geo'] = ResolversParentTypes['Geo']
+> = {
+  lat?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  lng?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type QueryResolvers<
@@ -174,7 +251,8 @@ export type QueryResolvers<
   specialistForAbout?: Resolver<
     ResolversTypes['Specialist'],
     ParentType,
-    ContextType
+    ContextType,
+    RequireFields<QuerySpecialistForAboutArgs, 'id'>
   >
   specialistsForDashboard?: Resolver<
     Array<ResolversTypes['Specialist']>,
@@ -187,17 +265,21 @@ export type SpecialistResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Specialist'] = ResolversParentTypes['Specialist']
 > = {
-  avatar?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  company?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  address?: Resolver<ResolversTypes['Address'], ParentType, ContextType>
+  avatar?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  company?: Resolver<ResolversTypes['Company'], ParentType, ContextType>
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
-  industry?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  location?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  phone?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  website?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type Resolvers<ContextType = any> = {
+  Address?: AddressResolvers<ContextType>
+  Company?: CompanyResolvers<ContextType>
+  Geo?: GeoResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
   Specialist?: SpecialistResolvers<ContextType>
 }
