@@ -12,13 +12,11 @@ const Item = styled.div`
 const SpecialistItem = ({
   id,
   name,
-  company,
-  industry,
-  location,
-  avatar,
   email,
+  address,
+  company,
 }: getSpecialist_specialistForAbout): JSX.Element => {
-  console.log({id, name, company, industry, location, avatar, email})
+  console.log({id, name, email, address, company})
   return <Item />
 }
 

@@ -12,11 +12,14 @@ const GET_SPECIALISTS = gql`
     specialistsForDashboard {
       id
       name
-      company
-      industry
-      avatar
       email
-      location
+      address {
+        city
+      }
+      company {
+        name
+        bs
+      }
     }
   }
 `

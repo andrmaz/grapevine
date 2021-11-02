@@ -8,15 +8,18 @@ import {sizes} from '@/styles/sizes'
 import styled from '@emotion/styled'
 
 const GET_SPECIALIST = gql`
-  query getSpecialist {
-    specialistForAbout {
+  query getSpecialist($id: ID!) {
+    specialistForAbout(id: $id) {
       id
       name
-      company
-      industry
-      location
-      avatar
       email
+      address {
+        city
+      }
+      company {
+        name
+        bs
+      }
     }
   }
 `
@@ -90,7 +93,10 @@ const Card = styled.section`
 `
 
 export default function About(): JSX.Element {
-  const {loading, error, data} = useQuery<getSpecialist>(GET_SPECIALIST)
+  const {loading, error, data} = useQuery<getSpecialist>(GET_SPECIALIST, {
+    variables: {id: 1},
+  })
+  console.log(data)
   // Only editable to Specialist owner'
   return (
     <Container>

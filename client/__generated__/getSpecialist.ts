@@ -7,6 +7,21 @@
 // GraphQL query operation: getSpecialist
 // ====================================================
 
+export interface getSpecialist_specialistForAbout_address {
+  city: string;
+}
+
+export interface getSpecialist_specialistForAbout_company {
+  /**
+   * the name by which people know the business of the specialist
+   */
+  name: string;
+  /**
+   * the sector of the economy the specialist operates in
+   */
+  bs: string;
+}
+
 export interface getSpecialist_specialistForAbout {
   /**
    * the unique identifier of the specialist
@@ -17,25 +32,17 @@ export interface getSpecialist_specialistForAbout {
    */
   name: string;
   /**
-   * the name by which people know the business of the specialist
-   */
-  company: string;
-  /**
-   * the sector of the economy the specialist operates in
-   */
-  industry: string;
-  /**
-   * the place where the specialist works
-   */
-  location: string;
-  /**
-   * An icon, graphic, or other image by which the specialist represents himself or herself
-   */
-  avatar: string;
-  /**
    * the business email address of the specialist
    */
   email: string;
+  /**
+   * the place where the specialist works
+   */
+  address: getSpecialist_specialistForAbout_address;
+  /**
+   * a business organization that makes, buys, or sells goods or provides services in exchange for money
+   */
+  company: getSpecialist_specialistForAbout_company;
 }
 
 export interface getSpecialist {
@@ -44,3 +51,8 @@ export interface getSpecialist {
    */
   specialistForAbout: getSpecialist_specialistForAbout;
 }
+
+export interface getSpecialistVariables {
+  id: string;
+}
+
