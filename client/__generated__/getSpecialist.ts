@@ -55,3 +55,4 @@ export interface getSpecialist {
 export interface getSpecialistVariables {
   id: string;
 }
+

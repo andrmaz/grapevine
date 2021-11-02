@@ -32,6 +32,7 @@ export interface getSpecialists_specialistsForDashboard {
    */
   name: string;
   /**
+
    * the business email address of the specialist
    */
   email: string;
