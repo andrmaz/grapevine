@@ -1,28 +1,10 @@
 import * as React from 'react'
 
-import {gql, useQuery} from '@apollo/client'
-
-import QueryResult from '@/lib/results/query-result'
-import {getSpecialist} from '/__generated__/getSpecialist'
+import {SpecialistInfo} from '@/containers/specialist/info'
+import {getSpecialistVariables} from '/__generated__/getSpecialist'
 import {sizes} from '@/styles/sizes'
 import styled from '@emotion/styled'
-
-const GET_SPECIALIST = gql`
-  query getSpecialist($id: ID!) {
-    specialistForAbout(id: $id) {
-      id
-      name
-      email
-      address {
-        city
-      }
-      company {
-        name
-        bs
-      }
-    }
-  }
-`
+import {useParams} from 'react-router'
 
 const Container = styled.div`
   width: ${sizes.header.width}px;
@@ -30,12 +12,11 @@ const Container = styled.div`
   margin: auto;
   padding: 32px;
   border-style: solid;
-  border-width: 0 1px;
 `
 
 const Wrapper = styled.main`
   isolation: isolate;
-  height: 800px;
+  height: 640px;
   width: 100%;
   display: flex;
   margin-bottom: 16px;
@@ -62,7 +43,7 @@ const Picture = styled.section`
   z-index: 2;
 `
 
-const Box = styled.div`
+const Box = styled.section`
   height: 280px;
   width: 100%;
   margin-left: -24px;
@@ -74,7 +55,7 @@ const Map = styled.div`
   background-color: green;
 `
 
-const Info = styled.article`
+const Details = styled.section`
   height: 100%;
   width: 60%;
   padding: 16px;
@@ -82,37 +63,22 @@ const Info = styled.article`
   display: flex;
 `
 
-const Card = styled.section`
-  height: 100%;
-  width: 100%;
-  padding: 32px;
-  margin: 0;
-  margin-left: -32px;
-  background-color: orange;
-  z-index: 1;
-`
-
 export default function About(): JSX.Element {
-  const {loading, error, data} = useQuery<getSpecialist>(GET_SPECIALIST, {
-    variables: {id: 1},
-  })
-  console.log(data)
+  const {id} = useParams<{id: getSpecialistVariables['id']}>()
   // Only editable to Specialist owner'
   return (
     <Container>
-      <QueryResult loading={loading} error={error} data={data}>
-        <Wrapper>
-          <Column>
-            <Picture />
-            <Box>
-              <Map />
-            </Box>
-          </Column>
-          <Info>
-            <Card />
-          </Info>
-        </Wrapper>
-      </QueryResult>
+      <Wrapper>
+        <Column>
+          <Picture />
+          <Box>
+            <Map />
+          </Box>
+        </Column>
+        <Details>
+          <SpecialistInfo id={id} />
+        </Details>
+      </Wrapper>
       {/* Only visible to Customer */}
       <Contact />
     </Container>

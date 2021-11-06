@@ -12,12 +12,10 @@ const GET_SPECIALISTS = gql`
     specialistsForDashboard {
       id
       name
-      email
       address {
         city
       }
       company {
-        name
         bs
       }
     }
@@ -25,6 +23,7 @@ const GET_SPECIALISTS = gql`
 `
 
 const Grid = styled.div`
+  position: relative;
   width: 568px;
   height: auto;
   display: grid;
@@ -35,6 +34,7 @@ const Grid = styled.div`
   gap: 8px;
   padding-top: 100px;
   margin: 8px 0;
+  isolation: isolate;
 `
 
 const SpecialistGrid = (): JSX.Element => {

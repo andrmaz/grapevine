@@ -5,12 +5,27 @@ import {theme} from '@/styles/theme'
 
 interface SpinnerProps {
   testid?: string
-  size?: 'large' | 'small'
+  size: 'large' | 'medium' | 'small'
   color?: string
 }
 
+const STYLES = {
+  small: {
+    '--width': '60px',
+    '--height': '60px',
+  },
+  medium: {
+    '--width': '90px',
+    '--height': '90px',
+  },
+  large: {
+    '--width': '120px',
+    '--height': '120px',
+  },
+}
+
 const SpinnerContainer = styled.div`
-  height: 100vh;
+  height: 100%;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -22,8 +37,8 @@ const LoadingSpinner = styled.div<SpinnerProps>`
   border-top: 16px solid
     ${props => (props.color ? props.color : theme.colors.blue)};
   border-radius: 50%;
-  width: ${props => (props.size === 'small' ? '60px' : '120px')};
-  height: ${props => (props.size === 'small' ? '60px' : '120px')};
+  width: var(--width);
+  height: var(--height);
   animation: spin 2s linear infinite;
   @keyframes spin {
     0% {
@@ -36,9 +51,13 @@ const LoadingSpinner = styled.div<SpinnerProps>`
 `
 
 export default function Spinner(props: SpinnerProps): JSX.Element {
+  const styles = STYLES[props.size] as React.CSSProperties
+  if (!styles) {
+    throw new Error(`Unknown size passed to Spinner: ${props.size}`)
+  }
   return (
     <SpinnerContainer>
-      <LoadingSpinner {...props} testid='spinner' />
+      <LoadingSpinner {...props} style={styles} testid='spinner' />
     </SpinnerContainer>
   )
 }

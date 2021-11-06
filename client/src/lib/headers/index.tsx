@@ -13,9 +13,11 @@ const Navigation = styled.nav`
   width: ${sizes.header.width}px;
   height: ${sizes.header.height}px;
   background-color: ${theme.colors.indigoDarken10};
-  z-index: 999;
+  isolation: isolate;
+  z-index: 9;
 `
 const List = styled.ul`
+  height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -24,6 +26,7 @@ const List = styled.ul`
 
 const Item = styled.li`
   list-style-type: none;
+  font-size: 0.9rem;
 `
 
 const NavLink = styled(Link)`
@@ -37,10 +40,6 @@ export default function Header(): JSX.Element {
       <List>
         <Item>
           <NavLink to='/'>Dashboard</NavLink>
-        </Item>
-        <Item>
-          {/* Only visible to Specialists */}
-          <NavLink to='/about'>About</NavLink>
         </Item>
         <Item>
           <NavLink to='/signin'>Sign Out</NavLink>
