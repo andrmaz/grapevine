@@ -1,11 +1,15 @@
 import * as React from 'react'
 
+import {
+  getSpecialist,
+  getSpecialistVariables,
+} from '/__generated__/getSpecialist'
 import {gql, useQuery} from '@apollo/client'
 
 import QueryResult from '@/lib/results/query-result'
-import {getSpecialist} from '/__generated__/getSpecialist'
 import {sizes} from '@/styles/sizes'
 import styled from '@emotion/styled'
+import {useParams} from 'react-router'
 
 const GET_SPECIALIST = gql`
   query getSpecialist($id: ID!) {
@@ -14,10 +18,20 @@ const GET_SPECIALIST = gql`
       name
       email
       address {
+        street
+        suite
         city
+        zipcode
+        geo {
+          lat
+          lng
+        }
       }
+      phone
+      website
       company {
         name
+        catchPhrase
         bs
       }
     }
@@ -30,7 +44,6 @@ const Container = styled.div`
   margin: auto;
   padding: 32px;
   border-style: solid;
-  border-width: 0 1px;
 `
 
 const Wrapper = styled.main`
@@ -62,7 +75,7 @@ const Picture = styled.section`
   z-index: 2;
 `
 
-const Box = styled.div`
+const Box = styled.section`
   height: 280px;
   width: 100%;
   margin-left: -24px;
@@ -74,7 +87,7 @@ const Map = styled.div`
   background-color: green;
 `
 
-const Info = styled.article`
+const Info = styled.section`
   height: 100%;
   width: 60%;
   padding: 16px;
@@ -82,7 +95,7 @@ const Info = styled.article`
   display: flex;
 `
 
-const Card = styled.section`
+const Card = styled.article`
   height: 100%;
   width: 100%;
   padding: 32px;
@@ -93,8 +106,9 @@ const Card = styled.section`
 `
 
 export default function About(): JSX.Element {
+  const {id} = useParams<{id: getSpecialistVariables['id']}>()
   const {loading, error, data} = useQuery<getSpecialist>(GET_SPECIALIST, {
-    variables: {id: 1},
+    variables: {id},
   })
   console.log(data)
   // Only editable to Specialist owner'

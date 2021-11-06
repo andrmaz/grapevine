@@ -8,7 +8,7 @@ import Dashboard from '@/pages/dashboard'
 export default function AuthRoutes(): JSX.Element {
   return (
     <Switch>
-      <Route path='/about'>
+      <Route path='/about/:id'>
         <About />
       </Route>
       <Route path='/' exact>
