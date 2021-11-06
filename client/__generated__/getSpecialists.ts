@@ -13,10 +13,6 @@ export interface getSpecialists_specialistsForDashboard_address {
 
 export interface getSpecialists_specialistsForDashboard_company {
   /**
-   * the name by which people know the business of the specialist
-   */
-  name: string;
-  /**
    * the sector of the economy the specialist operates in
    */
   bs: string;
@@ -31,11 +27,6 @@ export interface getSpecialists_specialistsForDashboard {
    * the first and last name of the specialist
    */
   name: string;
-  /**
-
-   * the business email address of the specialist
-   */
-  email: string;
   /**
    * the place where the specialist works
    */

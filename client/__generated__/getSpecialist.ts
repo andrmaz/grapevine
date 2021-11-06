@@ -8,7 +8,10 @@
 // ====================================================
 
 export interface getSpecialist_specialistForAbout_address {
+  street: string | null;
+  suite: string | null;
   city: string;
+  zipcode: string | null;
 }
 
 export interface getSpecialist_specialistForAbout_company {
@@ -16,6 +19,10 @@ export interface getSpecialist_specialistForAbout_company {
    * the name by which people know the business of the specialist
    */
   name: string;
+  /**
+   * an expression consisting of one or more words slogan a favorite saying of a sector
+   */
+  catchPhrase: string | null;
   /**
    * the sector of the economy the specialist operates in
    */
@@ -40,6 +47,14 @@ export interface getSpecialist_specialistForAbout {
    */
   address: getSpecialist_specialistForAbout_address;
   /**
+   * the business phone number of the specialist
+   */
+  phone: string | null;
+  /**
+   * a central location of web pages that are related and accessed using a browser
+   */
+  website: string | null;
+  /**
    * a business organization that makes, buys, or sells goods or provides services in exchange for money
    */
   company: getSpecialist_specialistForAbout_company;
@@ -55,4 +70,3 @@ export interface getSpecialist {
 export interface getSpecialistVariables {
   id: string;
 }
-

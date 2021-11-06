@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import {Link} from 'react-router-dom'
-import {getSpecialist_specialistForAbout} from '/__generated__/getSpecialist'
+import {getSpecialists_specialistsForDashboard} from '/__generated__/getSpecialists'
 import styled from '@emotion/styled'
 import {theme} from '@/styles/theme'
 
@@ -71,7 +71,7 @@ const SpecialistItem = ({
   name,
   address: {city},
   company: {bs},
-}: getSpecialist_specialistForAbout): JSX.Element => {
+}: getSpecialists_specialistsForDashboard): JSX.Element => {
   return (
     <Item>
       <Header>
