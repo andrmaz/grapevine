@@ -15,7 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "apollo-datasource-rest": "^3.3.0",
-    "apollo-server": "^3.3.0",
+    "apollo-server": "^3.4.1",
     "graphql": "^15.6.0"
   },
   "devDependencies": {
