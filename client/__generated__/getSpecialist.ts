@@ -7,11 +7,17 @@
 // GraphQL query operation: getSpecialist
 // ====================================================
 
+export interface getSpecialist_specialistForAbout_address_geo {
+  lat: string;
+  lng: string;
+}
+
 export interface getSpecialist_specialistForAbout_address {
   street: string | null;
   suite: string | null;
   city: string;
   zipcode: string | null;
+  geo: getSpecialist_specialistForAbout_address_geo | null;
 }
 
 export interface getSpecialist_specialistForAbout_company {

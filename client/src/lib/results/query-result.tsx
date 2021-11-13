@@ -20,7 +20,7 @@ export default function QueryResult<P>({
     return <p>ERROR: {error.message}</p>
   }
   if (loading) {
-    return <Spinner size='medium' />
+    return <Spinner size='large' />
   }
   if (!data) {
     return <p>Nothing to show...</p>

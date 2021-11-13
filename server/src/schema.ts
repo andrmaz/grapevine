@@ -3,8 +3,8 @@ import {gql} from 'apollo-server'
 const typeDefs = gql`
   "the coordinates at geographic coordinate system"
   type Geo {
-    lat: String
-    lng: String
+    lat: String!
+    lng: String!
   }
   "the name and address of the person or business"
   type Address {
