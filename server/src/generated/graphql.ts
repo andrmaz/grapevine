@@ -43,8 +43,8 @@ export type Company = {
 /** the coordinates at geographic coordinate system */
 export type Geo = {
   __typename?: 'Geo'
-  lat?: Maybe<Scalars['String']>
-  lng?: Maybe<Scalars['String']>
+  lat: Scalars['String']
+  lng: Scalars['String']
 }
 
 export type Query = {
@@ -239,8 +239,8 @@ export type GeoResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Geo'] = ResolversParentTypes['Geo']
 > = {
-  lat?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
-  lng?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  lat?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  lng?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 

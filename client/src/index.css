@@ -146,3 +146,8 @@ table {
 body {
   font-family: 'Nunito', sans-serif;
 }
+
+html,
+body {
+  height: 100%;
+}
