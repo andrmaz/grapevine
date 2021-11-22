@@ -26,7 +26,7 @@
     "husky": "^7.0.4",
     "lint-staged": "^11.2.6",
     "prettier": "2.4.1",
-    "typescript": "^4.4.4"
+    "typescript": "^4.5.2"
   },
   "scripts": {
     "requirements-check": "node scripts/check_node_version.js",
