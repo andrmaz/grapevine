@@ -147,7 +147,12 @@ body {
   font-family: 'Nunito', sans-serif;
 }
 
+/* Set the viewport height on both mobile and desktop. */
 html,
 body {
   height: 100%;
+}
+
+#root {
+  min-height: 100%;
 }

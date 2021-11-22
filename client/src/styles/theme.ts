@@ -15,11 +15,11 @@ enum Colors {
   blue = '#3498db',
 }
 
-enum Widths {
-  small = 425,
-  medium = 426,
-  large = 1024,
-  huge = 1025,
+enum Devices {
+  mobile = 425.99,
+  tablet = 426,
+  laptop = 1024.99,
+  desktop = 1025,
 }
 
 export const theme = {
@@ -40,8 +40,8 @@ export const theme = {
     blue: Colors.blue,
   },
   breakpoints: {
-    large: `@media (min-width: ${Widths.huge}px)`,
-    medium: `@media (min-width: ${Widths.medium}px) and (max-width: ${Widths.large}px)'`,
-    small: `@media (max-width: ${Widths.small}px)`,
+    small: `@media (max-width: ${Devices.desktop}px)`,
+    medium: `@media (min-width: ${Devices.tablet}px) and (max-width: ${Devices.laptop}px)'`,
+    large: `@media (min-width: ${Devices.mobile}px)`,
   },
 }
