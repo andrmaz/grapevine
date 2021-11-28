@@ -18,6 +18,11 @@ class SpecialistAPI extends RESTDataSource {
   ): Promise<QueryResolvers['specialistForAbout']> {
     return this.get(`users/${encodeURIComponent(id)}`)
   }
+  async incrementRecommendations(
+    id: Scalars['ID']
+  ): Promise<QueryResolvers['specialistForAbout']> {
+    return this.patch(`users/${encodeURIComponent(id)}`)
+  }
 }
 
 export default SpecialistAPI

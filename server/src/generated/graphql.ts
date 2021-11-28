@@ -2,15 +2,14 @@ import type {GraphQLResolveInfo} from 'graphql'
 import gql from 'graphql-tag'
 export type Maybe<T> = T | null
 export type Exact<T extends {[key: string]: unknown}> = {[K in keyof T]: T[K]}
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>
-}
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>
-}
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
+  {[SubKey in K]?: Maybe<T[SubKey]>}
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
+  {[SubKey in K]: Maybe<T[SubKey]>}
 export type RequireFields<T, K extends keyof T> = {
   [X in Exclude<keyof T, K>]?: T[X]
-} & {[P in K]-?: NonNullable<T[P]>}
+} &
+  {[P in K]-?: NonNullable<T[P]>}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
@@ -47,6 +46,16 @@ export type Geo = {
   lng: Scalars['String']
 }
 
+export type Mutation = {
+  __typename?: 'Mutation'
+  /** Mutation to increment the specialist's recommendations property */
+  incrementRecommendations: IncrementRecommendationsResponse
+}
+
+export type MutationIncrementRecommendationsArgs = {
+  id: Scalars['ID']
+}
+
 export type Query = {
   __typename?: 'Query'
   /** Query to get the information about a specific specialist */
@@ -76,8 +85,22 @@ export type Specialist = {
   name: Scalars['String']
   /** the business phone number of the specialist */
   phone?: Maybe<Scalars['String']>
+  /** number of times the specialist has been recommended by customers */
+  recommendations?: Maybe<Scalars['Int']>
   /** a central location of web pages that are related and accessed using a browser */
   website?: Maybe<Scalars['String']>
+}
+
+export type IncrementRecommendationsResponse = {
+  __typename?: 'incrementRecommendationsResponse'
+  /** Similar to HTTP status code, represents the status of the mutation */
+  code: Scalars['Int']
+  /** Human-readable message for the UI */
+  message: Scalars['String']
+  /** Newly updated specialist after a successful mutation */
+  specialist?: Maybe<Specialist>
+  /** Indicates whether the mutation was successful */
+  success: Scalars['Boolean']
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -192,9 +215,12 @@ export type ResolversTypes = {
   Company: ResolverTypeWrapper<Company>
   Geo: ResolverTypeWrapper<Geo>
   ID: ResolverTypeWrapper<Scalars['ID']>
+  Int: ResolverTypeWrapper<Scalars['Int']>
+  Mutation: ResolverTypeWrapper<{}>
   Query: ResolverTypeWrapper<{}>
   Specialist: ResolverTypeWrapper<Specialist>
   String: ResolverTypeWrapper<Scalars['String']>
+  incrementRecommendationsResponse: ResolverTypeWrapper<IncrementRecommendationsResponse>
 }
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -204,9 +230,12 @@ export type ResolversParentTypes = {
   Company: Company
   Geo: Geo
   ID: Scalars['ID']
+  Int: Scalars['Int']
+  Mutation: {}
   Query: {}
   Specialist: Specialist
   String: Scalars['String']
+  incrementRecommendationsResponse: IncrementRecommendationsResponse
 }
 
 export type AddressResolvers<
@@ -244,6 +273,18 @@ export type GeoResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
+export type MutationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
+> = {
+  incrementRecommendations?: Resolver<
+    ResolversTypes['incrementRecommendationsResponse'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationIncrementRecommendationsArgs, 'id'>
+  >
+}
+
 export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
@@ -272,7 +313,27 @@ export type SpecialistResolvers<
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   phone?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  recommendations?: Resolver<
+    Maybe<ResolversTypes['Int']>,
+    ParentType,
+    ContextType
+  >
   website?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type IncrementRecommendationsResponseResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['incrementRecommendationsResponse'] = ResolversParentTypes['incrementRecommendationsResponse']
+> = {
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  specialist?: Resolver<
+    Maybe<ResolversTypes['Specialist']>,
+    ParentType,
+    ContextType
+  >
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
@@ -280,6 +341,8 @@ export type Resolvers<ContextType = any> = {
   Address?: AddressResolvers<ContextType>
   Company?: CompanyResolvers<ContextType>
   Geo?: GeoResolvers<ContextType>
+  Mutation?: MutationResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
   Specialist?: SpecialistResolvers<ContextType>
+  incrementRecommendationsResponse?: IncrementRecommendationsResponseResolvers<ContextType>
 }

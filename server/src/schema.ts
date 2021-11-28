@@ -41,6 +41,8 @@ const typeDefs = gql`
     company: Company!
     "an icon, graphic, or other image by which the specialist represents himself or herself"
     avatar: String
+    "number of times the specialist has been recommended by customers"
+    recommendations: Int
   }
   type Query {
     # Queries go here
@@ -48,6 +50,21 @@ const typeDefs = gql`
     specialistsForDashboard: [Specialist!]!
     "Query to get the information about a specific specialist"
     specialistForAbout(id: ID!): Specialist!
+  }
+  type Mutation {
+    # Mutations go here
+    "Mutation to increment the specialist's recommendations property"
+    incrementRecommendations(id: ID!): incrementRecommendationsResponse!
+  }
+  type incrementRecommendationsResponse {
+    "Similar to HTTP status code, represents the status of the mutation"
+    code: Int!
+    "Indicates whether the mutation was successful"
+    success: Boolean!
+    "Human-readable message for the UI"
+    message: String!
+    "Newly updated specialist after a successful mutation"
+    specialist: Specialist
   }
 `
 export default typeDefs
