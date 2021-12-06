@@ -6,6 +6,7 @@ import QueryResult from '@/lib/results/query-result'
 import SpecialistItem from '@/components/specialist/item'
 import {getSpecialists} from '/__generated__/getSpecialists'
 import styled from '@emotion/styled'
+import {theme} from '@/styles/theme'
 
 const GET_SPECIALISTS = gql`
   query getSpecialists {
@@ -35,6 +36,9 @@ const Grid = styled.div`
   padding-top: 100px;
   margin: 8px 0;
   isolation: isolate;
+  ${theme.breakpoints.medium} {
+    width: 100%;
+  }
 `
 
 const SpecialistGrid = (): JSX.Element => {

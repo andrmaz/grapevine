@@ -1,11 +1,5 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,400;1,300&display=swap');
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
 
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
@@ -143,11 +137,42 @@ table {
   border-spacing: 0;
 }
 
-body {
-  font-family: 'Nunito', sans-serif;
+/* GLOBAL STYLES */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  line-height: 1.5;
 }
 
+body {
+  font-family: 'Nunito',
+  -apple-system,
+  BlinkMacSystemFont,
+  avenir next,
+  avenir,
+  segoe ui,
+  helvetica neue,
+  helvetica,
+  Ubuntu,
+  roboto,
+  noto,
+  arial,
+  sans-serif;
+}
+
+/* Set the viewport height on both mobile and desktop. */
 html,
 body {
   height: 100%;
+}
+
+#root {
+  min-height: 100%;
+   /*
+    Create a stacking context, without a z-index.
+    This ensures that all portal content (modals and tooltips) will
+    float above the app.
+  */
+   isolation: isolate;
 }

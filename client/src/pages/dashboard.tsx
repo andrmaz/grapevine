@@ -3,6 +3,7 @@ import * as React from 'react'
 import SpecialistGrid from '@/components/specialist/grid'
 import {sizes} from '@/styles/sizes'
 import styled from '@emotion/styled'
+import {theme} from '@/styles/theme'
 
 const Container = styled.div`
   width: ${sizes.header.width}px;
@@ -20,19 +21,28 @@ const SideBar = styled.nav`
   z-index: 1; /* Stay on top */
   background-color: yellow;
   overflow-x: hidden; /* Disable horizontal scroll */
+  ${theme.breakpoints.medium} {
+    display: none;
+  }
 `
 const Wrapper = styled.div`
   width: 568px;
-  height: 100%;
   padding-left: 200px;
+  ${theme.breakpoints.medium} {
+    width: 100%;
+    padding-left: 0;
+  }
 `
 const SearchBar = styled.header`
   position: fixed; /* Fixed SearchBar (stay in place on scroll) */
   z-index: 1; /* Stay on top */
-  width: 568px;
   height: 100px;
+  width: 568px;
   border-bottom: 1px solid black;
   background-color: green;
+  ${theme.breakpoints.medium} {
+    width: 100%;
+  }
 `
 
 export default function Dashboard(): JSX.Element {
