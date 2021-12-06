@@ -16,10 +16,9 @@ enum Colors {
 }
 
 enum Devices {
-  mobile = 425.99,
-  tablet = 426,
-  laptop = 1024.99,
-  desktop = 1025,
+  mobile = 426,
+  tablet = 768,
+  laptop = 1024,
 }
 
 export const theme = {
@@ -40,8 +39,8 @@ export const theme = {
     blue: Colors.blue,
   },
   breakpoints: {
-    small: `@media (max-width: ${Devices.desktop}px)`,
-    medium: `@media (min-width: ${Devices.tablet}px) and (max-width: ${Devices.laptop}px)'`,
-    large: `@media (min-width: ${Devices.mobile}px)`,
+    small: `@media (max-width: ${Devices.mobile}px)`,
+    medium: `@media (max-width: ${Devices.tablet}px)`,
+    large: `@media (max-width: ${Devices.laptop}px)`,
   },
 }

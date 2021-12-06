@@ -25,7 +25,7 @@ const GET_SPECIALISTS = gql`
 
 const Grid = styled.div`
   position: relative;
-  width: 100%;
+  width: 568px;
   height: auto;
   display: grid;
   grid-template-rows: repeat(auto-fill, minmax(200px, 1fr));
@@ -36,8 +36,8 @@ const Grid = styled.div`
   padding-top: 100px;
   margin: 8px 0;
   isolation: isolate;
-  ${theme.breakpoints.large} {
-    width: 568px;
+  ${theme.breakpoints.medium} {
+    width: 100%;
   }
 `
 
