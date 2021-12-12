@@ -22,17 +22,10 @@ const GET_SPECIALISTS = gql`
     }
   }
 `
-
-const Grid = styled.div`
+const Wrapper = styled.section`
   position: relative;
   width: 568px;
-  height: auto;
-  display: grid;
-  grid-template-rows: repeat(auto-fill, minmax(200px, 1fr));
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  justify-items: center;
-  align-items: center;
-  gap: 8px;
+  height: 100%;
   padding-top: 100px;
   margin: 8px 0;
   isolation: isolate;
@@ -40,17 +33,27 @@ const Grid = styled.div`
     width: 100%;
   }
 `
+const Grid = styled.div`
+  display: grid;
+  grid-template-rows: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  justify-items: center;
+  align-items: center;
+  gap: 8px;
+`
 
 const SpecialistGrid = (): JSX.Element => {
-  const {loading, error, data} = useQuery<getSpecialists>(GET_SPECIALISTS)
+  const { loading, error, data} = useQuery<getSpecialists>(GET_SPECIALISTS)
   return (
-    <Grid>
+    <Wrapper>
       <QueryResult loading={loading} error={error} data={data}>
-        {data?.specialistsForDashboard.map(specialist => (
-          <SpecialistItem key={specialist.id} {...specialist} />
-        ))}
+        <Grid>
+          {data?.specialistsForDashboard.map(specialist => (
+            <SpecialistItem key={specialist.id} {...specialist} />
+          ))}
+        </Grid>
       </QueryResult>
-    </Grid>
+    </Wrapper>
   )
 }
 
