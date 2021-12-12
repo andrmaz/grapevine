@@ -21,6 +21,14 @@ enum Devices {
   laptop = 1024,
 }
 
+enum Heights {
+  header = 62,
+}
+
+enum Widths {
+  header = 768,
+}
+
 export const theme = {
   colors: {
     base: Colors.base,
@@ -42,5 +50,8 @@ export const theme = {
     small: `@media (max-width: ${Devices.mobile}px)`,
     medium: `@media (max-width: ${Devices.tablet}px)`,
     large: `@media (max-width: ${Devices.laptop}px)`,
+  },
+  sizes: {
+    header: {height: Heights.header, width: Widths.header},
   },
 }
