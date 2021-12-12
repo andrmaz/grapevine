@@ -6,7 +6,7 @@ import QueryResult from '@/lib/results/query-result'
 import SpecialistItem from '@/components/specialist/item'
 import {getSpecialists} from '/__generated__/getSpecialists'
 import styled from '@emotion/styled'
-import {theme} from '@/styles/theme'
+import {theme} from '@/themes'
 
 const GET_SPECIALISTS = gql`
   query getSpecialists {

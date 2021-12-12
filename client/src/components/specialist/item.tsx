@@ -3,7 +3,7 @@ import * as React from 'react'
 import {Link} from 'react-router-dom'
 import {getSpecialists_specialistsForDashboard} from '/__generated__/getSpecialists'
 import styled from '@emotion/styled'
-import {theme} from '@/styles/theme'
+import {theme} from '@/themes'
 
 const Item = styled.article`
   width: 176px;
