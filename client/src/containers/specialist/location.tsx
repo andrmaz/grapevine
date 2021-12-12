@@ -1,8 +1,17 @@
+import 'mapbox-gl/dist/mapbox-gl.css'
+
 import * as React from 'react'
 
+import {Marker, StaticMap} from 'react-map-gl'
+
 import {GeolocationFields} from '/__generated__/GeolocationFields'
+import {GiPositionMarker} from 'react-icons/gi'
 import {gql} from '@apollo/client'
 import styled from '@emotion/styled'
+import {theme} from '@/themes'
+
+const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN as string
+const MAPBOX_STYLE = import.meta.env.VITE_MAPBOX_STYLE as string
 
 /*
  * Query to get latitude and longitude of the specialist's location
@@ -15,27 +24,41 @@ export const GEOLOCATION_FIELDS = gql`
   }
 `
 
-const Box = styled.section`
+const Wrapper = styled.section`
   height: 280px;
   width: 100%;
   margin-left: -24px;
 `
 
-const Map = styled.div`
-  height: 100%;
-  width: 100%;
-  border: 1px solid;
-`
-
 export const SpecialistLocation = ({
-  geo,
+  geo: {lat, lng},
 }: {
   geo: GeolocationFields
 }): JSX.Element => {
+  const latitude = Number(lat)
+  const longitude = Number(lng)
   return (
-    <Box>
-      <Map>{JSON.stringify(geo, null, 2)}</Map>
-    </Box>
+    <Wrapper>
+      <StaticMap
+        mapboxApiAccessToken={MAPBOX_TOKEN}
+        width={280}
+        height={280}
+        latitude={latitude}
+        longitude={longitude}
+        zoom={8}
+        preventStyleDiffing
+        mapStyle={MAPBOX_STYLE}
+      >
+        <Marker
+          latitude={latitude}
+          longitude={longitude}
+          offsetLeft={-20}
+          offsetTop={-10}
+        >
+          <GiPositionMarker title='marker' color={theme.colors.danger} />
+        </Marker>
+      </StaticMap>
+    </Wrapper>
   )
 }
 
