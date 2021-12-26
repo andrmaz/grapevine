@@ -41,6 +41,6 @@ Because the base font size is 16px, this works out in pixels to:
 
 ### Approach
 
-This app uses a desktop first approach by picking a series of breakpoints.
-A breakpoint is a specific viewport width that lets us segment all devices into a small set of possible experiences.
+This app uses a desktop first approach by picking a series of breakpoints.  
+A breakpoint is a specific viewport width that lets us segment all devices into a small set of possible experiences.  
 Any device under the specified breakpoint will be put in the same bucket, and can be styled separately.
