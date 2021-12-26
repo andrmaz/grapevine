@@ -1,32 +1,23 @@
 import * as React from 'react'
 
-import {gql, useQuery} from '@apollo/client'
-
 import QueryResult from '@/lib/results/query-result'
-import SpecialistItem from '@/components/specialist/item'
-import {getSpecialists} from '/__generated__/getSpecialists'
+import {SpecialistItem} from '@/components/specialist/item'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
+import {getSpecialists_specialistsForDashboard} from '/__generated__/getSpecialists'
+import {ApolloError} from '@apollo/client'
 
-const GET_SPECIALISTS = gql`
-  query getSpecialists {
-    specialistsForDashboard {
-      id
-      name
-      address {
-        city
-      }
-      company {
-        bs
-      }
-    }
-  }
-`
+interface SpecialistGridProps {
+  loading: boolean
+  error?: ApolloError
+  specialists?: getSpecialists_specialistsForDashboard[]
+}
+
 const Wrapper = styled.section`
   position: relative;
   width: 568px;
   height: 100%;
-  padding-top: 100px;
+  padding-top: 64px;
   margin: 8px 0;
   isolation: isolate;
   ${theme.breakpoints.medium} {
@@ -42,13 +33,19 @@ const Grid = styled.div`
   gap: 8px;
 `
 
-const SpecialistGrid = (): JSX.Element => {
-  const { loading, error, data} = useQuery<getSpecialists>(GET_SPECIALISTS)
+export const SpecialistGrid = ({
+  loading,
+  error,
+  specialists,
+}: SpecialistGridProps): JSX.Element => {
   return (
     <Wrapper>
-      <QueryResult loading={loading} error={error} data={data}>
+      {specialists && specialists.length < 1 && (
+        <>No results match your search criteria. Try with supply-chains</>
+      )}
+      <QueryResult loading={loading} error={error} data={specialists}>
         <Grid>
-          {data?.specialistsForDashboard.map(specialist => (
+          {specialists?.map(specialist => (
             <SpecialistItem key={specialist.id} {...specialist} />
           ))}
         </Grid>
@@ -56,5 +53,3 @@ const SpecialistGrid = (): JSX.Element => {
     </Wrapper>
   )
 }
-
-export default SpecialistGrid
