@@ -40,6 +40,7 @@ const Information = styled.main`
   align-items: center;
   text-align: center;
   font-size: 0.8rem;
+  text-transform: capitalize;
 `
 const Name = styled.p``
 const Business = styled.p``
@@ -66,7 +67,7 @@ const StyledLink = styled(Link)`
   text-decoration: none;
 `
 
-const SpecialistItem = ({
+export const SpecialistItem = ({
   id,
   name,
   address: {city},
@@ -90,5 +91,3 @@ const SpecialistItem = ({
     </Item>
   )
 }
-
-export default SpecialistItem
