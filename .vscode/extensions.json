@@ -6,6 +6,6 @@
         "streetsidesoftware.code-spell-checker",
         "christian-kohler.path-intellisense",
         "2gua.rainbow-brackets",
-        "jpoissonnier.vscode-styled-components"
+        "styled-components.vscode-styled-components"
     ]
 }

@@ -2,7 +2,6 @@
   "name": "grapevine",
   "version": "1.0.0",
   "description": "Web-based marketing software application",
-  "main": "index.js",
   "engineStrict": true,
   "engines": {
     "node": ">=14.17.4"
@@ -43,7 +42,7 @@
     "url": "git+https://github.com/andrmaz/grapevine.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Andrea Mazzucchelli",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/andrmaz/grapevine/issues"
