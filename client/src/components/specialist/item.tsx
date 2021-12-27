@@ -6,7 +6,7 @@ import styled from '@emotion/styled'
 import {theme} from '@/themes'
 
 const Item = styled.article`
-  width: 176px;
+  width: 100%;
   height: 200px;
   border: 1px solid;
   padding: 8px;
