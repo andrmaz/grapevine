@@ -5,7 +5,7 @@ import * as React from 'react'
 import {Marker, StaticMap} from 'react-map-gl'
 
 import {GeolocationFields} from '/__generated__/GeolocationFields'
-import {GiPositionMarker} from 'react-icons/gi'
+import {MapPin} from 'react-feather'
 import {gql} from '@apollo/client'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
@@ -55,7 +55,7 @@ export const SpecialistLocation = ({
           offsetLeft={-20}
           offsetTop={-10}
         >
-          <GiPositionMarker title='marker' color={theme.colors.danger} />
+          <MapPin size={16} color={theme.colors.danger} />
         </Marker>
       </StaticMap>
     </Wrapper>
