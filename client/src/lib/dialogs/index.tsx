@@ -6,6 +6,7 @@ import UnstyledButton from '@/lib/buttons/unstyled'
 import VisuallyHidden from '@reach/visually-hidden'
 import {theme} from '@/themes'
 import {useTransition, animated} from '@react-spring/web'
+import {SpecialistChat} from '@/containers/specialist/chat'
 
 interface DialogProps {
   isOpen: boolean
@@ -36,7 +37,14 @@ const Content = styled(animated(DialogContent))`
   background-color: ${theme.colors.base};
   border: 2px solid;
 `
-const CloseButton = styled(UnstyledButton)``
+const CloseButton = styled(UnstyledButton)`
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  svg {
+    background-color: ${theme.colors.base};
+  }
+`
 
 export default function Dialog({isOpen, onDismiss}: DialogProps): JSX.Element {
   const transitions = useTransition(isOpen, {
@@ -66,6 +74,7 @@ export default function Dialog({isOpen, onDismiss}: DialogProps): JSX.Element {
                   <VisuallyHidden>Dismiss menu</VisuallyHidden>
                   <XCircle />
                 </CloseButton>
+                <SpecialistChat />
               </Content>
             </Overlay>
           )

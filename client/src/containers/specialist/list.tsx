@@ -33,7 +33,7 @@ const Wrapper = styled.div`
   }
 `
 
-export default function SpecialistList(): JSX.Element {
+export const SpecialistList = (): JSX.Element => {
   const {loading, error, data} = useQuery<getSpecialists>(GET_SPECIALISTS)
   const [specialists, setSpecialists] = React.useState<
     getSpecialists_specialistsForDashboard[] | undefined

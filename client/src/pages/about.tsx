@@ -5,6 +5,7 @@ import {getSpecialistVariables} from '/__generated__/getSpecialist'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 import {useParams} from 'react-router'
+import Spinner from '@/lib/loaders/spinner'
 const ContactBar = React.lazy(() => import('@/lib/bars/contact'))
 
 const Container = styled.div`
@@ -22,7 +23,9 @@ export default function About(): JSX.Element {
     <Container>
       <SpecialistInfo id={id} />
       {/* Only visible to Customer */}
-      <ContactBar />
+      <React.Suspense fallback={<Spinner size='medium' />}>
+        <ContactBar />
+      </React.Suspense>
     </Container>
   )
 }
