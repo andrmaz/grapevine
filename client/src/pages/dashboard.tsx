@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
-import SpecialistList from '@/containers/specialist/list'
+import {SpecialistList} from '@/containers/specialist/list'
 
 const Container = styled.div`
   width: ${theme.sizes.header.width}px;
