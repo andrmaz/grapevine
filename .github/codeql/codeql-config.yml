@@ -5,8 +5,12 @@ queries:
 
 paths:
 - client
+- server
 
 paths-ignore:
+- out
 - node_modules
 - client/node_modules
 - client/dist
+- server/node_modules
+- server/build
