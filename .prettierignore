@@ -1,4 +1,6 @@
 node_modules
 client/dist
 client/node_modules
-scripts/check_node_version.js
+server/build
+server/node_modules
+scripts/**

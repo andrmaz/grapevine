@@ -10,6 +10,7 @@
     "generate": "graphql-codegen --config codegen.yml",
     "prestart": "npm run generate",
     "tsc": "tsc --project tsconfig.json --pretty",
+    "prebuild": "npm run tsc",
     "build": "node build/src/index.js"
   },
   "keywords": [],
