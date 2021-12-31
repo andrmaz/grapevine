@@ -36,7 +36,7 @@
     "format": "prettier --write .",
     "type-check": "tsc --build --verbose",
     "start": "concurrently \"cd client && npm run dev\" \"cd server && npm start\"",
-    "build": "concurrently \"cd client && npm run build\" \"cd server && npm run build\""
+    "build": "concurrently \"cd client && npm run build\" \"cd server && npm run tsc\""
   },
   "repository": {
     "type": "git",
