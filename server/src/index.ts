@@ -2,6 +2,9 @@ import {ApolloServer} from 'apollo-server'
 import SpecialistAPI from './datasources/specialist-api'
 import resolvers from './resolvers'
 import typeDefs from './schema'
+import {conn} from './mongo'
+
+conn()
 
 const server = new ApolloServer({
   typeDefs,
