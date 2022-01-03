@@ -80,6 +80,9 @@ export type Specialist = {
   website?: Maybe<Scalars['String']>
 }
 
+export type WithIndex<TObject> = TObject & Record<string, any>
+export type ResolversObject<TObject> = WithIndex<TObject>
+
 export type ResolverTypeWrapper<T> = Promise<T> | T
 
 export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
@@ -186,7 +189,7 @@ export type DirectiveResolverFn<
 ) => TResult | Promise<TResult>
 
 /** Mapping between all available schema types and the resolvers types */
-export type ResolversTypes = {
+export type ResolversTypes = ResolversObject<{
   Address: ResolverTypeWrapper<Address>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   Company: ResolverTypeWrapper<Company>
@@ -195,10 +198,10 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>
   Specialist: ResolverTypeWrapper<Specialist>
   String: ResolverTypeWrapper<Scalars['String']>
-}
+}>
 
 /** Mapping between all available schema types and the resolvers parents */
-export type ResolversParentTypes = {
+export type ResolversParentTypes = ResolversObject<{
   Address: Address
   Boolean: Scalars['Boolean']
   Company: Company
@@ -207,24 +210,24 @@ export type ResolversParentTypes = {
   Query: {}
   Specialist: Specialist
   String: Scalars['String']
-}
+}>
 
 export type AddressResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Address'] = ResolversParentTypes['Address']
-> = {
+> = ResolversObject<{
   city?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   geo?: Resolver<Maybe<ResolversTypes['Geo']>, ParentType, ContextType>
   street?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   suite?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   zipcode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
-}
+}>
 
 export type CompanyResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Company'] = ResolversParentTypes['Company']
-> = {
+> = ResolversObject<{
   bs?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   catchPhrase?: Resolver<
     Maybe<ResolversTypes['String']>,
@@ -233,21 +236,21 @@ export type CompanyResolvers<
   >
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
-}
+}>
 
 export type GeoResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Geo'] = ResolversParentTypes['Geo']
-> = {
+> = ResolversObject<{
   lat?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   lng?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
-}
+}>
 
 export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
-> = {
+> = ResolversObject<{
   specialistForAbout?: Resolver<
     ResolversTypes['Specialist'],
     ParentType,
@@ -259,12 +262,12 @@ export type QueryResolvers<
     ParentType,
     ContextType
   >
-}
+}>
 
 export type SpecialistResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Specialist'] = ResolversParentTypes['Specialist']
-> = {
+> = ResolversObject<{
   address?: Resolver<ResolversTypes['Address'], ParentType, ContextType>
   avatar?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   company?: Resolver<ResolversTypes['Company'], ParentType, ContextType>
@@ -274,12 +277,12 @@ export type SpecialistResolvers<
   phone?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   website?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
-}
+}>
 
-export type Resolvers<ContextType = any> = {
+export type Resolvers<ContextType = any> = ResolversObject<{
   Address?: AddressResolvers<ContextType>
   Company?: CompanyResolvers<ContextType>
   Geo?: GeoResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
   Specialist?: SpecialistResolvers<ContextType>
-}
+}>

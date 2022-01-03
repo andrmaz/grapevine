@@ -1,4 +1,4 @@
-import {QueryResolvers, Scalars} from '../generated/graphql'
+import {QueryResolvers, QuerySpecialistForAboutArgs} from '../generated/graphql'
 
 import {RESTDataSource} from 'apollo-datasource-rest'
 
@@ -14,7 +14,7 @@ class SpecialistAPI extends RESTDataSource {
     return this.get('users')
   }
   async getSpecialistForAbout(
-    id: Scalars['ID']
+    id: QuerySpecialistForAboutArgs['id']
   ): Promise<QueryResolvers['specialistForAbout']> {
     return this.get(`users/${encodeURIComponent(id)}`)
   }

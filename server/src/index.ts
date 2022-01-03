@@ -3,11 +3,12 @@ import SpecialistAPI from './datasources/specialist-api'
 import resolvers from './resolvers'
 import typeDefs from './schema'
 import {conn} from './mongo'
+import {DIRECTIVES} from '@graphql-codegen/typescript-mongodb'
 
 conn()
 
 const server = new ApolloServer({
-  typeDefs,
+  typeDefs: [DIRECTIVES, typeDefs],
   resolvers,
   dataSources: () => {
     return {
