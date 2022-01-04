@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import {getSpecialist_specialistForAbout} from '/__generated__/getSpecialist'
+import {GetSpecialistQuery} from '/__generated__/types'
 import styled from '@emotion/styled'
 
 const Wrapper = styled.article`
@@ -33,7 +33,7 @@ export const SpecialistCard = ({
   phone,
   website,
   company: {bs, catchPhrase, name: company},
-}: getSpecialist_specialistForAbout): JSX.Element => {
+}: GetSpecialistQuery['specialistForAbout']): JSX.Element => {
   return (
     <Wrapper>
       <Header>

@@ -1,28 +1,9 @@
-import {gql, useQuery} from '@apollo/client'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 import {SpecialistGrid} from '@/components/specialist/grid'
 import SearchBar from '@/lib/bars/search'
 import * as React from 'react'
-import {
-  getSpecialists,
-  getSpecialists_specialistsForDashboard,
-} from '/__generated__/getSpecialists'
-
-const GET_SPECIALISTS = gql`
-  query getSpecialists {
-    specialistsForDashboard {
-      id
-      name
-      address {
-        city
-      }
-      company {
-        bs
-      }
-    }
-  }
-`
+import {useGetSpecialistsQuery, GetSpecialistsQuery} from '/__generated__/types'
 
 const Wrapper = styled.div`
   width: 568px;
@@ -34,9 +15,9 @@ const Wrapper = styled.div`
 `
 
 export const SpecialistList = (): JSX.Element => {
-  const {loading, error, data} = useQuery<getSpecialists>(GET_SPECIALISTS)
+  const {loading, error, data} = useGetSpecialistsQuery()
   const [specialists, setSpecialists] = React.useState<
-    getSpecialists_specialistsForDashboard[] | undefined
+    GetSpecialistsQuery['specialistsForDashboard'] | undefined
   >(() => data?.specialistsForDashboard)
   const [search, setSearch] = React.useState<string>('')
   React.useEffect(() => {

@@ -3,11 +3,11 @@
     "target": "ESNext",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "allowJs": false,
+    "allowJs": true,
     "baseUrl": "./",
-    "declaration":true,
+    "declaration": true,
     "declarationDir": "./dist",
-    "declarationMap":true,
+    "declarationMap": true,
     "outDir": "./dist",
     "skipLibCheck": false,
     "esModuleInterop": false,
@@ -20,7 +20,7 @@
     "isolatedModules": true,
     "jsx": "react",
     "types": ["vite/client"],
-    "typeRoots": ["./node_modules/@types", "src/types"],
+    "typeRoots": ["./node_modules/@types", "__generated__", "src/types"],
     "sourceMap": true,
     "paths": {
       "@/*": ["src/*"],
@@ -28,5 +28,5 @@
     }
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules, __generated__, **/__generated__"],
+  "exclude": ["node_modules", "src/api/*.graphql"],
 }

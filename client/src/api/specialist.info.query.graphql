@@ -1,0 +1,25 @@
+#import "./specialist.location.fragment.graphql"
+# Query to get all the information about the specialist 
+query getSpecialist($id: ID!) {
+  specialistForAbout(id: $id) {
+    id
+    name
+    email
+    address {
+      street
+      suite
+      city
+      zipcode
+      geo {
+        ...GeolocationFields
+      }
+    }
+    phone
+    website
+    company {
+      name
+      catchPhrase
+      bs
+    }
+  }
+}

@@ -8,14 +8,20 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
-    "predev": "tsc --project tsconfig.json --pretty",
+    "predev": "tsc -b --verbose",
     "download-schema": "apollo service:download --endpoint=http://localhost:4000/ graphql-schema.json",
-    "codegen": "npm run download-schema && apollo codegen:generate --localSchemaFile=graphql-schema.json --outputFlat --no-addTypename --target=typescript --tagName=gql"
+    "generate": "graphql-codegen --config config/codegen.js",
+    "codegen": "npm run download-schema && npm run generate"
   },
   "dependencies": {
     "@apollo/client": "^3.4.15",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
+    "@graphql-codegen/cli": "^2.3.1",
+    "@graphql-codegen/introspection": "^2.1.1",
+    "@graphql-codegen/typescript": "^2.4.2",
+    "@graphql-codegen/typescript-operations": "^2.2.2",
+    "@graphql-codegen/typescript-react-apollo": "^3.2.3",
     "@reach/dialog": "^0.16.2",
     "@reach/visually-hidden": "^0.16.0",
     "@react-spring/web": "^9.3.2",
