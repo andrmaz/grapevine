@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import {SpecialistInfo} from '@/containers/specialist/info'
-import {getSpecialistVariables} from '/__generated__/getSpecialist'
+import {GetSpecialistQueryVariables} from '/__generated__/types'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 import {useParams} from 'react-router'
@@ -17,7 +17,7 @@ const Container = styled.div`
 `
 
 export default function About(): JSX.Element {
-  const {id} = useParams<{id: getSpecialistVariables['id']}>()
+  const {id} = useParams<{id: GetSpecialistQueryVariables['id']}>()
   // Only editable to Specialist owner'
   return (
     <Container>

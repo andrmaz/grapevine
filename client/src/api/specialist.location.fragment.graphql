@@ -1,0 +1,5 @@
+# Query to get latitude and longitude of the specialist's location
+fragment GeolocationFields on Geo {
+  lat
+  lng
+}

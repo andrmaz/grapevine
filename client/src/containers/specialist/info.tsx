@@ -1,48 +1,15 @@
 import * as React from 'react'
 
-import {
-  getSpecialist,
-  getSpecialistVariables,
-} from '/__generated__/getSpecialist'
-import {gql, useQuery} from '@apollo/client'
-
-import {GeolocationFields} from '/__generated__/GeolocationFields'
 import QueryResult from '@/lib/results/query-result'
 import {SpecialistCard} from '@/components/specialist/card'
 import {SpecialistLocation} from '@/containers/specialist/location'
 import {filter} from 'graphql-anywhere'
 import styled from '@emotion/styled'
-
-/*
- * Query to get all the information about the specialist
- * (exported for tests)
- */
-export const GET_SPECIALIST = gql`
-  query getSpecialist($id: ID!) {
-    specialistForAbout(id: $id) {
-      id
-      name
-      email
-      address {
-        street
-        suite
-        city
-        zipcode
-        geo {
-          ...GeolocationFields
-        }
-      }
-      phone
-      website
-      company {
-        name
-        catchPhrase
-        bs
-      }
-    }
-  }
-  ${SpecialistLocation.fragments.specialist}
-`
+import {
+  GetSpecialistQueryVariables,
+  useGetSpecialistQuery,
+  Geo,
+} from '/__generated__/types'
 
 const Wrapper = styled.main`
   isolation: isolate;
@@ -77,10 +44,8 @@ const Details = styled.section`
 
 export const SpecialistInfo = ({
   id,
-}: {
-  id: getSpecialistVariables['id']
-}): JSX.Element => {
-  const {loading, error, data} = useQuery<getSpecialist>(GET_SPECIALIST, {
+}: GetSpecialistQueryVariables): JSX.Element => {
+  const {loading, error, data} = useGetSpecialistQuery({
     variables: {id},
   })
   return (
@@ -90,7 +55,7 @@ export const SpecialistInfo = ({
           <Picture />
           {data?.specialistForAbout.address.geo ? (
             <SpecialistLocation
-              geo={filter<GeolocationFields>(
+              geo={filter<Geo>(
                 SpecialistLocation.fragments.specialist,
                 data?.specialistForAbout.address.geo
               )}

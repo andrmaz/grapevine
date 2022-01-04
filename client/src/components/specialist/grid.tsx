@@ -4,13 +4,13 @@ import QueryResult from '@/lib/results/query-result'
 import {SpecialistItem} from '@/components/specialist/item'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
-import {getSpecialists_specialistsForDashboard} from '/__generated__/getSpecialists'
+import {GetSpecialistsQuery} from '/__generated__/types'
 import {ApolloError} from '@apollo/client'
 
 interface SpecialistGridProps {
   loading: boolean
   error?: ApolloError
-  specialists?: getSpecialists_specialistsForDashboard[]
+  specialists?: GetSpecialistsQuery['specialistsForDashboard']
 }
 
 const Wrapper = styled.section`
