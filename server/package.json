@@ -9,8 +9,9 @@
     "start": "ts-node src/index.ts",
     "generate": "graphql-codegen --config codegen.yml",
     "prestart": "npm run generate",
-    "tsc": "tsc --project tsconfig.json --pretty",
-    "build": "node build/src/index.js"
+    "tsc": "tsc -b --verbose",
+    "build": "node build/src/index.js",
+    "prebuild": "npm run tsc"
   },
   "keywords": [],
   "author": "",

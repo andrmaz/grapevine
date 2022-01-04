@@ -1,22 +1,22 @@
 {
   "compilerOptions": {
-    "target": "es2019",                                
-    "module": "CommonJS",                               
-    "rootDir": "./",                                
-    "moduleResolution": "node",                     
-    "baseUrl": "./",                                  
-    "typeRoots": ["./node_modules/@types", "src/generated"], 
-    "resolveJsonModule": true,                   
-    "allowJs": true,                                  
-    "checkJs": true,                                 
-    "outDir": "./build",      
-    "sourceMap": true,                            
-    "isolatedModules": true,                        
-    "allowSyntheticDefaultImports": true,             
-    "esModuleInterop": true,                           
-    "forceConsistentCasingInFileNames": true,          
-    "strict": true,                                      
-    "skipLibCheck": true                                 
+    "target": "es2019",
+    "module": "CommonJS",
+    "rootDir": "./",
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "typeRoots": ["./node_modules/@types", "src/generated"],
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "checkJs": true,
+    "outDir": "./build",
+    "sourceMap": true,
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
   },
   "watchOptions": {
     "watchFile": "useFsEvents",
@@ -24,8 +24,8 @@
     "fallbackPolling": "dynamicPriority",
     "synchronousWatchDirectory": true,
     "excludeDirectories": ["**/node_modules", "build"],
-    "excludeFiles": ["src/generated/graphql.ts, graphql.schema.json"]
+    "excludeFiles": ["src/generated/graphql.ts", "graphql.schema.json"]
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules, src/generated/*"],
+  "exclude": ["node_modules"],
 }
