@@ -8,7 +8,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node src/index.ts",
     "generate": "graphql-codegen --config codegen.yml",
-    "prestart": "npm run generate"
+    "prestart": "npm run generate",
+    "tsc": "tsc -b --verbose",
+    "build": "node build/src/index.js",
+    "prebuild": "npm run tsc"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +22,7 @@
     "graphql": "^15.6.0"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "2.2.0",
+    "@graphql-codegen/cli": "^2.2.0",
     "@graphql-codegen/import-types-preset": "^2.1.4",
     "@graphql-codegen/introspection": "2.1.0",
     "@graphql-codegen/typescript": "2.2.2",

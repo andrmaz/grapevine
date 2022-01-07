@@ -1,12 +1,12 @@
 import * as React from 'react'
 
+import {GetSpecialistsQuery} from '/__generated__/types'
 import {Link} from 'react-router-dom'
-import {getSpecialists_specialistsForDashboard} from '/__generated__/getSpecialists'
 import styled from '@emotion/styled'
-import {theme} from '@/styles/theme'
+import {theme} from '@/themes'
 
 const Item = styled.article`
-  width: 176px;
+  width: 100%;
   height: 200px;
   border: 1px solid;
   padding: 8px;
@@ -29,8 +29,13 @@ const Avatar = styled.div`
   margin: auto;
   border-radius: 50%;
   background-color: ${theme.colors.gray10};
+  overflow: hidden;
 `
-
+const Image = styled.img`
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+`
 const Information = styled.main`
   width: 100%;
   height: 50%;
@@ -40,6 +45,7 @@ const Information = styled.main`
   align-items: center;
   text-align: center;
   font-size: 0.8rem;
+  text-transform: capitalize;
 `
 const Name = styled.p``
 const Business = styled.p``
@@ -66,16 +72,18 @@ const StyledLink = styled(Link)`
   text-decoration: none;
 `
 
-const SpecialistItem = ({
+export const SpecialistItem = ({
   id,
   name,
   address: {city},
   company: {bs},
-}: getSpecialists_specialistsForDashboard): JSX.Element => {
+}: GetSpecialistsQuery['specialistsForDashboard'][0]): JSX.Element => {
   return (
     <Item>
       <Header>
-        <Avatar />
+        <Avatar>
+          <Image src={`https://avatars.dicebear.com/api/personas/${name}.svg`} />
+        </Avatar>
       </Header>
       <Information>
         <Name>{name}</Name>
@@ -90,5 +98,3 @@ const SpecialistItem = ({
     </Item>
   )
 }
-
-export default SpecialistItem

@@ -7,7 +7,7 @@ import {ApolloClient, ApolloProvider, InMemoryCache} from '@apollo/client'
 import App from './app'
 import ReactDOM from 'react-dom'
 import {ThemeProvider} from '@emotion/react'
-import {theme} from '@/styles/theme'
+import {theme} from '@/themes'
 
 const client = new ApolloClient({
   uri: import.meta.env.VITE_API_URL as string,

@@ -1,48 +1,17 @@
 import * as React from 'react'
 
 import {
-  getSpecialist,
-  getSpecialistVariables,
-} from '/__generated__/getSpecialist'
-import {gql, useQuery} from '@apollo/client'
+  Geo,
+  GetSpecialistQueryVariables,
+  useGetSpecialistQuery,
+} from '/__generated__/types'
 
-import {GeolocationFields} from '/__generated__/GeolocationFields'
 import QueryResult from '@/lib/results/query-result'
 import {SpecialistCard} from '@/components/specialist/card'
 import {SpecialistLocation} from '@/containers/specialist/location'
 import {filter} from 'graphql-anywhere'
 import styled from '@emotion/styled'
-
-/*
- * Query to get all the information about the specialist
- * (exported for tests)
- */
-export const GET_SPECIALIST = gql`
-  query getSpecialist($id: ID!) {
-    specialistForAbout(id: $id) {
-      id
-      name
-      email
-      address {
-        street
-        suite
-        city
-        zipcode
-        geo {
-          ...GeolocationFields
-        }
-      }
-      phone
-      website
-      company {
-        name
-        catchPhrase
-        bs
-      }
-    }
-  }
-  ${SpecialistLocation.fragments.specialist}
-`
+import {theme} from '@/themes'
 
 const Wrapper = styled.main`
   isolation: isolate;
@@ -60,13 +29,19 @@ const Column = styled.aside`
   justify-content: space-between;
 `
 
-const Picture = styled.section`
+const Avatar = styled.div`
   height: 250px;
   width: 100%;
-  background-color: red;
+  background-color: ${theme.colors.gray10};
+  border: 1px solid;
+  overflow: hidden;
   z-index: 2;
 `
-
+const Image = styled.img`
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+`
 const Details = styled.section`
   height: 100%;
   width: 60%;
@@ -77,20 +52,22 @@ const Details = styled.section`
 
 export const SpecialistInfo = ({
   id,
-}: {
-  id: getSpecialistVariables['id']
-}): JSX.Element => {
-  const {loading, error, data} = useQuery<getSpecialist>(GET_SPECIALIST, {
+}: GetSpecialistQueryVariables): JSX.Element => {
+  const {loading, error, data} = useGetSpecialistQuery({
     variables: {id},
   })
   return (
     <Wrapper>
       <QueryResult loading={loading} error={error} data={data}>
         <Column>
-          <Picture />
+          <Avatar>
+            <Image
+              src={`https://avatars.dicebear.com/api/personas/${data?.specialistForAbout.name}.svg`}
+            />
+          </Avatar>
           {data?.specialistForAbout.address.geo ? (
             <SpecialistLocation
-              geo={filter<GeolocationFields>(
+              geo={filter<Geo>(
                 SpecialistLocation.fragments.specialist,
                 data?.specialistForAbout.address.geo
               )}

@@ -1,0 +1,13 @@
+# Query to get a list of specialists with some information
+query getSpecialists {
+  specialistsForDashboard {
+    id
+    name
+    address {
+      city
+    }
+    company {
+      bs
+    }
+  }
+}
