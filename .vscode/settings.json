@@ -6,5 +6,6 @@
     "prettier.semi": false,
     "prettier.trailingComma": "none",
     "prettier.useTabs": true,
-    "prettier.configPath": ".prettierrc"
+    "prettier.configPath": ".prettierrc",
+    "quokka.automaticRestart": true
 }
