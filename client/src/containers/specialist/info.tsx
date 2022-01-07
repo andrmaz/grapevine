@@ -1,15 +1,17 @@
 import * as React from 'react'
 
+import {
+  Geo,
+  GetSpecialistQueryVariables,
+  useGetSpecialistQuery,
+} from '/__generated__/types'
+
 import QueryResult from '@/lib/results/query-result'
 import {SpecialistCard} from '@/components/specialist/card'
 import {SpecialistLocation} from '@/containers/specialist/location'
 import {filter} from 'graphql-anywhere'
 import styled from '@emotion/styled'
-import {
-  GetSpecialistQueryVariables,
-  useGetSpecialistQuery,
-  Geo,
-} from '/__generated__/types'
+import {theme} from '@/themes'
 
 const Wrapper = styled.main`
   isolation: isolate;
@@ -27,13 +29,19 @@ const Column = styled.aside`
   justify-content: space-between;
 `
 
-const Picture = styled.section`
+const Avatar = styled.div`
   height: 250px;
   width: 100%;
-  background-color: red;
+  background-color: ${theme.colors.gray10};
+  border: 1px solid;
+  overflow: hidden;
   z-index: 2;
 `
-
+const Image = styled.img`
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+`
 const Details = styled.section`
   height: 100%;
   width: 60%;
@@ -52,7 +60,11 @@ export const SpecialistInfo = ({
     <Wrapper>
       <QueryResult loading={loading} error={error} data={data}>
         <Column>
-          <Picture />
+          <Avatar>
+            <Image
+              src={`https://avatars.dicebear.com/api/personas/${data?.specialistForAbout.name}.svg`}
+            />
+          </Avatar>
           {data?.specialistForAbout.address.geo ? (
             <SpecialistLocation
               geo={filter<Geo>(

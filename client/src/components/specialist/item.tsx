@@ -1,7 +1,7 @@
 import * as React from 'react'
 
-import {Link} from 'react-router-dom'
 import {GetSpecialistsQuery} from '/__generated__/types'
+import {Link} from 'react-router-dom'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 
@@ -29,8 +29,13 @@ const Avatar = styled.div`
   margin: auto;
   border-radius: 50%;
   background-color: ${theme.colors.gray10};
+  overflow: hidden;
 `
-
+const Image = styled.img`
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+`
 const Information = styled.main`
   width: 100%;
   height: 50%;
@@ -76,7 +81,9 @@ export const SpecialistItem = ({
   return (
     <Item>
       <Header>
-        <Avatar />
+        <Avatar>
+          <Image src={`https://avatars.dicebear.com/api/personas/${name}.svg`} />
+        </Avatar>
       </Header>
       <Information>
         <Name>{name}</Name>
