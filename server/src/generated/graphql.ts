@@ -2,14 +2,15 @@ import type {GraphQLResolveInfo} from 'graphql'
 import gql from 'graphql-tag'
 export type Maybe<T> = T | null
 export type Exact<T extends {[key: string]: unknown}> = {[K in keyof T]: T[K]}
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-  {[SubKey in K]?: Maybe<T[SubKey]>}
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-  {[SubKey in K]: Maybe<T[SubKey]>}
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>
+}
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>
+}
 export type RequireFields<T, K extends keyof T> = {
   [X in Exclude<keyof T, K>]?: T[X]
-} &
-  {[P in K]-?: NonNullable<T[P]>}
+} & {[P in K]-?: NonNullable<T[P]>}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
@@ -37,6 +38,19 @@ export type Company = {
   catchPhrase?: Maybe<Scalars['String']>
   /** the name by which people know the business of the specialist */
   name: Scalars['String']
+}
+
+/** individuals and businesses that purchase goods and services from another business */
+export type Customer = {
+  __typename?: 'Customer'
+  /** the place where the customer lives */
+  address?: Maybe<Address>
+  /** the email address of the customer */
+  email: Scalars['String']
+  /** the first and last name of the customer */
+  name: Scalars['String']
+  /** a list of specialists who have been recommended by the customer */
+  specialists?: Maybe<Array<Maybe<Specialist>>>
 }
 
 /** the coordinates at geographic coordinate system */
@@ -213,6 +227,7 @@ export type ResolversTypes = {
   Address: ResolverTypeWrapper<Address>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   Company: ResolverTypeWrapper<Company>
+  Customer: ResolverTypeWrapper<Customer>
   Geo: ResolverTypeWrapper<Geo>
   ID: ResolverTypeWrapper<Scalars['ID']>
   Int: ResolverTypeWrapper<Scalars['Int']>
@@ -228,6 +243,7 @@ export type ResolversParentTypes = {
   Address: Address
   Boolean: Scalars['Boolean']
   Company: Company
+  Customer: Customer
   Geo: Geo
   ID: Scalars['ID']
   Int: Scalars['Int']
@@ -261,6 +277,21 @@ export type CompanyResolvers<
     ContextType
   >
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type CustomerResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Customer'] = ResolversParentTypes['Customer']
+> = {
+  address?: Resolver<Maybe<ResolversTypes['Address']>, ParentType, ContextType>
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  specialists?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Specialist']>>>,
+    ParentType,
+    ContextType
+  >
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
@@ -340,6 +371,7 @@ export type IncrementRecommendationsResponseResolvers<
 export type Resolvers<ContextType = any> = {
   Address?: AddressResolvers<ContextType>
   Company?: CompanyResolvers<ContextType>
+  Customer?: CustomerResolvers<ContextType>
   Geo?: GeoResolvers<ContextType>
   Mutation?: MutationResolvers<ContextType>
   Query?: QueryResolvers<ContextType>

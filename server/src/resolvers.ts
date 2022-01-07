@@ -23,7 +23,7 @@ const resolvers: Resolvers = {
         return {
           code: 200,
           success: true,
-          message: `Successfully incremented number of views for specialist ${id}`,
+          message: `Successfully incremented number of recommendations for specialist ${id}`,
           specialist,
         }
       } catch (err: unknown) {

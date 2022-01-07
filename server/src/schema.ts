@@ -44,6 +44,17 @@ const typeDefs = gql`
     "number of times the specialist has been recommended by customers"
     recommendations: Int
   }
+  "individuals and businesses that purchase goods and services from another business"
+  type Customer {
+    "the first and last name of the customer"
+    name: String!
+    "the email address of the customer"
+    email: String!
+    "the place where the customer lives"
+    address: Address
+    "a list of specialists who have been recommended by the customer"
+    specialists: [Specialist]
+  }
   type Query {
     # Queries go here
     "Query to get a list of specialists for the dashboard page"
