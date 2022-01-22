@@ -1,6 +1,7 @@
 # grapevine
 
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+![CodeQL](https://github.com/andrmaz/grapevine/actions/workflows/codeql-analysis.yml/badge.svg)
 
 Web-based marketing software application
 
