@@ -1,7 +1,9 @@
 import * as React from 'react'
-import styled from '@emotion/styled'
+
 import InputGroup from '@/lib/input/group'
-import { MessagesList } from '@/components/message/list'
+import {MessagesList} from '@/components/message/list'
+import styled from '@emotion/styled'
+import {theme} from '@/themes'
 
 const Wrapper = styled.div`
   height: 100%;
@@ -9,6 +11,9 @@ const Wrapper = styled.div`
   padding: 8px 4px;
   display: flex;
   flex-direction: column;
+  ${theme.mode.dark} {
+    color: var(--color-gray-10);
+  }
 `
 
 export const SpecialistChat = (): JSX.Element => {

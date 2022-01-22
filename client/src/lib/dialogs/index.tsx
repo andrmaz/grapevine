@@ -1,12 +1,14 @@
 import * as React from 'react'
-import styled from '@emotion/styled'
-import {DialogOverlay, DialogContent} from '@reach/dialog'
-import {XCircle} from 'react-feather'
+
+import {DialogContent, DialogOverlay} from '@reach/dialog'
+import {animated, useTransition} from '@react-spring/web'
+
+import {SpecialistChat} from '@/containers/specialist/chat'
 import UnstyledButton from '@/lib/buttons/unstyled'
 import VisuallyHidden from '@reach/visually-hidden'
+import {XCircle} from 'react-feather'
+import styled from '@emotion/styled'
 import {theme} from '@/themes'
-import {useTransition, animated} from '@react-spring/web'
-import {SpecialistChat} from '@/containers/specialist/chat'
 
 interface DialogProps {
   isOpen: boolean
@@ -34,15 +36,24 @@ const Content = styled(animated(DialogContent))`
   width: 400px;
   margin-right: 8px;
   margin-bottom: 8px;
-  background-color: ${theme.colors.base};
+  background-color: var(--color-base);
   border: 2px solid;
+  ${theme.mode.dark} {
+    background-color: var(--color-gray-80);
+  }
 `
 const CloseButton = styled(UnstyledButton)`
   position: absolute;
   top: -12px;
   left: -12px;
   svg {
-    background-color: ${theme.colors.base};
+    background-color: var(--color-base);
+  }
+  ${theme.mode.dark} {
+    svg {
+      background-color: var(--color-gray-80);
+      color: var(--color-base);
+    }
   }
 `
 

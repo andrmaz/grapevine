@@ -1,11 +1,11 @@
 import * as React from 'react'
 
+import {ApolloError} from '@apollo/client'
+import {GetSpecialistsQuery} from '/__generated__/types'
 import QueryResult from '@/lib/results/query-result'
 import {SpecialistItem} from '@/components/specialist/item'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
-import {GetSpecialistsQuery} from '/__generated__/types'
-import {ApolloError} from '@apollo/client'
 
 interface SpecialistGridProps {
   loading: boolean
@@ -33,6 +33,11 @@ const Grid = styled.div`
   align-items: center;
   gap: 8px;
 `
+const Text = styled.span`
+  ${theme.mode.dark} {
+    color: var(--color-gray-10);
+  }
+`
 
 export const SpecialistGrid = ({
   loading,
@@ -42,7 +47,9 @@ export const SpecialistGrid = ({
   return (
     <Wrapper>
       {specialists && specialists.length < 1 && (
-        <>No results match your search criteria. Try with supply-chains</>
+        <Text>
+          No results match your search criteria. Try with supply-chains
+        </Text>
       )}
       <QueryResult loading={loading} error={error} data={specialists}>
         <Grid>

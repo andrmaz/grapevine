@@ -11,12 +11,21 @@ const Item = styled.article`
   border: 1px solid;
   padding: 8px;
   letter-spacing: 1px;
-  background-color: ${theme.colors.orange};
+  background-color: var(--color-orange);
   border-radius: 4px;
   z-index: 1;
-  &:hover {
-    z-index: 2;
-    transform: scale(1.1);
+  ${theme.mode.dark} {
+    background-color: var(--color-blue);
+  }
+  ${theme.motion.enabled} {
+    transition: transform 500ms ease-out;
+    transition-delay: 100ms;
+    &:hover {
+      z-index: 2;
+      transform: scale(1.1);
+      transition: transform 250ms;
+      transition-delay: 100ms;
+    }
   }
 `
 const Header = styled.header`
@@ -28,7 +37,7 @@ const Avatar = styled.div`
   width: 48px;
   margin: auto;
   border-radius: 50%;
-  background-color: ${theme.colors.gray10};
+  background-color: var(--color-gray-10);
   overflow: hidden;
 `
 const Image = styled.img`
@@ -46,8 +55,13 @@ const Information = styled.main`
   text-align: center;
   font-size: 0.8rem;
   text-transform: capitalize;
+  ${theme.mode.dark} {
+    color: var(--color-gray-10);
+  }
 `
-const Name = styled.p``
+const Name = styled.p`
+  font-weight: 800;
+`
 const Business = styled.p``
 const Address = styled.p``
 
@@ -59,16 +73,16 @@ const Contact = styled.aside`
   align-items: center;
 `
 const Button = styled.button`
-  background-color: ${theme.colors.indigo};
+  background-color: var(--color-indigo);
   border-radius: 8px;
   cursor: pointer;
   &:hover {
-    background-color: ${theme.colors.indigoDarken10};
+    background-color: var(--color-indigo-10);
   }
 `
 const StyledLink = styled(Link)`
   font-size: 0.7rem;
-  color: ${theme.colors.base};
+  color: var(--color-base);
   text-decoration: none;
 `
 
@@ -82,7 +96,9 @@ export const SpecialistItem = ({
     <Item>
       <Header>
         <Avatar>
-          <Image src={`https://avatars.dicebear.com/api/personas/${name}.svg`} />
+          <Image
+            src={`https://avatars.dicebear.com/api/personas/${name}.svg`}
+          />
         </Avatar>
       </Header>
       <Information>

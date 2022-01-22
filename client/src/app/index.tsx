@@ -1,8 +1,7 @@
 import * as React from 'react'
 
-import {Global, css} from '@emotion/react'
-
 import {AuthStateContext} from '@/services/auth/context'
+import {GlobalStyles} from '@/components/styles/global'
 import Spinner from '@/lib/loaders/spinner'
 
 const AuthenticatedApp = React.lazy(() => import('./authenticated'))
@@ -14,15 +13,7 @@ export default function App(): JSX.Element {
   window.localStorage.setItem('customer', JSON.stringify(user))
   return (
     <React.Suspense fallback={<Spinner size='large' />}>
-      <Global
-        styles={css`
-          @media (pointer: coarse) {
-            html {
-              --min-tap-height: 44px;
-            }
-          }
-        `}
-      />
+      <GlobalStyles />
       {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
     </React.Suspense>
   )

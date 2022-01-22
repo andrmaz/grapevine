@@ -2,6 +2,7 @@ import * as React from 'react'
 
 import {GetSpecialistQuery} from '/__generated__/types'
 import styled from '@emotion/styled'
+import {theme} from '@/themes'
 
 const Wrapper = styled.article`
   height: 100%;
@@ -11,6 +12,9 @@ const Wrapper = styled.article`
   margin-left: -32px;
   border: 1px solid black;
   z-index: 1;
+  ${theme.mode.dark} {
+    color: var(--color-gray-10);
+  }
 `
 
 const Header = styled.header`

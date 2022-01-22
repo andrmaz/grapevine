@@ -1,7 +1,6 @@
 import * as React from 'react'
 
 import styled from '@emotion/styled'
-import {theme} from '@/themes'
 
 interface SpinnerProps {
   testid?: string
@@ -33,9 +32,9 @@ const SpinnerContainer = styled.div`
 `
 
 const LoadingSpinner = styled.div<SpinnerProps>`
-  border: 16px solid ${theme.colors.gray};
+  border: 16px solid var(--color-gray);
   border-top: 16px solid
-    ${props => (props.color ? props.color : theme.colors.blue)};
+    ${props => (props.color ? props.color : 'var(--color-blue)')};
   border-radius: 50%;
   width: var(--width);
   height: var(--height);

@@ -51,6 +51,12 @@ export const theme = {
     medium: `@media (max-width: ${Devices.tablet}px)`,
     large: `@media (max-width: ${Devices.laptop}px)`,
   },
+  motion: {
+    enabled: '@media (prefers-reduced-motion: no-preference)',
+  },
+  mode: {
+    dark: '@media (prefers-color-scheme: dark)',
+  },
   sizes: {
     header: {height: Heights.header, width: Widths.header},
   },
