@@ -22,6 +22,9 @@ const Wrapper = styled.div`
   ${theme.breakpoints.medium} {
     width: 100%;
   }
+  ${theme.mode.dark} {
+    background-color: var(--color-blue);
+  }
 `
 const Input = styled.input`
   padding: 1px 2px;

@@ -38,6 +38,9 @@ const Content = styled(animated(DialogContent))`
   margin-bottom: 8px;
   background-color: var(--color-base);
   border: 2px solid;
+  ${theme.mode.dark} {
+    background-color: var(--color-gray-80);
+  }
 `
 const CloseButton = styled(UnstyledButton)`
   position: absolute;
@@ -45,6 +48,12 @@ const CloseButton = styled(UnstyledButton)`
   left: -12px;
   svg {
     background-color: var(--color-base);
+  }
+  ${theme.mode.dark} {
+    svg {
+      background-color: var(--color-gray-80);
+      color: var(--color-base);
+    }
   }
 `
 

@@ -3,6 +3,7 @@ import * as React from 'react'
 import {GetSpecialistsQuery} from '/__generated__/types'
 import {Link} from 'react-router-dom'
 import styled from '@emotion/styled'
+import {theme} from '@/themes'
 
 const Item = styled.article`
   width: 100%;
@@ -13,9 +14,18 @@ const Item = styled.article`
   background-color: var(--color-orange);
   border-radius: 4px;
   z-index: 1;
-  &:hover {
-    z-index: 2;
-    transform: scale(1.1);
+  ${theme.mode.dark} {
+    background-color: var(--color-blue);
+  }
+  ${theme.motion.enabled} {
+    transition: transform 500ms ease-out;
+    transition-delay: 100ms;
+    &:hover {
+      z-index: 2;
+      transform: scale(1.1);
+      transition: transform 250ms;
+      transition-delay: 100ms;
+    }
   }
 `
 const Header = styled.header`
@@ -45,6 +55,9 @@ const Information = styled.main`
   text-align: center;
   font-size: 0.8rem;
   text-transform: capitalize;
+  ${theme.mode.dark} {
+    color: var(--color-gray-10);
+  }
 `
 const Name = styled.p`
   font-weight: 800;

@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import styled from '@emotion/styled'
+import { theme } from '@/themes'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -23,6 +24,9 @@ const Button = styled.button`
   &:disabled {
     background-color: var(--color-gray-20);
     color: var(--color-gray-80);
+    ${theme.mode.dark} {
+      background-color: var(--color-gray-20);
+    }
   }
 `
 

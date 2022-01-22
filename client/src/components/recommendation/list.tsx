@@ -16,6 +16,10 @@ const SideBar = styled.nav`
   ${theme.breakpoints.medium} {
     display: none;
   }
+  ${theme.mode.dark} {
+    color: var(--color-gray-10);
+    border-right-color: var(--color-blue);
+  }
 `
 const Title = styled.h4`
   margin-bottom: 16px;
@@ -30,6 +34,9 @@ const NavLink = styled(Link)`
   text-decoration: none;
   &:hover {
     text-decoration: revert;
+  }
+  ${theme.mode.dark} {
+    color: var(--color-yellow);
   }
 `
 
