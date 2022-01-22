@@ -13,7 +13,6 @@ import {SpecialistLocation} from '@/containers/specialist/location'
 import {Star} from 'react-feather'
 import {filter} from 'graphql-anywhere'
 import styled from '@emotion/styled'
-import {theme} from '@/themes'
 
 const Wrapper = styled.main`
   isolation: isolate;
@@ -34,7 +33,7 @@ const Column = styled.aside`
 const Avatar = styled.div`
   height: 250px;
   width: 100%;
-  background-color: ${theme.colors.gray10};
+  background-color: var(--color-gray-10);
   border: 1px solid;
   overflow: hidden;
   z-index: 2;
@@ -57,7 +56,7 @@ const Icon = styled(Star)`
   top: 0;
   right: 0;
   &:hover {
-    color: ${theme.colors.green};
+    color: var(--color-green);
   }
 `
 

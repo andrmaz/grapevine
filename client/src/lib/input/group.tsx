@@ -1,6 +1,6 @@
 import * as React from 'react'
+
 import styled from '@emotion/styled'
-import {theme} from '@/themes'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -13,16 +13,16 @@ const Input = styled.input`
 `
 const Button = styled.button`
   width: 20%;
-  background-color: ${theme.colors.indigo};
-  color: ${theme.colors.base};
+  background-color: var(--color-indigo);
+  color: var(--color-base);
   cursor: pointer;
   border-radius: 4px 4px 0 0;
   &:hover {
-    background-color: ${theme.colors.indigoDarken10};
+    background-color: var(--color-indigo-10);
   }
   &:disabled {
-    background-color: ${theme.colors.gray20};
-    color: ${theme.colors.gray80};
+    background-color: var(--color-gray-20);
+    color: var(--color-gray-80);
   }
 `
 

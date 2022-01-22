@@ -11,7 +11,7 @@ const Navigation = styled.nav`
   border: 1px solid black;
   width: ${theme.sizes.header.width}px;
   height: ${theme.sizes.header.height}px;
-  background-color: ${theme.colors.indigoDarken10};
+  background-color: var(--color-indigo-10);
   isolation: isolate;
   z-index: 9;
 `
@@ -29,7 +29,7 @@ const Item = styled.li`
 `
 
 const NavLink = styled(Link)`
-  color: ${theme.colors.base};
+  color: var(--color-base);
   text-decoration: none;
 `
 
