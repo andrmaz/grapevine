@@ -34,6 +34,16 @@ const NavLink = styled(Link)`
 `
 
 export default function Header(): JSX.Element {
+  //* Faking the user State for development purposes
+  const clear = (): void => {
+    const customer = JSON.parse(
+      window.localStorage.getItem('customer') as string
+    )
+    window.localStorage.setItem(
+      'customer',
+      JSON.stringify({...customer, specialists: []})
+    )
+  }
   return (
     <Navigation>
       <List>
@@ -41,7 +51,9 @@ export default function Header(): JSX.Element {
           <NavLink to='/'>Dashboard</NavLink>
         </Item>
         <Item>
-          <NavLink to='/signin'>Sign Out</NavLink>
+          <NavLink to='/signin' onClick={clear}>
+            Sign Out
+          </NavLink>
         </Item>
       </List>
     </Navigation>

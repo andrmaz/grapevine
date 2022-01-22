@@ -36,11 +36,35 @@ export type Company = {
   name: Scalars['String'];
 };
 
+/** individuals and businesses that purchase goods and services from another business */
+export type Customer = {
+  __typename?: 'Customer';
+  /** the place where the customer lives */
+  address?: Maybe<Address>;
+  /** the email address of the customer */
+  email: Scalars['String'];
+  /** the first and last name of the customer */
+  name: Scalars['String'];
+  /** a list of specialists who have been recommended by the customer */
+  specialists?: Maybe<Array<Maybe<Specialist>>>;
+};
+
 /** the coordinates at geographic coordinate system */
 export type Geo = {
   __typename?: 'Geo';
   lat: Scalars['String'];
   lng: Scalars['String'];
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  /** Mutation to increment the specialist's recommendations property */
+  incrementRecommendations: IncrementRecommendationsResponse;
+};
+
+
+export type MutationIncrementRecommendationsArgs = {
+  id: Scalars['ID'];
 };
 
 export type Query = {
@@ -73,9 +97,30 @@ export type Specialist = {
   name: Scalars['String'];
   /** the business phone number of the specialist */
   phone?: Maybe<Scalars['String']>;
+  /** number of times the specialist has been recommended by customers */
+  recommendations?: Maybe<Scalars['Int']>;
   /** a central location of web pages that are related and accessed using a browser */
   website?: Maybe<Scalars['String']>;
 };
+
+export type IncrementRecommendationsResponse = {
+  __typename?: 'incrementRecommendationsResponse';
+  /** Similar to HTTP status code, represents the status of the mutation */
+  code: Scalars['Int'];
+  /** Human-readable message for the UI */
+  message: Scalars['String'];
+  /** Newly updated specialist after a successful mutation */
+  specialist?: Maybe<Specialist>;
+  /** Indicates whether the mutation was successful */
+  success: Scalars['Boolean'];
+};
+
+export type IncrementRecommendationsMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type IncrementRecommendationsMutation = { __typename?: 'Mutation', incrementRecommendations: { __typename?: 'incrementRecommendationsResponse', code: number, success: boolean, message: string, specialist?: { __typename?: 'Specialist', id: string, recommendations?: number | null | undefined } | null | undefined } };
 
 export type GetSpecialistQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -97,6 +142,45 @@ export const GeolocationFieldsFragmentDoc = /*#__PURE__*/ gql`
   lng
 }
     `;
+export const IncrementRecommendationsDocument = /*#__PURE__*/ gql`
+    mutation IncrementRecommendations($id: ID!) {
+  incrementRecommendations(id: $id) {
+    code
+    success
+    message
+    specialist {
+      id
+      recommendations
+    }
+  }
+}
+    `;
+export type IncrementRecommendationsMutationFn = Apollo.MutationFunction<IncrementRecommendationsMutation, IncrementRecommendationsMutationVariables>;
+
+/**
+ * __useIncrementRecommendationsMutation__
+ *
+ * To run a mutation, you first call `useIncrementRecommendationsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useIncrementRecommendationsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [incrementRecommendationsMutation, { data, loading, error }] = useIncrementRecommendationsMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useIncrementRecommendationsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<IncrementRecommendationsMutation, IncrementRecommendationsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<IncrementRecommendationsMutation, IncrementRecommendationsMutationVariables>(IncrementRecommendationsDocument, options);
+      }
+export type IncrementRecommendationsMutationHookResult = ReturnType<typeof useIncrementRecommendationsMutation>;
+export type IncrementRecommendationsMutationResult = Apollo.MutationResult<IncrementRecommendationsMutation>;
+export type IncrementRecommendationsMutationOptions = Apollo.BaseMutationOptions<IncrementRecommendationsMutation, IncrementRecommendationsMutationVariables>;
 export const GetSpecialistDocument = /*#__PURE__*/ gql`
     query getSpecialist($id: ID!) {
   specialistForAbout(id: $id) {

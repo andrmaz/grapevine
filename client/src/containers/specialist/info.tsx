@@ -4,11 +4,13 @@ import {
   Geo,
   GetSpecialistQueryVariables,
   useGetSpecialistQuery,
+  useIncrementRecommendationsMutation,
 } from '/__generated__/types'
 
 import QueryResult from '@/lib/results/query-result'
 import {SpecialistCard} from '@/components/specialist/card'
 import {SpecialistLocation} from '@/containers/specialist/location'
+import {Star} from 'react-feather'
 import {filter} from 'graphql-anywhere'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
@@ -43,11 +45,20 @@ const Image = styled.img`
   object-fit: cover;
 `
 const Details = styled.section`
+  position: relative;
   height: 100%;
   width: 60%;
   padding: 16px;
   padding-top: 200px;
   display: flex;
+`
+const Icon = styled(Star)`
+  position: absolute;
+  top: 0;
+  right: 0;
+  &:hover {
+    color: ${theme.colors.green};
+  }
 `
 
 export const SpecialistInfo = ({
@@ -56,6 +67,23 @@ export const SpecialistInfo = ({
   const {loading, error, data} = useGetSpecialistQuery({
     variables: {id},
   })
+  const [incrementRecommendations] = useIncrementRecommendationsMutation({
+    variables: {id},
+  })
+  const handleClick = (): void => {
+    incrementRecommendations()
+    //* Faking the user State for development purposes
+    const customer = JSON.parse(
+      window.localStorage.getItem('customer') as string
+    )
+    window.localStorage.setItem(
+      'customer',
+      JSON.stringify({
+        ...customer,
+        specialists: [...customer.specialists, data?.specialistForAbout],
+      })
+    )
+  }
   return (
     <Wrapper>
       <QueryResult loading={loading} error={error} data={data}>
@@ -75,6 +103,7 @@ export const SpecialistInfo = ({
           ) : null}
         </Column>
         <Details>
+          <Icon size={40} onClick={handleClick} />
           {data?.specialistForAbout ? (
             <SpecialistCard {...data?.specialistForAbout} />
           ) : null}
