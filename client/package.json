@@ -12,7 +12,8 @@
     "download-schema": "apollo service:download --endpoint=http://localhost:4000/ graphql-schema.json",
     "generate": "graphql-codegen --config config/codegen.js",
     "codegen": "npm run download-schema && npm run generate",
-    "predev": "npm run generate"
+    "predev": "npm run generate",
+    "nc": "node scripts/create_new_component.mjs"
   },
   "dependencies": {
     "@apollo/client": "^3.4.15",
