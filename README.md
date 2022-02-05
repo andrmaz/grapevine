@@ -48,11 +48,11 @@ A breakpoint is a specific viewport width that lets us segment all devices into 
 Any device under the specified breakpoint will be put in the same bucket, and can be styled separately.
     
 ***Colors*** :<br>
-By default this app uses a light mode first approach.
-To detect if the user has requested dark color theme use media queries as follows.<br>
+By default we use a light mode first approach.<br>
+To detect if the user has requested dark color theme use media queries as follows :<br>
 `@media (prefers-color-scheme: dark)`
     
 ***Animations*** :<br>
-Start without animations, and enable them if the user wishes. 
+Start without animations, and enable them if the user wishes.<br>
 By switching it up so that the transition is set from within a media query, we ensure that the animation is disabled by default for users on browsers/devices that don't support this property.<br>
 `@media (prefers-reduced-motion: no-preference)`
