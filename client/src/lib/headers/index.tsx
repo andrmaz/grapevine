@@ -11,7 +11,7 @@ const Navigation = styled.nav`
   border: 1px solid black;
   width: ${theme.sizes.header.width}px;
   height: ${theme.sizes.header.height}px;
-  background-color: ${theme.colors.indigoDarken10};
+  background-color: var(--color-indigo-10);
   isolation: isolate;
   z-index: 9;
 `
@@ -29,11 +29,21 @@ const Item = styled.li`
 `
 
 const NavLink = styled(Link)`
-  color: ${theme.colors.base};
+  color: var(--color-base);
   text-decoration: none;
 `
 
 export default function Header(): JSX.Element {
+  //* Faking the user State for development purposes
+  const clear = (): void => {
+    const customer = JSON.parse(
+      window.localStorage.getItem('customer') as string
+    )
+    window.localStorage.setItem(
+      'customer',
+      JSON.stringify({...customer, specialists: []})
+    )
+  }
   return (
     <Navigation>
       <List>
@@ -41,7 +51,9 @@ export default function Header(): JSX.Element {
           <NavLink to='/'>Dashboard</NavLink>
         </Item>
         <Item>
-          <NavLink to='/signin'>Sign Out</NavLink>
+          <NavLink to='/signin' onClick={clear}>
+            Sign Out
+          </NavLink>
         </Item>
       </List>
     </Navigation>

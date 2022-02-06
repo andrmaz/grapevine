@@ -1,6 +1,7 @@
 # grapevine
 
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+![CodeQL](https://github.com/andrmaz/grapevine/actions/workflows/codeql-analysis.yml/badge.svg)
 
 Web-based marketing software application
 
@@ -39,8 +40,19 @@ Because the base font size is 16px, this works out in pixels to:
 - `24px`
 - `32px`
 
-### Approach
+### Responsiveness
 
+***Devices*** :<br>
 This app uses a desktop first approach by picking a series of breakpoints.  
 A breakpoint is a specific viewport width that lets us segment all devices into a small set of possible experiences.  
 Any device under the specified breakpoint will be put in the same bucket, and can be styled separately.
+    
+***Colors*** :<br>
+By default we use a light mode first approach.<br>
+To detect if the user has requested dark color theme use media queries as follows :<br>
+`@media (prefers-color-scheme: dark)`
+    
+***Animations*** :<br>
+Start without animations, and enable them if the user wishes.<br>
+By switching it up so that the transition is set from within a media query, we ensure that the animation is disabled by default for users on browsers/devices that don't support this property.<br>
+`@media (prefers-reduced-motion: no-preference)`

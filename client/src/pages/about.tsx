@@ -1,10 +1,12 @@
 import * as React from 'react'
 
 import {SpecialistInfo} from '@/containers/specialist/info'
-import {getSpecialistVariables} from '/__generated__/getSpecialist'
+import {GetSpecialistQueryVariables} from '/__generated__/types'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 import {useParams} from 'react-router'
+import Spinner from '@/lib/loaders/spinner'
+const ContactBar = React.lazy(() => import('@/lib/bars/contact'))
 
 const Container = styled.div`
   width: ${theme.sizes.header.width}px;
@@ -14,20 +16,16 @@ const Container = styled.div`
   border-style: solid;
 `
 
-const Contact = styled.aside`
-  height: 50px;
-  width: 100%;
-  background-color: yellow;
-`
-
 export default function About(): JSX.Element {
-  const {id} = useParams<{id: getSpecialistVariables['id']}>()
+  const {id} = useParams<{id: GetSpecialistQueryVariables['id']}>()
   // Only editable to Specialist owner'
   return (
     <Container>
       <SpecialistInfo id={id} />
       {/* Only visible to Customer */}
-      <Contact />
+      <React.Suspense fallback={<Spinner size='medium' />}>
+        <ContactBar />
+      </React.Suspense>
     </Container>
   )
 }

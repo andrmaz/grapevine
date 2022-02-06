@@ -4,25 +4,13 @@ import * as React from 'react'
 
 import {Marker, StaticMap} from 'react-map-gl'
 
-import {GeolocationFields} from '/__generated__/GeolocationFields'
-import {GiPositionMarker} from 'react-icons/gi'
-import {gql} from '@apollo/client'
+import {MapPin} from 'react-feather'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
+import {Geo, GeolocationFieldsFragmentDoc} from '/__generated__/types'
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN as string
 const MAPBOX_STYLE = import.meta.env.VITE_MAPBOX_STYLE as string
-
-/*
- * Query to get latitude and longitude of the specialist's location
- * (exported for tests)
- */
-export const GEOLOCATION_FIELDS = gql`
-  fragment GeolocationFields on Geo {
-    lat
-    lng
-  }
-`
 
 const Wrapper = styled.section`
   height: 280px;
@@ -33,7 +21,7 @@ const Wrapper = styled.section`
 export const SpecialistLocation = ({
   geo: {lat, lng},
 }: {
-  geo: GeolocationFields
+  geo: Geo
 }): JSX.Element => {
   const latitude = Number(lat)
   const longitude = Number(lng)
@@ -55,7 +43,7 @@ export const SpecialistLocation = ({
           offsetLeft={-20}
           offsetTop={-10}
         >
-          <GiPositionMarker title='marker' color={theme.colors.danger} />
+          <MapPin size={16} color={theme.colors.danger} />
         </Marker>
       </StaticMap>
     </Wrapper>
@@ -63,5 +51,5 @@ export const SpecialistLocation = ({
 }
 
 SpecialistLocation.fragments = {
-  specialist: GEOLOCATION_FIELDS,
+  specialist: GeolocationFieldsFragmentDoc,
 }

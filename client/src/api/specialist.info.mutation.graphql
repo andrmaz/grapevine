@@ -1,0 +1,12 @@
+# Mutation to increment the specialist's recommendations
+mutation IncrementRecommendations($id: ID!) {
+  incrementRecommendations(id: $id) {
+    code
+    success
+    message
+    specialist {
+      id
+      recommendations
+    }
+  }
+}

@@ -7,7 +7,9 @@ on:
     # The branches below must be a subset of the branches above
     branches: [development]
     paths:
-      - '**.(ts|js)?(x)'
+      - 'client/src/**'
+      - 'server/src/**'
+      - '!server/src/generated/**'
   schedule:
     - cron: '23 19 * * 0'
 
@@ -39,6 +41,8 @@ jobs:
           languages: ${{ matrix.language }}
           # If you wish to specify custom queries, you can do so here or in a config file.
           config-file: ./.github/codeql/codeql-config.yml
+          # Enable debug artifacts
+          debug: true
           # By default, queries listed here will override any specified in a config file.
           # Prefix the list here with "+" to use these queries and those in the config file.
           # queries: ./path/to/local/query, your-org/your-repo/queries@main

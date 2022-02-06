@@ -36,11 +36,35 @@ export type Company = {
   name: Scalars['String'];
 };
 
+/** individuals and businesses that purchase goods and services from another business */
+export type Customer = {
+  __typename?: 'Customer';
+  /** the place where the customer lives */
+  address?: Maybe<Address>;
+  /** the email address of the customer */
+  email: Scalars['String'];
+  /** the first and last name of the customer */
+  name: Scalars['String'];
+  /** a list of specialists who have been recommended by the customer */
+  specialists?: Maybe<Array<Maybe<Specialist>>>;
+};
+
 /** the coordinates at geographic coordinate system */
 export type Geo = {
   __typename?: 'Geo';
   lat: Scalars['String'];
   lng: Scalars['String'];
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  /** Mutation to increment the specialist's recommendations property */
+  incrementRecommendations: IncrementRecommendationsResponse;
+};
+
+
+export type MutationIncrementRecommendationsArgs = {
+  id: Scalars['ID'];
 };
 
 export type Query = {
@@ -73,8 +97,22 @@ export type Specialist = {
   name: Scalars['String'];
   /** the business phone number of the specialist */
   phone?: Maybe<Scalars['String']>;
+  /** number of times the specialist has been recommended by customers */
+  recommendations?: Maybe<Scalars['Int']>;
   /** a central location of web pages that are related and accessed using a browser */
   website?: Maybe<Scalars['String']>;
+};
+
+export type IncrementRecommendationsResponse = {
+  __typename?: 'incrementRecommendationsResponse';
+  /** Similar to HTTP status code, represents the status of the mutation */
+  code: Scalars['Int'];
+  /** Human-readable message for the UI */
+  message: Scalars['String'];
+  /** Newly updated specialist after a successful mutation */
+  specialist?: Maybe<Specialist>;
+  /** Indicates whether the mutation was successful */
+  success: Scalars['Boolean'];
 };
 
 import { ObjectId } from 'mongodb';

@@ -1,7 +1,7 @@
 import * as React from 'react'
 
+import {GetSpecialistsQuery} from '/__generated__/types'
 import {Link} from 'react-router-dom'
-import {getSpecialists_specialistsForDashboard} from '/__generated__/getSpecialists'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 
@@ -11,12 +11,21 @@ const Item = styled.article`
   border: 1px solid;
   padding: 8px;
   letter-spacing: 1px;
-  background-color: ${theme.colors.orange};
+  background-color: var(--color-orange);
   border-radius: 4px;
   z-index: 1;
-  &:hover {
-    z-index: 2;
-    transform: scale(1.1);
+  ${theme.mode.dark} {
+    background-color: var(--color-blue);
+  }
+  ${theme.motion.enabled} {
+    transition: transform 500ms ease-out;
+    transition-delay: 100ms;
+    &:hover {
+      z-index: 2;
+      transform: scale(1.1);
+      transition: transform 250ms;
+      transition-delay: 100ms;
+    }
   }
 `
 const Header = styled.header`
@@ -28,9 +37,14 @@ const Avatar = styled.div`
   width: 48px;
   margin: auto;
   border-radius: 50%;
-  background-color: ${theme.colors.gray10};
+  background-color: var(--color-gray-10);
+  overflow: hidden;
 `
-
+const Image = styled.img`
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+`
 const Information = styled.main`
   width: 100%;
   height: 50%;
@@ -41,8 +55,13 @@ const Information = styled.main`
   text-align: center;
   font-size: 0.8rem;
   text-transform: capitalize;
+  ${theme.mode.dark} {
+    color: var(--color-gray-10);
+  }
 `
-const Name = styled.p``
+const Name = styled.p`
+  font-weight: 800;
+`
 const Business = styled.p``
 const Address = styled.p``
 
@@ -54,16 +73,16 @@ const Contact = styled.aside`
   align-items: center;
 `
 const Button = styled.button`
-  background-color: ${theme.colors.indigo};
+  background-color: var(--color-indigo);
   border-radius: 8px;
   cursor: pointer;
   &:hover {
-    background-color: ${theme.colors.indigoDarken10};
+    background-color: var(--color-indigo-10);
   }
 `
 const StyledLink = styled(Link)`
   font-size: 0.7rem;
-  color: ${theme.colors.base};
+  color: var(--color-base);
   text-decoration: none;
 `
 
@@ -72,11 +91,15 @@ export const SpecialistItem = ({
   name,
   address: {city},
   company: {bs},
-}: getSpecialists_specialistsForDashboard): JSX.Element => {
+}: GetSpecialistsQuery['specialistsForDashboard'][0]): JSX.Element => {
   return (
     <Item>
       <Header>
-        <Avatar />
+        <Avatar>
+          <Image
+            src={`https://avatars.dicebear.com/api/personas/${name}.svg`}
+          />
+        </Avatar>
       </Header>
       <Information>
         <Name>{name}</Name>

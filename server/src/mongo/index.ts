@@ -1,10 +1,8 @@
+import {options, url} from '../config'
+
 import mongoose from 'mongoose'
 
-const url = 'mongodb://localhost:27018'
-
-const options = {dbName: 'grapevine', user: 'root', pass: 'example'}
-
-function conn(): void {
+function connector(): void {
   mongoose.connect(url, options, function (error) {
     if (error) {
       console.error('Initial connection error:', error.name)
@@ -30,4 +28,4 @@ function conn(): void {
   })
 }
 
-export {conn}
+export {connector}

@@ -1,4 +1,5 @@
 import * as React from 'react'
+
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 
@@ -17,9 +18,12 @@ const Wrapper = styled.div`
   padding: 8px;
   border-right: 1px solid black;
   border-bottom: 1px solid black;
-  background-color: ${theme.colors.base};
+  background-color: var(--color-base);
   ${theme.breakpoints.medium} {
     width: 100%;
+  }
+  ${theme.mode.dark} {
+    background-color: var(--color-blue);
   }
 `
 const Input = styled.input`
