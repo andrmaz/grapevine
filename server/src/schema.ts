@@ -42,18 +42,37 @@ const typeDefs = gql`
     "an icon, graphic, or other image by which the specialist represents himself or herself"
     avatar: String @column
     "number of times the specialist has been recommended by customers"
-    recommendations: Int
+    recommendations: Int # this field won't get a generated MongoDB field
   }
   "individuals and businesses that purchase goods and services from another business"
-  type Customer {
+  type Customer @entity {
+    "the unique identifier of the customer"
+    id: ID! @id
     "the first and last name of the customer"
-    name: String!
+    name: String! @column
     "the email address of the customer"
-    email: String!
+    email: String! @column
     "the place where the customer lives"
-    address: Address
+    address: Address @embedded
     "a list of specialists who have been recommended by the customer"
-    specialists: [Specialist]
+    specialists: [Specialist] @link
+  }
+  # Inputs go here
+  input GeoInput {
+    lat: String!
+    lng: String!
+  }
+  input AddressInput {
+    street: String
+    suite: String
+    city: String!
+    zipcode: String
+    geo: GeoInput
+  }
+  input CustomerInput {
+    name: String!
+    email: String!
+    address: AddressInput
   }
   type Query {
     # Queries go here
@@ -61,13 +80,27 @@ const typeDefs = gql`
     specialistsForDashboard: [Specialist!]!
     "Query to get the information about a specific specialist"
     specialistForAbout(id: ID!): Specialist!
+    "Query to get the information about a specific customer"
+    customerForProfile(id: ID!): Customer!
   }
   type Mutation {
     # Mutations go here
+    "Mutation to create a new customer"
+    registerCustomer(data: CustomerInput): CustomerResponse!
     "Mutation to increment the specialist's recommendations property"
-    incrementRecommendations(id: ID!): incrementRecommendationsResponse!
+    incrementRecommendations(id: ID!): IncrementRecommendationsResponse!
   }
-  type incrementRecommendationsResponse {
+  type CustomerResponse {
+    "Similar to HTTP status code, represents the status of the mutation"
+    code: Int!
+    "Indicates whether the mutation was successful"
+    success: Boolean!
+    "Human-readable message for the UI"
+    message: String!
+    "Newly updated specialist after a successful mutation"
+    customer: Customer
+  }
+  type IncrementRecommendationsResponse {
     "Similar to HTTP status code, represents the status of the mutation"
     code: Int!
     "Indicates whether the mutation was successful"

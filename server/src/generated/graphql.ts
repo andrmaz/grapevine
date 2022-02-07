@@ -30,6 +30,14 @@ export type Address = {
   zipcode?: Maybe<Scalars['String']>
 }
 
+export type AddressInput = {
+  city: Scalars['String']
+  geo?: Maybe<GeoInput>
+  street?: Maybe<Scalars['String']>
+  suite?: Maybe<Scalars['String']>
+  zipcode?: Maybe<Scalars['String']>
+}
+
 export type Company = {
   __typename?: 'Company'
   /** the sector of the economy the specialist operates in */
@@ -47,10 +55,30 @@ export type Customer = {
   address?: Maybe<Address>
   /** the email address of the customer */
   email: Scalars['String']
+  /** the unique identifier of the customer */
+  id: Scalars['ID']
   /** the first and last name of the customer */
   name: Scalars['String']
   /** a list of specialists who have been recommended by the customer */
   specialists?: Maybe<Array<Maybe<Specialist>>>
+}
+
+export type CustomerInput = {
+  address?: Maybe<AddressInput>
+  email: Scalars['String']
+  name: Scalars['String']
+}
+
+export type CustomerResponse = {
+  __typename?: 'CustomerResponse'
+  /** Similar to HTTP status code, represents the status of the mutation */
+  code: Scalars['Int']
+  /** Newly updated specialist after a successful mutation */
+  customer?: Maybe<Customer>
+  /** Human-readable message for the UI */
+  message: Scalars['String']
+  /** Indicates whether the mutation was successful */
+  success: Scalars['Boolean']
 }
 
 /** the coordinates at geographic coordinate system */
@@ -60,22 +88,51 @@ export type Geo = {
   lng: Scalars['String']
 }
 
+export type GeoInput = {
+  lat: Scalars['String']
+  lng: Scalars['String']
+}
+
+export type IncrementRecommendationsResponse = {
+  __typename?: 'IncrementRecommendationsResponse'
+  /** Similar to HTTP status code, represents the status of the mutation */
+  code: Scalars['Int']
+  /** Human-readable message for the UI */
+  message: Scalars['String']
+  /** Newly updated specialist after a successful mutation */
+  specialist?: Maybe<Specialist>
+  /** Indicates whether the mutation was successful */
+  success: Scalars['Boolean']
+}
+
 export type Mutation = {
   __typename?: 'Mutation'
   /** Mutation to increment the specialist's recommendations property */
   incrementRecommendations: IncrementRecommendationsResponse
+  /** Mutation to create a new customer */
+  registerCustomer: CustomerResponse
 }
 
 export type MutationIncrementRecommendationsArgs = {
   id: Scalars['ID']
 }
 
+export type MutationRegisterCustomerArgs = {
+  data?: Maybe<CustomerInput>
+}
+
 export type Query = {
   __typename?: 'Query'
+  /** Query to get the information about a specific customer */
+  customerForProfile: Customer
   /** Query to get the information about a specific specialist */
   specialistForAbout: Specialist
   /** Query to get a list of specialists for the dashboard page */
   specialistsForDashboard: Array<Specialist>
+}
+
+export type QueryCustomerForProfileArgs = {
+  id: Scalars['ID']
 }
 
 export type QuerySpecialistForAboutArgs = {
@@ -103,18 +160,6 @@ export type Specialist = {
   recommendations?: Maybe<Scalars['Int']>
   /** a central location of web pages that are related and accessed using a browser */
   website?: Maybe<Scalars['String']>
-}
-
-export type IncrementRecommendationsResponse = {
-  __typename?: 'incrementRecommendationsResponse'
-  /** Similar to HTTP status code, represents the status of the mutation */
-  code: Scalars['Int']
-  /** Human-readable message for the UI */
-  message: Scalars['String']
-  /** Newly updated specialist after a successful mutation */
-  specialist?: Maybe<Specialist>
-  /** Indicates whether the mutation was successful */
-  success: Scalars['Boolean']
 }
 
 export type WithIndex<TObject> = TObject & Record<string, any>
@@ -228,33 +273,41 @@ export type DirectiveResolverFn<
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   Address: ResolverTypeWrapper<Address>
+  AddressInput: AddressInput
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   Company: ResolverTypeWrapper<Company>
   Customer: ResolverTypeWrapper<Customer>
+  CustomerInput: CustomerInput
+  CustomerResponse: ResolverTypeWrapper<CustomerResponse>
   Geo: ResolverTypeWrapper<Geo>
+  GeoInput: GeoInput
   ID: ResolverTypeWrapper<Scalars['ID']>
+  IncrementRecommendationsResponse: ResolverTypeWrapper<IncrementRecommendationsResponse>
   Int: ResolverTypeWrapper<Scalars['Int']>
   Mutation: ResolverTypeWrapper<{}>
   Query: ResolverTypeWrapper<{}>
   Specialist: ResolverTypeWrapper<Specialist>
   String: ResolverTypeWrapper<Scalars['String']>
-  incrementRecommendationsResponse: ResolverTypeWrapper<IncrementRecommendationsResponse>
 }>
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Address: Address
+  AddressInput: AddressInput
   Boolean: Scalars['Boolean']
   Company: Company
   Customer: Customer
+  CustomerInput: CustomerInput
+  CustomerResponse: CustomerResponse
   Geo: Geo
+  GeoInput: GeoInput
   ID: Scalars['ID']
+  IncrementRecommendationsResponse: IncrementRecommendationsResponse
   Int: Scalars['Int']
   Mutation: {}
   Query: {}
   Specialist: Specialist
   String: Scalars['String']
-  incrementRecommendationsResponse: IncrementRecommendationsResponse
 }>
 
 export type AddressResolvers<
@@ -289,12 +342,28 @@ export type CustomerResolvers<
 > = ResolversObject<{
   address?: Resolver<Maybe<ResolversTypes['Address']>, ParentType, ContextType>
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   specialists?: Resolver<
     Maybe<Array<Maybe<ResolversTypes['Specialist']>>>,
     ParentType,
     ContextType
   >
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}>
+
+export type CustomerResponseResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CustomerResponse'] = ResolversParentTypes['CustomerResponse']
+> = ResolversObject<{
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  customer?: Resolver<
+    Maybe<ResolversTypes['Customer']>,
+    ParentType,
+    ContextType
+  >
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
@@ -307,15 +376,36 @@ export type GeoResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
+export type IncrementRecommendationsResponseResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['IncrementRecommendationsResponse'] = ResolversParentTypes['IncrementRecommendationsResponse']
+> = ResolversObject<{
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  specialist?: Resolver<
+    Maybe<ResolversTypes['Specialist']>,
+    ParentType,
+    ContextType
+  >
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}>
+
 export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = ResolversObject<{
   incrementRecommendations?: Resolver<
-    ResolversTypes['incrementRecommendationsResponse'],
+    ResolversTypes['IncrementRecommendationsResponse'],
     ParentType,
     ContextType,
     RequireFields<MutationIncrementRecommendationsArgs, 'id'>
+  >
+  registerCustomer?: Resolver<
+    ResolversTypes['CustomerResponse'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRegisterCustomerArgs, never>
   >
 }>
 
@@ -323,6 +413,12 @@ export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = ResolversObject<{
+  customerForProfile?: Resolver<
+    ResolversTypes['Customer'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryCustomerForProfileArgs, 'id'>
+  >
   specialistForAbout?: Resolver<
     ResolversTypes['Specialist'],
     ParentType,
@@ -356,28 +452,14 @@ export type SpecialistResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
-export type IncrementRecommendationsResponseResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['incrementRecommendationsResponse'] = ResolversParentTypes['incrementRecommendationsResponse']
-> = ResolversObject<{
-  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
-  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  specialist?: Resolver<
-    Maybe<ResolversTypes['Specialist']>,
-    ParentType,
-    ContextType
-  >
-  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
-}>
-
 export type Resolvers<ContextType = any> = ResolversObject<{
   Address?: AddressResolvers<ContextType>
   Company?: CompanyResolvers<ContextType>
   Customer?: CustomerResolvers<ContextType>
+  CustomerResponse?: CustomerResponseResolvers<ContextType>
   Geo?: GeoResolvers<ContextType>
+  IncrementRecommendationsResponse?: IncrementRecommendationsResponseResolvers<ContextType>
   Mutation?: MutationResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
   Specialist?: SpecialistResolvers<ContextType>
-  incrementRecommendationsResponse?: IncrementRecommendationsResponseResolvers<ContextType>
 }>
