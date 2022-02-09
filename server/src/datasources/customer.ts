@@ -14,9 +14,9 @@ export default class Customers extends MongoDataSource<
   Context
 > {
   async insertCustomer(
-    data: CustomerInput
+    input: CustomerInput
   ): Promise<CustomerDbObject | null | undefined> {
-    const customer = new CustomerModel(data)
+    const customer = new CustomerModel(input)
     await customer.save()
     return customer
   }

@@ -31,7 +31,7 @@
           },
           {
             "name": "geo",
-            "description": null,
+            "description": "the coordinates at geographic coordinate system",
             "args": [],
             "type": {
               "kind": "OBJECT",
@@ -55,7 +55,7 @@
           },
           {
             "name": "suite",
-            "description": null,
+            "description": "the location of a business within a shopping mall or office building",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -91,7 +91,7 @@
         "inputFields": [
           {
             "name": "city",
-            "description": null,
+            "description": "the name of the city to which the address is located",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -107,7 +107,7 @@
           },
           {
             "name": "geo",
-            "description": null,
+            "description": "the coordinates at geographic coordinate system",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "GeoInput",
@@ -119,7 +119,7 @@
           },
           {
             "name": "street",
-            "description": null,
+            "description": "the name of the street to which the address is located",
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -131,7 +131,7 @@
           },
           {
             "name": "suite",
-            "description": null,
+            "description": " the location of a business within a shopping mall or office building",
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -143,7 +143,7 @@
           },
           {
             "name": "zipcode",
-            "description": null,
+            "description": "the postal code to which the address is located",
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -171,7 +171,7 @@
       {
         "kind": "OBJECT",
         "name": "Company",
-        "description": null,
+        "description": "a business organization that makes, buys, or sells goods or provides services in exchange for money",
         "fields": [
           {
             "name": "bs",
@@ -220,6 +220,61 @@
         ],
         "inputFields": null,
         "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "CompanyInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "bs",
+            "description": "the sector of the economy the specialist operates in",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "catchPhrase",
+            "description": "an expression consisting of one or more words slogan a favorite saying of a sector",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "name",
+            "description": "the name by which people know the business of the specialist",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
       },
@@ -318,7 +373,7 @@
         "inputFields": [
           {
             "name": "address",
-            "description": null,
+            "description": "the place where the customer lives",
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "AddressInput",
@@ -330,7 +385,7 @@
           },
           {
             "name": "email",
-            "description": null,
+            "description": "the email address of the customer",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -346,7 +401,7 @@
           },
           {
             "name": "name",
-            "description": null,
+            "description": "the first and last name of the customer",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -388,7 +443,7 @@
           },
           {
             "name": "customer",
-            "description": "Newly updated specialist after a successful mutation",
+            "description": "Newly updated customer after a successful mutation",
             "args": [],
             "type": {
               "kind": "OBJECT",
@@ -443,7 +498,7 @@
         "fields": [
           {
             "name": "lat",
-            "description": null,
+            "description": "the latitude of a certain point on the surface of the Earth",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -459,7 +514,7 @@
           },
           {
             "name": "lng",
-            "description": null,
+            "description": "the longitude of a certain point on the surface of the Earth",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -487,7 +542,7 @@
         "inputFields": [
           {
             "name": "lat",
-            "description": null,
+            "description": "the latitude of a certain point on the surface of the Earth",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -503,7 +558,7 @@
           },
           {
             "name": "lng",
-            "description": null,
+            "description": "the longitude of a certain point on the surface of the Earth",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -656,7 +711,7 @@
             "description": "Mutation to create a new customer",
             "args": [
               {
-                "name": "data",
+                "name": "input",
                 "description": null,
                 "type": {
                   "kind": "INPUT_OBJECT",
@@ -674,6 +729,35 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "CustomerResponse",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "registerSpecialist",
+            "description": "Mutation to create a new specialist",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "SpecialistInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "SpecialistResponse",
                 "ofType": null
               }
             },
@@ -726,6 +810,39 @@
           },
           {
             "name": "specialistForAbout",
+            "description": "Query to get the information about a specific specialist",
+            "args": [
+              {
+                "name": "id",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Specialist",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "specialistForProfile",
             "description": "Query to get the information about a specific specialist",
             "args": [
               {
@@ -916,6 +1033,188 @@
               "kind": "SCALAR",
               "name": "String",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "SpecialistInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "address",
+            "description": "the place where the specialist works",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "AddressInput",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "avatar",
+            "description": "an icon, graphic, or other image by which the specialist represents himself or herself",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "company",
+            "description": "the company where the specialist works",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "CompanyInput",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "email",
+            "description": "the business email address of the specialist",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "name",
+            "description": "the first and last name of the specialist",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "phone",
+            "description": "the business phone number of the specialist",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "website",
+            "description": "a central location of web pages that are related and accessed using a browser",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "SpecialistResponse",
+        "description": null,
+        "fields": [
+          {
+            "name": "code",
+            "description": "Similar to HTTP status code, represents the status of the mutation",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "message",
+            "description": "Human-readable message for the UI",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "specialist",
+            "description": "Newly updated specialist after a successful mutation",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Specialist",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "success",
+            "description": "Indicates whether the mutation was successful",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null

@@ -2,15 +2,14 @@ import type {GraphQLResolveInfo} from 'graphql'
 import gql from 'graphql-tag'
 export type Maybe<T> = T | null
 export type Exact<T extends {[key: string]: unknown}> = {[K in keyof T]: T[K]}
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>
-}
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>
-}
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
+  {[SubKey in K]?: Maybe<T[SubKey]>}
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
+  {[SubKey in K]: Maybe<T[SubKey]>}
 export type RequireFields<T, K extends keyof T> = {
   [X in Exclude<keyof T, K>]?: T[X]
-} & {[P in K]-?: NonNullable<T[P]>}
+} &
+  {[P in K]-?: NonNullable<T[P]>}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
@@ -24,22 +23,39 @@ export type Scalars = {
 export type Address = {
   __typename?: 'Address'
   city: Scalars['String']
+  /** the coordinates at geographic coordinate system */
   geo?: Maybe<Geo>
   street?: Maybe<Scalars['String']>
+  /** the location of a business within a shopping mall or office building */
   suite?: Maybe<Scalars['String']>
   zipcode?: Maybe<Scalars['String']>
 }
 
 export type AddressInput = {
+  /** the name of the city to which the address is located */
   city: Scalars['String']
+  /** the coordinates at geographic coordinate system */
   geo?: Maybe<GeoInput>
+  /** the name of the street to which the address is located */
   street?: Maybe<Scalars['String']>
+  /**  the location of a business within a shopping mall or office building */
   suite?: Maybe<Scalars['String']>
+  /** the postal code to which the address is located */
   zipcode?: Maybe<Scalars['String']>
 }
 
+/** a business organization that makes, buys, or sells goods or provides services in exchange for money */
 export type Company = {
   __typename?: 'Company'
+  /** the sector of the economy the specialist operates in */
+  bs: Scalars['String']
+  /** an expression consisting of one or more words slogan a favorite saying of a sector */
+  catchPhrase?: Maybe<Scalars['String']>
+  /** the name by which people know the business of the specialist */
+  name: Scalars['String']
+}
+
+export type CompanyInput = {
   /** the sector of the economy the specialist operates in */
   bs: Scalars['String']
   /** an expression consisting of one or more words slogan a favorite saying of a sector */
@@ -64,8 +80,11 @@ export type Customer = {
 }
 
 export type CustomerInput = {
+  /** the place where the customer lives */
   address?: Maybe<AddressInput>
+  /** the email address of the customer */
   email: Scalars['String']
+  /** the first and last name of the customer */
   name: Scalars['String']
 }
 
@@ -73,7 +92,7 @@ export type CustomerResponse = {
   __typename?: 'CustomerResponse'
   /** Similar to HTTP status code, represents the status of the mutation */
   code: Scalars['Int']
-  /** Newly updated specialist after a successful mutation */
+  /** Newly updated customer after a successful mutation */
   customer?: Maybe<Customer>
   /** Human-readable message for the UI */
   message: Scalars['String']
@@ -84,12 +103,16 @@ export type CustomerResponse = {
 /** the coordinates at geographic coordinate system */
 export type Geo = {
   __typename?: 'Geo'
+  /** the latitude of a certain point on the surface of the Earth */
   lat: Scalars['String']
+  /** the longitude of a certain point on the surface of the Earth */
   lng: Scalars['String']
 }
 
 export type GeoInput = {
+  /** the latitude of a certain point on the surface of the Earth */
   lat: Scalars['String']
+  /** the longitude of a certain point on the surface of the Earth */
   lng: Scalars['String']
 }
 
@@ -111,6 +134,8 @@ export type Mutation = {
   incrementRecommendations: IncrementRecommendationsResponse
   /** Mutation to create a new customer */
   registerCustomer: CustomerResponse
+  /** Mutation to create a new specialist */
+  registerSpecialist: SpecialistResponse
 }
 
 export type MutationIncrementRecommendationsArgs = {
@@ -118,7 +143,11 @@ export type MutationIncrementRecommendationsArgs = {
 }
 
 export type MutationRegisterCustomerArgs = {
-  data?: Maybe<CustomerInput>
+  input?: Maybe<CustomerInput>
+}
+
+export type MutationRegisterSpecialistArgs = {
+  input?: Maybe<SpecialistInput>
 }
 
 export type Query = {
@@ -127,6 +156,8 @@ export type Query = {
   customerForProfile: Customer
   /** Query to get the information about a specific specialist */
   specialistForAbout: Specialist
+  /** Query to get the information about a specific specialist */
+  specialistForProfile: Specialist
   /** Query to get a list of specialists for the dashboard page */
   specialistsForDashboard: Array<Specialist>
 }
@@ -136,6 +167,10 @@ export type QueryCustomerForProfileArgs = {
 }
 
 export type QuerySpecialistForAboutArgs = {
+  id: Scalars['ID']
+}
+
+export type QuerySpecialistForProfileArgs = {
   id: Scalars['ID']
 }
 
@@ -160,6 +195,35 @@ export type Specialist = {
   recommendations?: Maybe<Scalars['Int']>
   /** a central location of web pages that are related and accessed using a browser */
   website?: Maybe<Scalars['String']>
+}
+
+export type SpecialistInput = {
+  /** the place where the specialist works */
+  address: AddressInput
+  /** an icon, graphic, or other image by which the specialist represents himself or herself */
+  avatar?: Maybe<Scalars['String']>
+  /** the company where the specialist works */
+  company: CompanyInput
+  /** the business email address of the specialist */
+  email: Scalars['String']
+  /** the first and last name of the specialist */
+  name: Scalars['String']
+  /** the business phone number of the specialist */
+  phone?: Maybe<Scalars['String']>
+  /** a central location of web pages that are related and accessed using a browser */
+  website?: Maybe<Scalars['String']>
+}
+
+export type SpecialistResponse = {
+  __typename?: 'SpecialistResponse'
+  /** Similar to HTTP status code, represents the status of the mutation */
+  code: Scalars['Int']
+  /** Human-readable message for the UI */
+  message: Scalars['String']
+  /** Newly updated specialist after a successful mutation */
+  specialist?: Maybe<Specialist>
+  /** Indicates whether the mutation was successful */
+  success: Scalars['Boolean']
 }
 
 export type WithIndex<TObject> = TObject & Record<string, any>
@@ -276,6 +340,7 @@ export type ResolversTypes = ResolversObject<{
   AddressInput: AddressInput
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   Company: ResolverTypeWrapper<Company>
+  CompanyInput: CompanyInput
   Customer: ResolverTypeWrapper<Customer>
   CustomerInput: CustomerInput
   CustomerResponse: ResolverTypeWrapper<CustomerResponse>
@@ -287,6 +352,8 @@ export type ResolversTypes = ResolversObject<{
   Mutation: ResolverTypeWrapper<{}>
   Query: ResolverTypeWrapper<{}>
   Specialist: ResolverTypeWrapper<Specialist>
+  SpecialistInput: SpecialistInput
+  SpecialistResponse: ResolverTypeWrapper<SpecialistResponse>
   String: ResolverTypeWrapper<Scalars['String']>
 }>
 
@@ -296,6 +363,7 @@ export type ResolversParentTypes = ResolversObject<{
   AddressInput: AddressInput
   Boolean: Scalars['Boolean']
   Company: Company
+  CompanyInput: CompanyInput
   Customer: Customer
   CustomerInput: CustomerInput
   CustomerResponse: CustomerResponse
@@ -307,6 +375,8 @@ export type ResolversParentTypes = ResolversObject<{
   Mutation: {}
   Query: {}
   Specialist: Specialist
+  SpecialistInput: SpecialistInput
+  SpecialistResponse: SpecialistResponse
   String: Scalars['String']
 }>
 
@@ -407,6 +477,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationRegisterCustomerArgs, never>
   >
+  registerSpecialist?: Resolver<
+    ResolversTypes['SpecialistResponse'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRegisterSpecialistArgs, never>
+  >
 }>
 
 export type QueryResolvers<
@@ -424,6 +500,12 @@ export type QueryResolvers<
     ParentType,
     ContextType,
     RequireFields<QuerySpecialistForAboutArgs, 'id'>
+  >
+  specialistForProfile?: Resolver<
+    ResolversTypes['Specialist'],
+    ParentType,
+    ContextType,
+    RequireFields<QuerySpecialistForProfileArgs, 'id'>
   >
   specialistsForDashboard?: Resolver<
     Array<ResolversTypes['Specialist']>,
@@ -452,6 +534,21 @@ export type SpecialistResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
+export type SpecialistResponseResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['SpecialistResponse'] = ResolversParentTypes['SpecialistResponse']
+> = ResolversObject<{
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  specialist?: Resolver<
+    Maybe<ResolversTypes['Specialist']>,
+    ParentType,
+    ContextType
+  >
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}>
+
 export type Resolvers<ContextType = any> = ResolversObject<{
   Address?: AddressResolvers<ContextType>
   Company?: CompanyResolvers<ContextType>
@@ -462,4 +559,5 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Mutation?: MutationResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
   Specialist?: SpecialistResolvers<ContextType>
+  SpecialistResponse?: SpecialistResponseResolvers<ContextType>
 }>
