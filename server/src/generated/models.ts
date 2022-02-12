@@ -113,26 +113,18 @@ export type GeoInput = {
   lng: Scalars['String'];
 };
 
-export type IncrementRecommendationsResponse = {
-  __typename?: 'IncrementRecommendationsResponse';
-  /** Similar to HTTP status code, represents the status of the mutation */
-  code: Scalars['Int'];
-  /** Human-readable message for the UI */
-  message: Scalars['String'];
-  /** Newly updated specialist after a successful mutation */
-  specialist?: Maybe<Specialist>;
-  /** Indicates whether the mutation was successful */
-  success: Scalars['Boolean'];
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
   /** Mutation to increment the specialist's recommendations property */
-  incrementRecommendations: IncrementRecommendationsResponse;
+  incrementRecommendations: SpecialistResponse;
   /** Mutation to create a new customer */
   registerCustomer: CustomerResponse;
   /** Mutation to create a new specialist */
   registerSpecialist: SpecialistResponse;
+  /** Mutation to remove a specific customer */
+  removeCustomer: CustomerResponse;
+  /** Mutation to remove a specific specialist */
+  removeSpecialist: SpecialistResponse;
 };
 
 
@@ -150,14 +142,24 @@ export type MutationRegisterSpecialistArgs = {
   input?: Maybe<SpecialistInput>;
 };
 
+
+export type MutationRemoveCustomerArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationRemoveSpecialistArgs = {
+  id: Scalars['ID'];
+};
+
 export type Query = {
   __typename?: 'Query';
   /** Query to get the information about a specific customer */
   customerForProfile: Customer;
+  /** Query to get the customer's recommendation list */
+  recommendationsForDashboard: Array<Maybe<Specialist>>;
   /** Query to get the information about a specific specialist */
   specialistForAbout: Specialist;
-  /** Query to get the information about a specific specialist */
-  specialistForProfile: Specialist;
   /** Query to get a list of specialists for the dashboard page */
   specialistsForDashboard: Array<Specialist>;
 };
@@ -168,12 +170,12 @@ export type QueryCustomerForProfileArgs = {
 };
 
 
-export type QuerySpecialistForAboutArgs = {
+export type QueryRecommendationsForDashboardArgs = {
   id: Scalars['ID'];
 };
 
 
-export type QuerySpecialistForProfileArgs = {
+export type QuerySpecialistForAboutArgs = {
   id: Scalars['ID'];
 };
 

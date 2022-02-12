@@ -24,6 +24,10 @@ export default class Specialists extends MongoDataSource<
     const specialist = await SpecialistModel.findById<SpecialistDbObject>(id)
     return specialist
   }
+  async getSpecialists(): Promise<SpecialistDbObject[]> {
+    const specialists = await SpecialistModel.find<SpecialistDbObject>()
+    return specialists
+  }
   async incrementRecommendations(
     id: ObjectId
   ): Promise<SpecialistDbObject | null> {
@@ -33,6 +37,23 @@ export default class Specialists extends MongoDataSource<
         {$inc: {recommendations: 1}},
         {new: true}
       )
+    return specialist
+  }
+  /* async editSpecialist(
+    input: SpecialistInput
+  ): Promise<SpecialistDbObject | null> {
+    const id = this.context.specialist._id
+    const specialist =
+      await SpecialistModel.findByIdAndUpdate<SpecialistDbObject>(
+        id,
+        {$set: {...input}},
+        {new: true}
+      )
+    return specialist
+  } */
+  async removeSpecialist(id: ObjectId): Promise<SpecialistDbObject | null> {
+    const specialist =
+      await SpecialistModel.findByIdAndDelete<SpecialistDbObject>(id)
     return specialist
   }
 }

@@ -21,9 +21,35 @@ export default class Customers extends MongoDataSource<
     return customer
   }
   async getCustomer(id: ObjectId): Promise<CustomerDbObject | null> {
-    // this.context has type `Context` as defined above
-    // this.findOneById has type `(id: ObjectId) => Promise<UserDocument | null | undefined>`
     const customer = await CustomerModel.findById<CustomerDbObject>(id)
+    return customer
+  }
+  /* async addRecommendation(id: ObjectId): Promise<CustomerDbObject | null> {
+    const customer_id = this.context.customer._id
+    const customer = await CustomerModel.findByIdAndUpdate<CustomerDbObject>(
+      customer_id,
+      {$push: {specialists: {id}}},
+      {new: true}
+    )
+    return customer
+  } */
+  async getRecommendations(
+    id: ObjectId
+  ): Promise<CustomerDbObject['specialists']> {
+    const customer = await this.getCustomer(id)
+    return customer?.specialists
+  }
+  /* async editCustomer(input: CustomerInput): Promise<CustomerDbObject | null> {
+    const id = this.context.customer._id
+    const customer = await CustomerModel.findByIdAndUpdate<CustomerDbObject>(
+      id,
+      {$set: {...input}},
+      {new: true}
+    )
+    return customer
+  } */
+  async removeCustomer(id: ObjectId): Promise<CustomerDbObject | null> {
+    const customer = await CustomerModel.findByIdAndDelete<CustomerDbObject>(id)
     return customer
   }
 }

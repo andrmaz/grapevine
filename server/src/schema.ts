@@ -121,17 +121,27 @@ const typeDefs = gql`
     specialistForAbout(id: ID!): Specialist!
     "Query to get the information about a specific customer"
     customerForProfile(id: ID!): Customer!
-    "Query to get the information about a specific specialist"
-    specialistForProfile(id: ID!): Specialist!
+    "Query to get the customer's recommendation list"
+    recommendationsForDashboard(id: ID!): [Specialist]!
   }
   type Mutation {
     # Mutations go here
-    "Mutation to create a new customer"
-    registerCustomer(input: CustomerInput): CustomerResponse!
     "Mutation to create a new specialist"
     registerSpecialist(input: SpecialistInput): SpecialistResponse!
+    "Mutation to create a new customer"
+    registerCustomer(input: CustomerInput): CustomerResponse!
     "Mutation to increment the specialist's recommendations property"
-    incrementRecommendations(id: ID!): IncrementRecommendationsResponse!
+    incrementRecommendations(id: ID!): SpecialistResponse!
+    # "Mutation to add a specialist to the user recommendation list"
+    # addRecommendation(id: ID!): CustomerResponse!
+    # "Mutation to edit a specific specialist"
+    # editSpecialist(id: ID!, input: SpecialistInput): SpecialistResponse!
+    # "Mutation to edit a specific customer"
+    # editCustomer(id: ID!, input: CustomerInput): CustomerResponse!
+    "Mutation to remove a specific specialist"
+    removeSpecialist(id: ID!): SpecialistResponse!
+    "Mutation to remove a specific customer"
+    removeCustomer(id: ID!): CustomerResponse!
   }
   type CustomerResponse {
     "Similar to HTTP status code, represents the status of the mutation"
@@ -144,16 +154,6 @@ const typeDefs = gql`
     customer: Customer
   }
   type SpecialistResponse {
-    "Similar to HTTP status code, represents the status of the mutation"
-    code: Int!
-    "Indicates whether the mutation was successful"
-    success: Boolean!
-    "Human-readable message for the UI"
-    message: String!
-    "Newly updated specialist after a successful mutation"
-    specialist: Specialist
-  }
-  type IncrementRecommendationsResponse {
     "Similar to HTTP status code, represents the status of the mutation"
     code: Int!
     "Indicates whether the mutation was successful"

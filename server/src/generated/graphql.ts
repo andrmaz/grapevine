@@ -116,26 +116,18 @@ export type GeoInput = {
   lng: Scalars['String']
 }
 
-export type IncrementRecommendationsResponse = {
-  __typename?: 'IncrementRecommendationsResponse'
-  /** Similar to HTTP status code, represents the status of the mutation */
-  code: Scalars['Int']
-  /** Human-readable message for the UI */
-  message: Scalars['String']
-  /** Newly updated specialist after a successful mutation */
-  specialist?: Maybe<Specialist>
-  /** Indicates whether the mutation was successful */
-  success: Scalars['Boolean']
-}
-
 export type Mutation = {
   __typename?: 'Mutation'
   /** Mutation to increment the specialist's recommendations property */
-  incrementRecommendations: IncrementRecommendationsResponse
+  incrementRecommendations: SpecialistResponse
   /** Mutation to create a new customer */
   registerCustomer: CustomerResponse
   /** Mutation to create a new specialist */
   registerSpecialist: SpecialistResponse
+  /** Mutation to remove a specific customer */
+  removeCustomer: CustomerResponse
+  /** Mutation to remove a specific specialist */
+  removeSpecialist: SpecialistResponse
 }
 
 export type MutationIncrementRecommendationsArgs = {
@@ -150,14 +142,22 @@ export type MutationRegisterSpecialistArgs = {
   input?: Maybe<SpecialistInput>
 }
 
+export type MutationRemoveCustomerArgs = {
+  id: Scalars['ID']
+}
+
+export type MutationRemoveSpecialistArgs = {
+  id: Scalars['ID']
+}
+
 export type Query = {
   __typename?: 'Query'
   /** Query to get the information about a specific customer */
   customerForProfile: Customer
+  /** Query to get the customer's recommendation list */
+  recommendationsForDashboard: Array<Maybe<Specialist>>
   /** Query to get the information about a specific specialist */
   specialistForAbout: Specialist
-  /** Query to get the information about a specific specialist */
-  specialistForProfile: Specialist
   /** Query to get a list of specialists for the dashboard page */
   specialistsForDashboard: Array<Specialist>
 }
@@ -166,11 +166,11 @@ export type QueryCustomerForProfileArgs = {
   id: Scalars['ID']
 }
 
-export type QuerySpecialistForAboutArgs = {
+export type QueryRecommendationsForDashboardArgs = {
   id: Scalars['ID']
 }
 
-export type QuerySpecialistForProfileArgs = {
+export type QuerySpecialistForAboutArgs = {
   id: Scalars['ID']
 }
 
@@ -347,7 +347,6 @@ export type ResolversTypes = ResolversObject<{
   Geo: ResolverTypeWrapper<Geo>
   GeoInput: GeoInput
   ID: ResolverTypeWrapper<Scalars['ID']>
-  IncrementRecommendationsResponse: ResolverTypeWrapper<IncrementRecommendationsResponse>
   Int: ResolverTypeWrapper<Scalars['Int']>
   Mutation: ResolverTypeWrapper<{}>
   Query: ResolverTypeWrapper<{}>
@@ -370,7 +369,6 @@ export type ResolversParentTypes = ResolversObject<{
   Geo: Geo
   GeoInput: GeoInput
   ID: Scalars['ID']
-  IncrementRecommendationsResponse: IncrementRecommendationsResponse
   Int: Scalars['Int']
   Mutation: {}
   Query: {}
@@ -446,27 +444,12 @@ export type GeoResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
-export type IncrementRecommendationsResponseResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['IncrementRecommendationsResponse'] = ResolversParentTypes['IncrementRecommendationsResponse']
-> = ResolversObject<{
-  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
-  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  specialist?: Resolver<
-    Maybe<ResolversTypes['Specialist']>,
-    ParentType,
-    ContextType
-  >
-  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
-}>
-
 export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = ResolversObject<{
   incrementRecommendations?: Resolver<
-    ResolversTypes['IncrementRecommendationsResponse'],
+    ResolversTypes['SpecialistResponse'],
     ParentType,
     ContextType,
     RequireFields<MutationIncrementRecommendationsArgs, 'id'>
@@ -483,6 +466,18 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationRegisterSpecialistArgs, never>
   >
+  removeCustomer?: Resolver<
+    ResolversTypes['CustomerResponse'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRemoveCustomerArgs, 'id'>
+  >
+  removeSpecialist?: Resolver<
+    ResolversTypes['SpecialistResponse'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRemoveSpecialistArgs, 'id'>
+  >
 }>
 
 export type QueryResolvers<
@@ -495,17 +490,17 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryCustomerForProfileArgs, 'id'>
   >
+  recommendationsForDashboard?: Resolver<
+    Array<Maybe<ResolversTypes['Specialist']>>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryRecommendationsForDashboardArgs, 'id'>
+  >
   specialistForAbout?: Resolver<
     ResolversTypes['Specialist'],
     ParentType,
     ContextType,
     RequireFields<QuerySpecialistForAboutArgs, 'id'>
-  >
-  specialistForProfile?: Resolver<
-    ResolversTypes['Specialist'],
-    ParentType,
-    ContextType,
-    RequireFields<QuerySpecialistForProfileArgs, 'id'>
   >
   specialistsForDashboard?: Resolver<
     Array<ResolversTypes['Specialist']>,
@@ -555,7 +550,6 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Customer?: CustomerResolvers<ContextType>
   CustomerResponse?: CustomerResponseResolvers<ContextType>
   Geo?: GeoResolvers<ContextType>
-  IncrementRecommendationsResponse?: IncrementRecommendationsResponseResolvers<ContextType>
   Mutation?: MutationResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
   Specialist?: SpecialistResolvers<ContextType>
