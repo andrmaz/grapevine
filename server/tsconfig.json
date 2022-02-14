@@ -24,7 +24,7 @@
     "fallbackPolling": "dynamicPriority",
     "synchronousWatchDirectory": true,
     "excludeDirectories": ["**/node_modules", "build"],
-    "excludeFiles": ["src/generated/graphql.ts", "graphql.schema.json"]
+    "excludeFiles": ["src/generated/*.ts", "graphql.schema.json"]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"],

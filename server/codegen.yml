@@ -1,5 +1,7 @@
 overwrite: true
 schema:  'src/schema.ts'
+require:
+  - ts-node/register
 generates:
   src/generated/graphql.ts:
     hooks:
@@ -11,8 +13,15 @@ generates:
       - 'typescript-document-nodes'
     config:
       useTypeImports: true
+      useIndexSignature: true
+      makeResolverTypeCallable: true
+  src/generated/models.ts:
+    hooks:
+      afterAllFileWrite:
+        - prettier --write
+    plugins:
+      - 'typescript'
+      - 'typescript-mongodb'
   ./graphql.schema.json:
     plugins:
       - 'introspection'
-require:
-  - ts-node/register
