@@ -28,5 +28,5 @@
     }
   },
   "include": ["src/*", "src/**/*"],
-  "exclude": ["node_modules", "src/api/*.graphql"],
+  "exclude": ["node_modules", "src/api/*.graphql", "scripts/*.js"],
 }
