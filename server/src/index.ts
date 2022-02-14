@@ -4,7 +4,7 @@ import {ApolloServer} from 'apollo-server'
 import {CustomerModel} from './models/customer'
 import Customers from './datasources/customer'
 import {DIRECTIVES} from '@graphql-codegen/typescript-mongodb'
-import SpecialistAPI from './datasources/specialist-api'
+/* import SpecialistAPI from './datasources/specialist-api' */
 import {SpecialistModel} from './models/specialist'
 import Specialists from './datasources/specialist'
 import {connector} from './mongo'
@@ -19,7 +19,7 @@ const server = new ApolloServer({
   resolvers,
   dataSources: () => {
     return {
-      specialistAPI: new SpecialistAPI(),
+      /* specialistAPI: new SpecialistAPI(), */
       customers: new Customers(new CustomerModel()),
       specialists: new Specialists(new SpecialistModel()),
     }
