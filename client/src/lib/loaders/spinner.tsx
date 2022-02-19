@@ -56,7 +56,7 @@ export default function Spinner(props: SpinnerProps): JSX.Element {
   }
   return (
     <SpinnerContainer>
-      <LoadingSpinner {...props} style={styles} testid='spinner' />
+      <LoadingSpinner {...props} style={styles} data-testid='spinner' />
     </SpinnerContainer>
   )
 }

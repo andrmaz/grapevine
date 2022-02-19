@@ -3,7 +3,7 @@ import * as React from 'react'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 
-interface SearchBarProps {
+export interface SearchBarProps {
   search: string
   setSearch: React.Dispatch<React.SetStateAction<string>>
 }
@@ -52,7 +52,7 @@ export default function SearchBar({
           /* list='businesses' */
           size={30}
           maxLength={30}
-          minLength={2}
+          minLength={1}
           onChange={onChange}
         />
       </form>
