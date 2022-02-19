@@ -8,6 +8,7 @@ on:
       - '!server/src/generated/**'
 jobs:
   analyze:
+    name: Analyze
     runs-on: ubuntu-latest
     steps:
       - run: 'echo "No analysis required" '
