@@ -1,9 +1,11 @@
+import * as React from 'react'
+
+import {GetSpecialistsQuery, useGetSpecialistsQuery} from '/__generated__/types'
+
+import SearchBar from '@/lib/bars/search'
+import {SpecialistGrid} from '@/components/specialist/grid'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
-import {SpecialistGrid} from '@/components/specialist/grid'
-import SearchBar from '@/lib/bars/search'
-import * as React from 'react'
-import {useGetSpecialistsQuery, GetSpecialistsQuery} from '/__generated__/types'
 
 const Wrapper = styled.div`
   width: 568px;
@@ -23,7 +25,7 @@ export const SpecialistList = (): JSX.Element => {
   React.useEffect(() => {
     setSpecialists(
       data?.specialistsForDashboard?.filter(specialist =>
-        specialist.company.bs.includes(search)
+        specialist.company.bs.toLowerCase().includes(search)
       )
     )
   }, [data?.specialistsForDashboard, search])
