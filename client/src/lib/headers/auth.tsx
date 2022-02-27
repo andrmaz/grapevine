@@ -1,8 +1,35 @@
 import * as React from 'react'
 
 import {Link} from 'react-router-dom'
-import styled from '@emotion/styled'
 import {theme} from '@/themes'
+import styled from '@emotion/styled'
+
+export default function Header(): JSX.Element {
+  //* Faking the user State for development purposes
+  const clear = (): void => {
+    const customer = JSON.parse(
+      window.localStorage.getItem('customer') as string
+    )
+    window.localStorage.setItem(
+      'customer',
+      JSON.stringify({...customer, specialists: []})
+    )
+  }
+  return (
+    <Navigation>
+      <List>
+        <Item>
+          <NavLink to='/'>Dashboard</NavLink>
+        </Item>
+        <Item>
+          <NavLink to='/signin' onClick={clear}>
+            Sign Out
+          </NavLink>
+        </Item>
+      </List>
+    </Navigation>
+  )
+}
 
 const Navigation = styled.nav`
   position: sticky;
@@ -33,29 +60,3 @@ const NavLink = styled(Link)`
   text-decoration: none;
 `
 
-export default function Header(): JSX.Element {
-  //* Faking the user State for development purposes
-  const clear = (): void => {
-    const customer = JSON.parse(
-      window.localStorage.getItem('customer') as string
-    )
-    window.localStorage.setItem(
-      'customer',
-      JSON.stringify({...customer, specialists: []})
-    )
-  }
-  return (
-    <Navigation>
-      <List>
-        <Item>
-          <NavLink to='/'>Dashboard</NavLink>
-        </Item>
-        <Item>
-          <NavLink to='/signin' onClick={clear}>
-            Sign Out
-          </NavLink>
-        </Item>
-      </List>
-    </Navigation>
-  )
-}

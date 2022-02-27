@@ -184,10 +184,13 @@ body {
 
 #root {
   min-height: 100%;
-   /*
-    Create a stacking context, without a z-index.
-    This ensures that all portal content (modals and tooltips) will
-    float above the app.
+  height: 100%;
+  /*
+  Create a stacking context, without a z-index.
+  This ensures that all portal content (modals and tooltips) will
+  float above the app.
   */
-   isolation: isolate;
+  isolation: isolate;
+  /* https://reach.tech/styling/ */
+  --reach-dialog: 1;
 }
