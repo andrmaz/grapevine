@@ -45,6 +45,28 @@ export type AddressInput = {
   zipcode?: Maybe<Scalars['String']>
 }
 
+export type AuthenticationResponse = {
+  __typename?: 'AuthenticationResponse'
+  /** Similar to HTTP status code, represents the status of the mutation */
+  code: Scalars['Int']
+  /** Human-readable message for the UI */
+  message: Scalars['String']
+  /** Indicates whether the mutation was successful */
+  success: Scalars['Boolean']
+  /** Authenticated user after a successful mutation */
+  user?: Maybe<AuthenticationResult>
+}
+
+export type AuthenticationResult = {
+  __typename?: 'AuthenticationResult'
+  /** the expiration date of the authorization token */
+  expiresAt?: Maybe<Scalars['Int']>
+  /** the jsonwebtoken represents the user information */
+  token: Scalars['String']
+  /** the primary authentication information */
+  userInfo: User
+}
+
 /** a business organization that makes, buys, or sells goods or provides services in exchange for money */
 export type Company = {
   __typename?: 'Company'
@@ -76,6 +98,8 @@ export type Customer = {
   id: Scalars['ID']
   /** the first and last name of the customer */
   name: Scalars['String']
+  /** the permissions granted to the customer */
+  role: Role
   /** a list of specialists who have been recommended by the customer */
   specialists?: Maybe<Array<Maybe<Specialist>>>
 }
@@ -122,9 +146,9 @@ export type Mutation = {
   /** Mutation to increment the specialist's recommendations property */
   incrementRecommendations: SpecialistResponse
   /** Mutation to create a new customer */
-  registerCustomer: CustomerResponse
+  registerCustomer: AuthenticationResponse
   /** Mutation to create a new specialist */
-  registerSpecialist: SpecialistResponse
+  registerSpecialist: AuthenticationResponse
   /** Mutation to remove a specific customer */
   removeCustomer: CustomerResponse
   /** Mutation to remove a specific specialist */
@@ -175,6 +199,12 @@ export type QuerySpecialistForAboutArgs = {
   id: Scalars['ID']
 }
 
+export enum Role {
+  Admin = 'ADMIN',
+  Creator = 'CREATOR',
+  User = 'USER',
+}
+
 /** a member of a profession or any person who earns a living from a specified professional activity */
 export type Specialist = {
   __typename?: 'Specialist'
@@ -194,6 +224,8 @@ export type Specialist = {
   phone?: Maybe<Scalars['String']>
   /** number of times the specialist has been recommended by customers */
   recommendations?: Maybe<Scalars['Int']>
+  /** the permissions granted to the specialist */
+  role: Role
   /** a central location of web pages that are related and accessed using a browser */
   website?: Maybe<Scalars['String']>
 }
@@ -225,6 +257,18 @@ export type SpecialistResponse = {
   specialist?: Maybe<Specialist>
   /** Indicates whether the mutation was successful */
   success: Scalars['Boolean']
+}
+
+export type User = {
+  __typename?: 'User'
+  /** the email address of the user */
+  email: Scalars['String']
+  /** the unique identifier of the user */
+  id: Scalars['ID']
+  /** the first and last name of the user */
+  name: Scalars['String']
+  /** the permissions granted to the user */
+  role: Role
 }
 
 export type WithIndex<TObject> = TObject & Record<string, any>
@@ -339,6 +383,8 @@ export type DirectiveResolverFn<
 export type ResolversTypes = ResolversObject<{
   Address: ResolverTypeWrapper<Address>
   AddressInput: AddressInput
+  AuthenticationResponse: ResolverTypeWrapper<AuthenticationResponse>
+  AuthenticationResult: ResolverTypeWrapper<AuthenticationResult>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   Company: ResolverTypeWrapper<Company>
   CompanyInput: CompanyInput
@@ -351,16 +397,20 @@ export type ResolversTypes = ResolversObject<{
   Int: ResolverTypeWrapper<Scalars['Int']>
   Mutation: ResolverTypeWrapper<{}>
   Query: ResolverTypeWrapper<{}>
+  Role: Role
   Specialist: ResolverTypeWrapper<Specialist>
   SpecialistInput: SpecialistInput
   SpecialistResponse: ResolverTypeWrapper<SpecialistResponse>
   String: ResolverTypeWrapper<Scalars['String']>
+  User: ResolverTypeWrapper<User>
 }>
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Address: Address
   AddressInput: AddressInput
+  AuthenticationResponse: AuthenticationResponse
+  AuthenticationResult: AuthenticationResult
   Boolean: Scalars['Boolean']
   Company: Company
   CompanyInput: CompanyInput
@@ -377,7 +427,19 @@ export type ResolversParentTypes = ResolversObject<{
   SpecialistInput: SpecialistInput
   SpecialistResponse: SpecialistResponse
   String: Scalars['String']
+  User: User
 }>
+
+export type AuthDirectiveArgs = {
+  requires?: Maybe<Role>
+}
+
+export type AuthDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = AuthDirectiveArgs
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
 export type AddressResolvers<
   ContextType = any,
@@ -388,6 +450,31 @@ export type AddressResolvers<
   street?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   suite?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   zipcode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}>
+
+export type AuthenticationResponseResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['AuthenticationResponse'] = ResolversParentTypes['AuthenticationResponse']
+> = ResolversObject<{
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
+  user?: Resolver<
+    Maybe<ResolversTypes['AuthenticationResult']>,
+    ParentType,
+    ContextType
+  >
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}>
+
+export type AuthenticationResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['AuthenticationResult'] = ResolversParentTypes['AuthenticationResult']
+> = ResolversObject<{
+  expiresAt?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
+  token?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  userInfo?: Resolver<ResolversTypes['User'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
@@ -413,6 +500,7 @@ export type CustomerResolvers<
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  role?: Resolver<ResolversTypes['Role'], ParentType, ContextType>
   specialists?: Resolver<
     Maybe<Array<Maybe<ResolversTypes['Specialist']>>>,
     ParentType,
@@ -456,13 +544,13 @@ export type MutationResolvers<
     RequireFields<MutationIncrementRecommendationsArgs, 'id'>
   >
   registerCustomer?: Resolver<
-    ResolversTypes['CustomerResponse'],
+    ResolversTypes['AuthenticationResponse'],
     ParentType,
     ContextType,
     RequireFields<MutationRegisterCustomerArgs, never>
   >
   registerSpecialist?: Resolver<
-    ResolversTypes['SpecialistResponse'],
+    ResolversTypes['AuthenticationResponse'],
     ParentType,
     ContextType,
     RequireFields<MutationRegisterSpecialistArgs, never>
@@ -526,6 +614,7 @@ export type SpecialistResolvers<
     ParentType,
     ContextType
   >
+  role?: Resolver<ResolversTypes['Role'], ParentType, ContextType>
   website?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
@@ -545,8 +634,21 @@ export type SpecialistResponseResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
+export type UserResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']
+> = ResolversObject<{
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  role?: Resolver<ResolversTypes['Role'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}>
+
 export type Resolvers<ContextType = any> = ResolversObject<{
   Address?: AddressResolvers<ContextType>
+  AuthenticationResponse?: AuthenticationResponseResolvers<ContextType>
+  AuthenticationResult?: AuthenticationResultResolvers<ContextType>
   Company?: CompanyResolvers<ContextType>
   Customer?: CustomerResolvers<ContextType>
   CustomerResponse?: CustomerResponseResolvers<ContextType>
@@ -555,4 +657,9 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Query?: QueryResolvers<ContextType>
   Specialist?: SpecialistResolvers<ContextType>
   SpecialistResponse?: SpecialistResponseResolvers<ContextType>
+  User?: UserResolvers<ContextType>
+}>
+
+export type DirectiveResolvers<ContextType = any> = ResolversObject<{
+  auth?: AuthDirectiveResolver<any, any, ContextType>
 }>

@@ -1,8 +1,8 @@
 import * as React from 'react'
 
 import {Link} from 'react-router-dom'
-import {theme} from '@/themes'
 import styled from '@emotion/styled'
+import {theme} from '@/themes'
 
 export default function Header(): JSX.Element {
   //* Faking the user State for development purposes
@@ -14,6 +14,8 @@ export default function Header(): JSX.Element {
       'customer',
       JSON.stringify({...customer, specialists: []})
     )
+    // call your auth logout code then reset store
+    /* App.logout().then(() => client.resetStore()) */
   }
   return (
     <Navigation>

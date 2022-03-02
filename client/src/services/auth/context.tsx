@@ -10,9 +10,9 @@ AuthStateContext.displayName = 'Auth State Context'
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function AuthProvider(props: React.PropsWithChildren<{}>): JSX.Element {
   //* Faking the user State for development purposes
-  const state = {email: 'test@example.com', name: 'Test', specialists: []}
+  //const state = {email: 'test@example.com', name: 'Test', specialists: []}
   return (
-    <AuthStateContext.Provider value={state}>
+    <AuthStateContext.Provider value={undefined}>
       {props.children}
     </AuthStateContext.Provider>
   )

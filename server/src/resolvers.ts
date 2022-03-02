@@ -28,12 +28,12 @@ const resolvers: Resolvers = {
     // insert a new customer in the database
     registerCustomer: async (_, {input}, {dataSources}) => {
       try {
-        const customer = await dataSources.customers.insertCustomer(input)
+        const user = await dataSources.customers.insertCustomer(input)
         return {
           code: 200,
           success: true,
           message: `Successfully registered as a customer`,
-          customer,
+          user,
         }
       } catch (err: unknown) {
         if (err instanceof GraphQLError) {
@@ -41,14 +41,14 @@ const resolvers: Resolvers = {
             code: err.extensions?.response.status,
             success: false,
             message: err.extensions?.response.body,
-            customer: null,
+            user: null,
           }
         } else {
           return {
             code: 500,
             success: false,
             message: `Something went wrong while processing the request: ${err}`,
-            customer: null,
+            user: null,
           }
         }
       }

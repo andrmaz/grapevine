@@ -1,6 +1,12 @@
 import {gql} from 'apollo-server'
 
 const typeDefs = gql`
+  directive @auth(requires: Role = ADMIN) on OBJECT | FIELD_DEFINITION
+  enum Role {
+    ADMIN
+    CREATOR
+    USER
+  }
   "the coordinates at geographic coordinate system"
   type Geo @entity {
     "the latitude of a certain point on the surface of the Earth"
@@ -48,6 +54,8 @@ const typeDefs = gql`
     avatar: String @column
     "number of times the specialist has been recommended by customers"
     recommendations: Int # this field won't get a generated MongoDB field
+    "the permissions granted to the specialist"
+    role: Role! @column
   }
   "individuals and businesses that purchase goods and services from another business"
   type Customer @entity {
@@ -61,6 +69,8 @@ const typeDefs = gql`
     address: Address @embedded
     "a list of specialists who have been recommended by the customer"
     specialists: [Specialist] @link
+    "the permissions granted to the customer"
+    role: Role! @column
   }
   # Inputs go here
   input GeoInput {
@@ -116,22 +126,22 @@ const typeDefs = gql`
   type Query {
     # Queries go here
     "Query to get a list of specialists for the dashboard page"
-    specialistsForDashboard: [Specialist!]!
+    specialistsForDashboard: [Specialist!]! @auth(requires: USER)
     "Query to get the information about a specific specialist"
-    specialistForAbout(id: ID!): Specialist!
+    specialistForAbout(id: ID!): Specialist! @auth(requires: CREATOR)
     "Query to get the information about a specific customer"
-    customerForProfile(id: ID!): Customer!
+    customerForProfile(id: ID!): Customer! @auth(requires: USER)
     "Query to get the customer's recommendation list"
-    recommendationsForDashboard(id: ID!): [Specialist]!
+    recommendationsForDashboard(id: ID!): [Specialist]! @auth(requires: USER)
   }
   type Mutation {
     # Mutations go here
     "Mutation to create a new specialist"
-    registerSpecialist(input: SpecialistInput): SpecialistResponse!
+    registerSpecialist(input: SpecialistInput): AuthenticationResponse!
     "Mutation to create a new customer"
-    registerCustomer(input: CustomerInput): CustomerResponse!
+    registerCustomer(input: CustomerInput): AuthenticationResponse!
     "Mutation to increment the specialist's recommendations property"
-    incrementRecommendations(id: ID!): SpecialistResponse!
+    incrementRecommendations(id: ID!): SpecialistResponse! @auth(requires: USER)
     # "Mutation to add a specialist to the user recommendation list"
     # addRecommendation(id: ID!): CustomerResponse!
     # "Mutation to edit a specific specialist"
@@ -139,9 +149,37 @@ const typeDefs = gql`
     # "Mutation to edit a specific customer"
     # editCustomer(id: ID!, input: CustomerInput): CustomerResponse!
     "Mutation to remove a specific specialist"
-    removeSpecialist(id: ID!): SpecialistResponse!
+    removeSpecialist(id: ID!): SpecialistResponse! @auth(requires: CREATOR)
     "Mutation to remove a specific customer"
-    removeCustomer(id: ID!): CustomerResponse!
+    removeCustomer(id: ID!): CustomerResponse! @auth(requires: USER)
+  }
+  type User {
+    "the unique identifier of the user"
+    id: ID!
+    "the first and last name of the user"
+    name: String!
+    "the email address of the user"
+    email: String!
+    "the permissions granted to the user"
+    role: Role!
+  }
+  type AuthenticationResult {
+    "the primary authentication information"
+    userInfo: User!
+    "the jsonwebtoken represents the user information"
+    token: String!
+    "the expiration date of the authorization token"
+    expiresAt: Int
+  }
+  type AuthenticationResponse {
+    "Similar to HTTP status code, represents the status of the mutation"
+    code: Int!
+    "Indicates whether the mutation was successful"
+    success: Boolean!
+    "Human-readable message for the UI"
+    message: String!
+    "Authenticated user after a successful mutation"
+    user: AuthenticationResult
   }
   type CustomerResponse {
     "Similar to HTTP status code, represents the status of the mutation"
