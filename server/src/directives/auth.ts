@@ -1,12 +1,13 @@
 import {GraphQLSchema, defaultFieldResolver} from 'graphql'
 import {MapperKind, getDirective, mapSchema} from '@graphql-tools/utils'
 
-import { AuthenticationError } from 'apollo-server'
+import {AuthenticationError} from 'apollo-server'
+import { User } from 'src/generated/graphql'
 
 export default function authDirectiveTransformer(
   schema: GraphQLSchema,
   directiveName: string,
-  getUserFn: (token: string) => {hasRole: (role: string) => boolean}
+  getUserFn: (user: User) => {hasRole: (roles: string[]) => boolean}
 ): GraphQLSchema {
   const typeDirectiveArgumentMaps: Record<string, any> = {}
   return mapSchema(schema, {
@@ -26,7 +27,7 @@ export default function authDirectiveTransformer(
         if (requires) {
           const {resolve = defaultFieldResolver} = fieldConfig
           fieldConfig.resolve = function (source, args, context, info) {
-            const user = getUserFn(context.headers.authToken)
+            const user = getUserFn(context.user)
             if (!user.hasRole(requires)) {
               throw new AuthenticationError('Not authorized')
             }

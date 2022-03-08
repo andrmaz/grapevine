@@ -1,43 +1,49 @@
 import * as React from 'react'
 
+import {CustomerInput, useRegisterCustomerMutation} from '/__generated__/types'
+
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
-
-interface Input {
-  name: string
-  email: string
-  city?: string
-}
+import {useAuthDispatch} from '@/services/auth/context'
+import {useHistory} from 'react-router-dom'
 
 export default function Register(): JSX.Element {
-  const [state, setState] = React.useState<Input>({
+  const dispatch = useAuthDispatch()
+  const history = useHistory()
+  const [state, setState] = React.useState<CustomerInput>({
     name: '',
     email: '',
-    city: '',
+    address: undefined,
   })
-  const {name, email, city} = state
+  const {name, email, address} = state
+  const [registerCustomerMutation] = useRegisterCustomerMutation({
+    variables: {
+      registerCustomerInput: {email, name, address},
+    },
+    onCompleted: data => {
+      const success = data.registerCustomer.success
+      if (success) {
+        const token = data.registerCustomer.user?.token
+        typeof token === 'string' && localStorage.setItem('token', token)
+        const user = data.registerCustomer.user?.userInfo
+        user && dispatch({type: 'login', user})
+        history.push('/')
+      }
+    },
+    onError: error => {
+      console.error(error.name)
+    },
+  })
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (
     event
   ): void => {
-    const name = event.target.name
+    const name = event.target.name as keyof CustomerInput
     const value = event.target.value
     setState(state => ({...state, [name]: value}))
   }
   const onSubmit = (event: React.SyntheticEvent): void => {
     event.preventDefault()
-    const target = event.target as typeof event.target & {
-      name: {value: string}
-      email: {value: string}
-      city: {value: string}
-    }
-    console.info(
-      'name',
-      target.name.value,
-      'email',
-      target.email.value,
-      'city',
-      target.city.value
-    )
+    registerCustomerMutation()
   }
   return (
     <Container>
@@ -50,6 +56,7 @@ export default function Register(): JSX.Element {
             name='name'
             value={name}
             onChange={onChange}
+            required
           />
         </Wrapper>
         <Wrapper>
@@ -60,16 +67,7 @@ export default function Register(): JSX.Element {
             name='email'
             value={email}
             onChange={onChange}
-          />
-        </Wrapper>
-        <Wrapper>
-          <Label htmlFor='city'>City:</Label>
-          <Input
-            type='city'
-            id='city'
-            name='city'
-            value={city}
-            onChange={onChange}
+            required
           />
         </Wrapper>
         <Submit type='submit' />

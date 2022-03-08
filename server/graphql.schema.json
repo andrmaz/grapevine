@@ -2405,11 +2405,15 @@
             "name": "requires",
             "description": null,
             "type": {
-              "kind": "ENUM",
-              "name": "Role",
-              "ofType": null
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "Role",
+                "ofType": null
+              }
             },
-            "defaultValue": "ADMIN",
+            "defaultValue": "[ADMIN]",
             "isDeprecated": false,
             "deprecationReason": null
           }

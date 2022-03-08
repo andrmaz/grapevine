@@ -431,7 +431,7 @@ export type ResolversParentTypes = ResolversObject<{
 }>
 
 export type AuthDirectiveArgs = {
-  requires?: Maybe<Role>
+  requires?: Maybe<Array<Maybe<Role>>>
 }
 
 export type AuthDirectiveResolver<

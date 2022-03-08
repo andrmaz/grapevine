@@ -3,19 +3,15 @@ import * as React from 'react'
 import {Link} from 'react-router-dom'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
+import {useAuthDispatch} from '@/services/auth/context'
 
 export default function Header(): JSX.Element {
-  //* Faking the user State for development purposes
+  const dispatch = useAuthDispatch()
   const clear = (): void => {
-    const customer = JSON.parse(
-      window.localStorage.getItem('customer') as string
-    )
-    window.localStorage.setItem(
-      'customer',
-      JSON.stringify({...customer, specialists: []})
-    )
-    // call your auth logout code then reset store
-    /* App.logout().then(() => client.resetStore()) */
+    dispatch({type: 'logout'})
+    localStorage.removeItem('token')
+    // https://www.apollographql.com/docs/react/caching/advanced-topics/#resetting-the-cache
+    /* logout().then(() => client.resetStore()) */
   }
   return (
     <Navigation>
@@ -61,4 +57,3 @@ const NavLink = styled(Link)`
   color: var(--color-base);
   text-decoration: none;
 `
-

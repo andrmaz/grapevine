@@ -1,24 +1,18 @@
 import {AuthenticationError} from 'apollo-server'
-import { User } from 'src/generated/graphql'
+import {User} from 'src/generated/graphql'
 import jwt from 'jsonwebtoken'
 
-function getUser(token: string): {user: string | jwt.JwtPayload} {
+function getUser(token: string): string | jwt.JwtPayload {
   try {
-    const decoded = jwt.verify(token.slice(7), process.env.JWT_SECRET as string)
-    return {user: decoded}
+    return jwt.verify(token.slice(7), process.env.JWT_SECRET as string)
   } catch (error) {
-    throw new AuthenticationError('')
+    throw new AuthenticationError('Not authorized')
   }
 }
 
-function getRole(token: string): {hasRole: (role: string) => boolean} {
-  const roles = ['USER', 'CREATOR', 'ADMIN']
+function getRole(user: User): {hasRole: (roles: string[]) => boolean} {
   return {
-    hasRole: (role: string) => {
-      const tokenIndex = roles.indexOf(token)
-      const roleIndex = roles.indexOf(role)
-      return roleIndex >= 0 && tokenIndex >= roleIndex
-    },
+    hasRole: (roles: string[]) => roles.includes(user.role),
   }
 }
 
@@ -32,8 +26,6 @@ function createToken(user: User): string {
       sub: user.id,
       email: user.email,
       role: user.role,
-      iss: 'api.grapevine',
-      aud: 'api.grapevine',
     },
     process.env.JWT_SECRET as string,
     {algorithm: 'HS256', expiresIn: '1h'}

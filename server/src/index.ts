@@ -1,11 +1,8 @@
 import 'dotenv/config'
 
-import {
-  ApolloServer,
-  AuthenticationError,
-} from 'apollo-server'
 import {getRole, getUser} from './utils/auth'
 
+import {ApolloServer} from 'apollo-server'
 import {CustomerModel} from './models/customer'
 import Customers from './datasources/customer'
 import {DIRECTIVES} from '@graphql-codegen/typescript-mongodb'
@@ -39,12 +36,12 @@ const server = new ApolloServer({
   },
   context: ({req}) => {
     // Get the user token from the headers.
-    const token = req.headers.authorization || ''
+    const token = req.headers.authorization
+    if (!token) return {user: null}
     // Try to retrieve a user with the token
     const user = getUser(token)
     // optionally block the user
     // we could also check user roles/permissions here
-    if (!user) throw new AuthenticationError('Not authorized')
     // Add the user to the context
     return {user}
   },

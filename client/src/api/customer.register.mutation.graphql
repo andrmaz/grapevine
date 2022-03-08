@@ -1,0 +1,17 @@
+mutation RegisterCustomer($registerCustomerInput: CustomerInput) {
+  registerCustomer(input: $registerCustomerInput) {
+    code
+    success
+    message
+    user {
+      userInfo {
+        name
+        id
+        email
+        role
+      }
+      token
+      expiresAt
+    }
+  }
+}

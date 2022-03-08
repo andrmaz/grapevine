@@ -14,7 +14,7 @@ import App from './app'
 import {AuthProvider} from '@/services/auth/context'
 import ReactDOM from 'react-dom'
 import {ThemeProvider} from '@emotion/react'
-import { errorLink } from './utils/errors'
+import {errorLink} from './utils/errors'
 import {setContext} from '@apollo/client/link/context'
 import {theme} from '@/themes'
 
@@ -29,13 +29,13 @@ const authLink = setContext((_, {headers}) => {
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : '',
+      Authorization: token ? `Bearer ${token}` : '',
     },
   }
 })
 
 const client = new ApolloClient({
-  link: from([authLink, errorLink, httpLink]),
+  link: from([errorLink, authLink, httpLink]),
   cache: new InMemoryCache(),
 })
 

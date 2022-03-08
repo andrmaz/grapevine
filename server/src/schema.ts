@@ -1,7 +1,7 @@
 import {gql} from 'apollo-server'
 
 const typeDefs = gql`
-  directive @auth(requires: Role = ADMIN) on OBJECT | FIELD_DEFINITION
+  directive @auth(requires: [Role] = [ADMIN]) on OBJECT | FIELD_DEFINITION
   enum Role {
     ADMIN
     CREATOR
@@ -126,13 +126,15 @@ const typeDefs = gql`
   type Query {
     # Queries go here
     "Query to get a list of specialists for the dashboard page"
-    specialistsForDashboard: [Specialist!]! @auth(requires: USER)
+    specialistsForDashboard: [Specialist!]! @auth(requires: [USER, ADMIN])
     "Query to get the information about a specific specialist"
-    specialistForAbout(id: ID!): Specialist! @auth(requires: CREATOR)
+    specialistForAbout(id: ID!): Specialist!
+      @auth(requires: [USER, CREATOR, ADMIN])
     "Query to get the information about a specific customer"
-    customerForProfile(id: ID!): Customer! @auth(requires: USER)
+    customerForProfile(id: ID!): Customer! @auth(requires: [USER, ADMIN])
     "Query to get the customer's recommendation list"
-    recommendationsForDashboard(id: ID!): [Specialist]! @auth(requires: USER)
+    recommendationsForDashboard(id: ID!): [Specialist]!
+      @auth(requires: [USER, ADMIN])
   }
   type Mutation {
     # Mutations go here
@@ -141,7 +143,8 @@ const typeDefs = gql`
     "Mutation to create a new customer"
     registerCustomer(input: CustomerInput): AuthenticationResponse!
     "Mutation to increment the specialist's recommendations property"
-    incrementRecommendations(id: ID!): SpecialistResponse! @auth(requires: USER)
+    incrementRecommendations(id: ID!): SpecialistResponse!
+      @auth(requires: [USER, ADMIN])
     # "Mutation to add a specialist to the user recommendation list"
     # addRecommendation(id: ID!): CustomerResponse!
     # "Mutation to edit a specific specialist"
@@ -149,9 +152,10 @@ const typeDefs = gql`
     # "Mutation to edit a specific customer"
     # editCustomer(id: ID!, input: CustomerInput): CustomerResponse!
     "Mutation to remove a specific specialist"
-    removeSpecialist(id: ID!): SpecialistResponse! @auth(requires: CREATOR)
+    removeSpecialist(id: ID!): SpecialistResponse!
+      @auth(requires: [CREATOR, ADMIN])
     "Mutation to remove a specific customer"
-    removeCustomer(id: ID!): CustomerResponse! @auth(requires: USER)
+    removeCustomer(id: ID!): CustomerResponse! @auth(requires: [USER, ADMIN])
   }
   type User {
     "the unique identifier of the user"
