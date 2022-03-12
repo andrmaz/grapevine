@@ -2,15 +2,14 @@ import type {GraphQLResolveInfo} from 'graphql'
 import gql from 'graphql-tag'
 export type Maybe<T> = T | null
 export type Exact<T extends {[key: string]: unknown}> = {[K in keyof T]: T[K]}
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>
-}
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>
-}
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
+  {[SubKey in K]?: Maybe<T[SubKey]>}
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
+  {[SubKey in K]: Maybe<T[SubKey]>}
 export type RequireFields<T, K extends keyof T> = {
   [X in Exclude<keyof T, K>]?: T[X]
-} & {[P in K]-?: NonNullable<T[P]>}
+} &
+  {[P in K]-?: NonNullable<T[P]>}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
@@ -143,6 +142,8 @@ export type GeoInput = {
 
 export type Mutation = {
   __typename?: 'Mutation'
+  /** Mutation to authorize an existing customer */
+  authorizeCustomer: AuthenticationResponse
   /** Mutation to increment the specialist's recommendations property */
   incrementRecommendations: SpecialistResponse
   /** Mutation to create a new customer */
@@ -153,6 +154,10 @@ export type Mutation = {
   removeCustomer: CustomerResponse
   /** Mutation to remove a specific specialist */
   removeSpecialist: SpecialistResponse
+}
+
+export type MutationAuthorizeCustomerArgs = {
+  input?: Maybe<UserInput>
 }
 
 export type MutationIncrementRecommendationsArgs = {
@@ -168,7 +173,7 @@ export type MutationRegisterSpecialistArgs = {
 }
 
 export type MutationRemoveCustomerArgs = {
-  id: Scalars['ID']
+  id?: Maybe<Scalars['ID']>
 }
 
 export type MutationRemoveSpecialistArgs = {
@@ -269,6 +274,13 @@ export type User = {
   name: Scalars['String']
   /** the permissions granted to the user */
   role: Role
+}
+
+export type UserInput = {
+  /** the email address of the user */
+  email: Scalars['String']
+  /** the first and last name of the user */
+  name: Scalars['String']
 }
 
 export type WithIndex<TObject> = TObject & Record<string, any>
@@ -403,6 +415,7 @@ export type ResolversTypes = ResolversObject<{
   SpecialistResponse: ResolverTypeWrapper<SpecialistResponse>
   String: ResolverTypeWrapper<Scalars['String']>
   User: ResolverTypeWrapper<User>
+  UserInput: UserInput
 }>
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -428,6 +441,7 @@ export type ResolversParentTypes = ResolversObject<{
   SpecialistResponse: SpecialistResponse
   String: Scalars['String']
   User: User
+  UserInput: UserInput
 }>
 
 export type AuthDirectiveArgs = {
@@ -537,6 +551,12 @@ export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = ResolversObject<{
+  authorizeCustomer?: Resolver<
+    ResolversTypes['AuthenticationResponse'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationAuthorizeCustomerArgs, never>
+  >
   incrementRecommendations?: Resolver<
     ResolversTypes['SpecialistResponse'],
     ParentType,
@@ -559,7 +579,7 @@ export type MutationResolvers<
     ResolversTypes['CustomerResponse'],
     ParentType,
     ContextType,
-    RequireFields<MutationRemoveCustomerArgs, 'id'>
+    RequireFields<MutationRemoveCustomerArgs, never>
   >
   removeSpecialist?: Resolver<
     ResolversTypes['SpecialistResponse'],

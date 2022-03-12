@@ -1,6 +1,18 @@
-import {CustomerInput, SpecialistInput} from '../generated/models'
+import {CustomerInput, SpecialistInput, UserInput} from '../generated/models'
 
 import {UserInputError} from 'apollo-server'
+
+function validateUserInput(input: UserInput): void {
+  if (!input.email.length) {
+    throw new UserInputError('Email address is required')
+  }
+  if (!input.email.includes('@')) {
+    throw new UserInputError('Invalid email address')
+  }
+  if (!input.name.length) {
+    throw new UserInputError('Name field is required')
+  }
+}
 
 function validateCustomerInput(input: CustomerInput): void {
   if (!input.email.length) {
@@ -35,4 +47,4 @@ function validateSpecialistInput(input: SpecialistInput): void {
   }
 }
 
-export {validateCustomerInput, validateSpecialistInput}
+export {validateUserInput, validateCustomerInput, validateSpecialistInput}

@@ -1,24 +1,21 @@
+import {ApolloError, AuthenticationError} from 'apollo-server'
 import {AuthenticationResult, Role} from '../generated/graphql'
-import {CustomerDbObject, CustomerInput} from '../generated/models'
+import {CustomerDbObject, CustomerInput, UserInput} from '../generated/models'
+import {HydratedDocument, Types} from 'mongoose'
 import jwtDecode, {JwtPayload} from 'jwt-decode'
+import {validateCustomerInput, validateUserInput} from '../utils/validate'
 
-import {ApolloError} from 'apollo-server'
 import {CustomerModel} from '../models/customer'
-import {HydratedDocument} from 'mongoose'
 import {MongoDataSource} from 'apollo-datasource-mongodb'
 import {ObjectId} from 'mongodb'
 import {createToken} from '../utils/auth'
-import {validateCustomerInput} from '../utils/validate'
 
 // This is optional
 interface Context {
-  customer: CustomerDbObject
+  user: JwtPayload
 }
 
-export default class Customers extends MongoDataSource<
-  CustomerDbObject,
-  Context
-> {
+export default class Customers extends MongoDataSource<CustomerDbObject, Context> {
   async insertCustomer(input: CustomerInput): Promise<AuthenticationResult> {
     validateCustomerInput(input)
     const newCustomer: HydratedDocument<Omit<CustomerDbObject, '_id'>> =
@@ -28,6 +25,22 @@ export default class Customers extends MongoDataSource<
     }
     const savedCustomer = await newCustomer.save()
     const {id, name, email} = savedCustomer
+    const userInfo = {id, name, email, role: Role.User}
+    const token = createToken(userInfo)
+    const decodedToken = jwtDecode<JwtPayload>(token)
+    const expiresAt = decodedToken.exp
+    return {token, userInfo, expiresAt}
+  }
+  async authorizeCustomer(input: UserInput): Promise<AuthenticationResult> {
+    validateUserInput(input)
+    const existingCustomer = await CustomerModel.findOne<CustomerDbObject>({
+      email: input.email,
+    })
+    if (!existingCustomer) {
+      throw new AuthenticationError('Wrong credentials')
+    }
+    const {_id, name, email} = existingCustomer
+    const id = _id.toString()
     const userInfo = {id, name, email, role: Role.User}
     const token = createToken(userInfo)
     const decodedToken = jwtDecode<JwtPayload>(token)
@@ -68,7 +81,9 @@ export default class Customers extends MongoDataSource<
     )
     return customer
   } */
-  async removeCustomer(id: ObjectId): Promise<CustomerDbObject | null> {
+  async removeCustomer(): Promise<CustomerDbObject | null> {
+    const sub = this.context.user.sub
+    const id = new Types.ObjectId(sub)
     const customer = await CustomerModel.findByIdAndDelete<CustomerDbObject>(id)
     if (!customer) {
       throw new ApolloError('Resource not found', '404')

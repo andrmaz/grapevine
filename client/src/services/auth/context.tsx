@@ -1,5 +1,7 @@
 import * as React from 'react'
 
+import { getUserKey, setUserKey } from '@/utils/storage';
+
 import type {User} from '/__generated__/types'
 
 type State = {user: User | null}
@@ -48,7 +50,7 @@ function useAuthReducer(): [State, Dispatch] {
     React.Reducer<State, Action>,
     State
   >(reducer, {user: null}, () => ({
-    user: JSON.parse(localStorage.getItem('user') as string),
+    user: JSON.parse(getUserKey() as string),
   }))
   return [state, dispatch]
 }
@@ -59,7 +61,7 @@ function useAuthProvider(): [State, Dispatch] {
   const user = state.user
   const serializedUser = JSON.stringify(user)
   React.useEffect(() => {
-    localStorage.setItem('user', serializedUser)
+    setUserKey(serializedUser)
   }, [serializedUser])
 
   return [state, dispatch]

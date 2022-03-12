@@ -1,30 +1,44 @@
 import * as React from 'react'
 
+import { UserInput, useAuthorizeCustomerMutation } from '/__generated__/types'
+
+import {setTokenKey} from '@/utils/storage'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
-
-interface Input {
-  name: string
-  email: string
-}
+import { useAuthDispatch } from '@/services/auth/context'
+import { useHistory } from 'react-router-dom'
 
 export default function Login(): JSX.Element {
-  const [state, setState] = React.useState<Input>({name: '', email: ''})
-  const {name, email} = state
+  const dispatch = useAuthDispatch()
+  const history = useHistory()
+  const [input, setInput] = React.useState<UserInput>({name: '', email: ''})
+  const { name, email } = input
+  const [authorizeCustomerMutation] = useAuthorizeCustomerMutation({
+    variables: {input},
+    onCompleted: data => {
+      const success = data.authorizeCustomer.success
+      if (success) {
+        const token = data.authorizeCustomer.user?.token
+        typeof token === 'string' && setTokenKey(token)
+        const user = data.authorizeCustomer.user?.userInfo
+        user && dispatch({type: 'login', user})
+        history.push('/')
+      }
+    },
+    onError: error => {
+      console.error(error.name)
+    },
+  })
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (
     event
   ): void => {
     const name = event.target.name
     const value = event.target.value
-    setState(state => ({...state, [name]: value}))
+    setInput(input => ({...input, [name]: value}))
   }
   const onSubmit = (event: React.SyntheticEvent): void => {
     event.preventDefault()
-    const target = event.target as typeof event.target & {
-      name: {value: string}
-      email: {value: string}
-    }
-    console.info('name', target.name.value, 'email', target.email.value)
+    authorizeCustomerMutation()
   }
   return (
     <Container>

@@ -123,6 +123,12 @@ const typeDefs = gql`
     "the place where the customer lives"
     address: AddressInput
   }
+  input UserInput {
+    "the first and last name of the user"
+    name: String!
+    "the email address of the user"
+    email: String!
+  }
   type Query {
     # Queries go here
     "Query to get a list of specialists for the dashboard page"
@@ -142,6 +148,8 @@ const typeDefs = gql`
     registerSpecialist(input: SpecialistInput): AuthenticationResponse!
     "Mutation to create a new customer"
     registerCustomer(input: CustomerInput): AuthenticationResponse!
+    "Mutation to authorize an existing customer"
+    authorizeCustomer(input: UserInput): AuthenticationResponse!
     "Mutation to increment the specialist's recommendations property"
     incrementRecommendations(id: ID!): SpecialistResponse!
       @auth(requires: [USER, ADMIN])
@@ -155,7 +163,7 @@ const typeDefs = gql`
     removeSpecialist(id: ID!): SpecialistResponse!
       @auth(requires: [CREATOR, ADMIN])
     "Mutation to remove a specific customer"
-    removeCustomer(id: ID!): CustomerResponse! @auth(requires: [USER, ADMIN])
+    removeCustomer(id: ID): CustomerResponse! @auth(requires: [USER, ADMIN])
   }
   type User {
     "the unique identifier of the user"

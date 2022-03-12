@@ -144,6 +144,8 @@ export type GeoInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  /** Mutation to authorize an existing customer */
+  authorizeCustomer: AuthenticationResponse;
   /** Mutation to increment the specialist's recommendations property */
   incrementRecommendations: SpecialistResponse;
   /** Mutation to create a new customer */
@@ -154,6 +156,11 @@ export type Mutation = {
   removeCustomer: CustomerResponse;
   /** Mutation to remove a specific specialist */
   removeSpecialist: SpecialistResponse;
+};
+
+
+export type MutationAuthorizeCustomerArgs = {
+  input?: InputMaybe<UserInput>;
 };
 
 
@@ -173,7 +180,7 @@ export type MutationRegisterSpecialistArgs = {
 
 
 export type MutationRemoveCustomerArgs = {
-  id: Scalars['ID'];
+  id?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -280,6 +287,20 @@ export type User = {
   role: Role;
 };
 
+export type UserInput = {
+  /** the email address of the user */
+  email: Scalars['String'];
+  /** the first and last name of the user */
+  name: Scalars['String'];
+};
+
+export type AuthorizeCustomerMutationVariables = Exact<{
+  input?: InputMaybe<UserInput>;
+}>;
+
+
+export type AuthorizeCustomerMutation = { __typename?: 'Mutation', authorizeCustomer: { __typename?: 'AuthenticationResponse', code: number, success: boolean, message: string, user?: { __typename?: 'AuthenticationResult', token: string, expiresAt?: number | null | undefined, userInfo: { __typename?: 'User', name: string, id: string, email: string, role: Role } } | null | undefined } };
+
 export type RegisterCustomerMutationVariables = Exact<{
   registerCustomerInput?: InputMaybe<CustomerInput>;
 }>;
@@ -314,6 +335,51 @@ export const GeolocationFieldsFragmentDoc = /*#__PURE__*/ gql`
   lng
 }
     `;
+export const AuthorizeCustomerDocument = /*#__PURE__*/ gql`
+    mutation AuthorizeCustomer($input: UserInput) {
+  authorizeCustomer(input: $input) {
+    code
+    success
+    message
+    user {
+      userInfo {
+        name
+        id
+        email
+        role
+      }
+      token
+      expiresAt
+    }
+  }
+}
+    `;
+export type AuthorizeCustomerMutationFn = Apollo.MutationFunction<AuthorizeCustomerMutation, AuthorizeCustomerMutationVariables>;
+
+/**
+ * __useAuthorizeCustomerMutation__
+ *
+ * To run a mutation, you first call `useAuthorizeCustomerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAuthorizeCustomerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [authorizeCustomerMutation, { data, loading, error }] = useAuthorizeCustomerMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAuthorizeCustomerMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AuthorizeCustomerMutation, AuthorizeCustomerMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AuthorizeCustomerMutation, AuthorizeCustomerMutationVariables>(AuthorizeCustomerDocument, options);
+      }
+export type AuthorizeCustomerMutationHookResult = ReturnType<typeof useAuthorizeCustomerMutation>;
+export type AuthorizeCustomerMutationResult = Apollo.MutationResult<AuthorizeCustomerMutation>;
+export type AuthorizeCustomerMutationOptions = Apollo.BaseMutationOptions<AuthorizeCustomerMutation, AuthorizeCustomerMutationVariables>;
 export const RegisterCustomerDocument = /*#__PURE__*/ gql`
     mutation RegisterCustomer($registerCustomerInput: CustomerInput) {
   registerCustomer(input: $registerCustomerInput) {

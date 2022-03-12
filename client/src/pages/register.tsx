@@ -2,6 +2,7 @@ import * as React from 'react'
 
 import {CustomerInput, useRegisterCustomerMutation} from '/__generated__/types'
 
+import { setTokenKey } from '@/utils/storage'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 import {useAuthDispatch} from '@/services/auth/context'
@@ -24,7 +25,7 @@ export default function Register(): JSX.Element {
       const success = data.registerCustomer.success
       if (success) {
         const token = data.registerCustomer.user?.token
-        typeof token === 'string' && localStorage.setItem('token', token)
+        typeof token === 'string' && setTokenKey(token)
         const user = data.registerCustomer.user?.userInfo
         user && dispatch({type: 'login', user})
         history.push('/')

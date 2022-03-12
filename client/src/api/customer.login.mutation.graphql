@@ -1,0 +1,18 @@
+# Mutation to authenticate the customer
+mutation AuthorizeCustomer($input: UserInput) {
+  authorizeCustomer(input: $input) {
+    code
+    success
+    message
+    user {
+      userInfo {
+        name
+        id
+        email
+        role
+      }
+      token
+      expiresAt
+    }
+  }
+}

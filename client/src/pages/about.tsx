@@ -1,12 +1,13 @@
 import * as React from 'react'
 
-import {SpecialistInfo} from '@/containers/specialist/info'
 import {GetSpecialistQueryVariables} from '/__generated__/types'
+import {SpecialistInfo} from '@/containers/specialist/info'
+import Spinner from '@/lib/loaders/spinner'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 import {useParams} from 'react-router'
-import Spinner from '@/lib/loaders/spinner'
-const ContactBar = React.lazy(() => import('@/lib/bars/contact'))
+
+const ContactBar = React.lazy(() => import('@/components/bar/contact'))
 
 export default function About(): JSX.Element {
   const {id} = useParams<{id: GetSpecialistQueryVariables['id']}>()

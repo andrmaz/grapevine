@@ -139,6 +139,8 @@ export type GeoInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  /** Mutation to authorize an existing customer */
+  authorizeCustomer: AuthenticationResponse;
   /** Mutation to increment the specialist's recommendations property */
   incrementRecommendations: SpecialistResponse;
   /** Mutation to create a new customer */
@@ -149,6 +151,11 @@ export type Mutation = {
   removeCustomer: CustomerResponse;
   /** Mutation to remove a specific specialist */
   removeSpecialist: SpecialistResponse;
+};
+
+
+export type MutationAuthorizeCustomerArgs = {
+  input?: Maybe<UserInput>;
 };
 
 
@@ -168,7 +175,7 @@ export type MutationRegisterSpecialistArgs = {
 
 
 export type MutationRemoveCustomerArgs = {
-  id: Scalars['ID'];
+  id?: Maybe<Scalars['ID']>;
 };
 
 
@@ -273,6 +280,13 @@ export type User = {
   name: Scalars['String'];
   /** the permissions granted to the user */
   role: Role;
+};
+
+export type UserInput = {
+  /** the email address of the user */
+  email: Scalars['String'];
+  /** the first and last name of the user */
+  name: Scalars['String'];
 };
 
 import { ObjectId } from 'mongodb';

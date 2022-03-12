@@ -81,6 +81,34 @@ const resolvers: Resolvers = {
         }
       }
     },
+    // insert a new customer in the database
+    authorizeCustomer: async (_, {input}, {dataSources}) => {
+      try {
+        const user = await dataSources.customers.authorizeCustomer(input)
+        return {
+          code: 200,
+          success: true,
+          message: `Successfully authenticated as a customer`,
+          user,
+        }
+      } catch (err: unknown) {
+        if (err instanceof GraphQLError) {
+          return {
+            code: err.extensions?.response.status,
+            success: false,
+            message: err.extensions?.response.body,
+            user: null,
+          }
+        } else {
+          return {
+            code: 500,
+            success: false,
+            message: `Something went wrong while processing the request: ${err}`,
+            user: null,
+          }
+        }
+      }
+    },
     // increment specialist's recommendations property
     incrementRecommendations: async (_, {id}, {dataSources}) => {
       try {
@@ -219,13 +247,13 @@ const resolvers: Resolvers = {
         }
       }
     },
-    removeCustomer: async (_, {id}, {dataSources}) => {
+    removeCustomer: async (_, __, {dataSources}) => {
       try {
-        const customer = await dataSources.customers.removeCustomer(id)
+        const customer = await dataSources.customers.removeCustomer()
         return {
           code: 200,
           success: true,
-          message: `Successfully removed customer ${id}`,
+          message: `Successfully removed customer ${customer.id}`,
           customer,
         }
       } catch (err: unknown) {

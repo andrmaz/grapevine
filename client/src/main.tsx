@@ -14,7 +14,8 @@ import App from './app'
 import {AuthProvider} from '@/services/auth/context'
 import ReactDOM from 'react-dom'
 import {ThemeProvider} from '@emotion/react'
-import {errorLink} from './utils/errors'
+import {errorLink} from '@/utils/errors'
+import { getTokenKey } from '@/utils/storage'
 import {setContext} from '@apollo/client/link/context'
 import {theme} from '@/themes'
 
@@ -24,7 +25,7 @@ const httpLink = createHttpLink({
 
 const authLink = setContext((_, {headers}) => {
   // get the authentication token from local storage if it exists
-  const token = localStorage.getItem('token')
+  const token = getTokenKey()
   // return the headers to the context so httpLink can read them
   return {
     headers: {
