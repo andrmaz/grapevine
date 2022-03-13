@@ -1,10 +1,11 @@
 import * as React from 'react'
-import styled from '@emotion/styled'
+
 import {MessageCircle} from 'react-feather'
-import {theme} from '@/themes'
 import {SpecialistChat} from '@/containers/specialist/chat'
+import {Spinner} from '@/lib/loaders/spinner'
 import UnstyledButton from '@/lib/buttons/unstyled'
-import Spinner from '@/lib/loaders/spinner'
+import styled from '@emotion/styled'
+import {theme} from '@/themes'
 const Dialog = React.lazy(() => import('@/lib/dialogs'))
 
 export default function ContactBar(): JSX.Element {

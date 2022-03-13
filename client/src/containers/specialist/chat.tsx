@@ -1,9 +1,18 @@
 import * as React from 'react'
 
-import InputGroup from '@/lib/inputs/group'
+import {InputGroup} from '@/lib/inputs/group'
 import {MessagesList} from '@/components/message/list'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
+
+export const SpecialistChat = (): JSX.Element => {
+  return (
+    <Wrapper>
+      <MessagesList />
+      <InputGroup />
+    </Wrapper>
+  )
+}
 
 const Wrapper = styled.div`
   height: 100%;
@@ -16,11 +25,3 @@ const Wrapper = styled.div`
   }
 `
 
-export const SpecialistChat = (): JSX.Element => {
-  return (
-    <Wrapper>
-      <MessagesList />
-      <InputGroup />
-    </Wrapper>
-  )
-}

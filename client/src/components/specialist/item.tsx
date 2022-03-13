@@ -5,6 +5,35 @@ import {Link} from 'react-router-dom'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 
+export const SpecialistItem = ({
+  id,
+  name,
+  address: {city},
+  company: {bs},
+}: GetSpecialistsQuery['specialistsForDashboard'][0]): JSX.Element => {
+  return (
+    <Item>
+      <Header>
+        <Avatar>
+          <Image
+            src={`https://avatars.dicebear.com/api/personas/${name}.svg`}
+          />
+        </Avatar>
+      </Header>
+      <Information>
+        <Name>{name}</Name>
+        <Business>{bs}</Business>
+        <Address>{city}</Address>
+      </Information>
+      <Contact>
+        <Button>
+          <StyledLink to={`/about/${id}`}>See all information</StyledLink>
+        </Button>
+      </Contact>
+    </Item>
+  )
+}
+
 const Item = styled.article`
   width: 100%;
   height: 200px;
@@ -85,32 +114,3 @@ const StyledLink = styled(Link)`
   color: var(--color-base);
   text-decoration: none;
 `
-
-export const SpecialistItem = ({
-  id,
-  name,
-  address: {city},
-  company: {bs},
-}: GetSpecialistsQuery['specialistsForDashboard'][0]): JSX.Element => {
-  return (
-    <Item>
-      <Header>
-        <Avatar>
-          <Image
-            src={`https://avatars.dicebear.com/api/personas/${name}.svg`}
-          />
-        </Avatar>
-      </Header>
-      <Information>
-        <Name>{name}</Name>
-        <Business>{bs}</Business>
-        <Address>{city}</Address>
-      </Information>
-      <Contact>
-        <Button>
-          <StyledLink to={`/about/${id}`}>See all information</StyledLink>
-        </Button>
-      </Contact>
-    </Item>
-  )
-}

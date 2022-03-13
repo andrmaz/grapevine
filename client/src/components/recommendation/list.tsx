@@ -5,6 +5,27 @@ import {Specialist} from '/__generated__/types'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 
+export const RecommendationList = (): JSX.Element => {
+  // Get user's recommendations list
+  const specialists: Specialist[] = []
+  return (
+    <SideBar>
+      <Title>Your recommendations list</Title>
+      {specialists.length > 0 ? (
+        <List>
+          {specialists?.map(({id, name}) => (
+            <Item key={id}>
+              <NavLink to={`/about/${id}`}>{name}</NavLink>
+            </Item>
+          ))}
+        </List>
+      ) : (
+        'You have not recommended any specialists yet'
+      )}
+    </SideBar>
+  )
+}
+
 const SideBar = styled.nav`
   width: 200px;
   height: 100%;
@@ -40,23 +61,3 @@ const NavLink = styled(Link)`
   }
 `
 
-export const RecommendationList = (): JSX.Element => {
-  // Get user's recommendations list
-  const specialists: Specialist[] = []
-  return (
-    <SideBar>
-      <Title>Your recommendations list</Title>
-      {specialists.length > 0 ? (
-        <List>
-          {specialists?.map(({id, name}) => (
-            <Item key={id}>
-              <NavLink to={`/about/${id}`}>{name}</NavLink>
-            </Item>
-          ))}
-        </List>
-      ) : (
-        'You have not recommended any specialists yet'
-      )}
-    </SideBar>
-  )
-}

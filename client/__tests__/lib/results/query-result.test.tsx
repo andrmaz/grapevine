@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import QueryResult, {QueryResultProps} from '@/lib/results/query-result'
+import {QueryResult, QueryResultProps} from '@/lib/results/query-result'
 import {render, screen} from 'test-utils'
 
 import {ApolloError} from '@apollo/client'

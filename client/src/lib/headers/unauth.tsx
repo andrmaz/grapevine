@@ -5,7 +5,7 @@ import {Link, useRouteMatch} from 'react-router-dom'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 
-export default function Header(): JSX.Element {
+export const UnauthHeader = (): JSX.Element => {
   const match = useRouteMatch('/signin')
   return (
     <Navigation>

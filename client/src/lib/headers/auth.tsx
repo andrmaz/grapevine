@@ -6,7 +6,7 @@ import styled from '@emotion/styled'
 import {theme} from '@/themes'
 import {useAuthDispatch} from '@/services/auth/context'
 
-export default function Header(): JSX.Element {
+export const AuthHeader = (): JSX.Element => {
   const dispatch = useAuthDispatch()
   const clear = (): void => {
     dispatch({type: 'logout'})

@@ -1,5 +1,14 @@
 import * as React from 'react'
+
 import styled from '@emotion/styled'
+
+export const MessagesList = (): JSX.Element => {
+  return (
+    <Wrapper>
+      <Message>Hello! I am fine thanks</Message>
+    </Wrapper>
+  )
+}
 
 const Wrapper = styled.section`
   flex: 1;
@@ -17,10 +26,3 @@ const Message = styled.article`
   border-radius: 4px;
 `
 
-export const MessagesList = (): JSX.Element => {
-  return (
-    <Wrapper>
-      <Message>Hello! I am fine thanks</Message>
-    </Wrapper>
-  )
-}

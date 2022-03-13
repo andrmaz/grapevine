@@ -1,8 +1,8 @@
 import * as React from 'react'
 
 import { BrowserRouter as Router } from 'react-router-dom'
+import {UnauthHeader} from '@/lib/headers/unauth'
 import UnauthRoutes from '@/routes/unauth'
-import Header from '@/lib/headers/unauth'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 
@@ -10,7 +10,7 @@ export default function UnauthenticatedApp(): JSX.Element {
   return (
     <Router>
       <Container>
-        <Header />
+        <UnauthHeader />
         <UnauthRoutes />
       </Container>
     </Router>

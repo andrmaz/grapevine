@@ -23,7 +23,7 @@ const STYLES = {
   },
 }
 
-export default function Spinner(props: SpinnerProps): JSX.Element {
+export const Spinner = (props: SpinnerProps): JSX.Element => {
   const styles = STYLES[props.size] as React.CSSProperties
   if (!styles) {
     throw new Error(`Unknown size passed to Spinner: ${props.size}`)
@@ -34,7 +34,6 @@ export default function Spinner(props: SpinnerProps): JSX.Element {
     </SpinnerContainer>
   )
 }
-
 
 const SpinnerContainer = styled.div`
   height: 100%;
