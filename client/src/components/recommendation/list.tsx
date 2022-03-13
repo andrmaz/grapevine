@@ -41,9 +41,8 @@ const NavLink = styled(Link)`
 `
 
 export const RecommendationList = (): JSX.Element => {
-  //* Faking the user State for development purposes
-  const customer = JSON.parse(window.localStorage.getItem('customer') as string)
-  const specialists: Specialist[] = customer?.specialists
+  // Get user's recommendations list
+  const specialists: Specialist[] = []
   return (
     <SideBar>
       <Title>Your recommendations list</Title>

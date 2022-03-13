@@ -1,15 +1,19 @@
 import * as React from 'react'
 
+import Register from '@/pages/register'
+import Login from '@/pages/login'
+import Spinner from '@/lib/loaders/spinner'
+
 import {Redirect, Route, Switch} from 'react-router-dom'
 
 export default function UnauthRoutes(): JSX.Element {
   return (
-    <Switch>
-      <Route path='/signin'>
-        {/* <SignIn /> */}
-        <h3>SignIn / SignUp</h3>
-      </Route>
-      <Redirect to='/signin' />
-    </Switch>
+    <React.Suspense fallback={<Spinner size='large' />}>
+      <Switch>
+        <Route path='/signup' component={Register} />
+        <Route path='/signin' component={Login} />
+        <Redirect to='/signin' />
+      </Switch>
+    </React.Suspense>
   )
 }

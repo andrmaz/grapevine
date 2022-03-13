@@ -10,12 +10,8 @@ export default function AuthRoutes(): JSX.Element {
   return (
     <React.Suspense fallback={<Spinner size='large' />}>
       <Switch>
-        <Route path='/about/:id'>
-          <About />
-        </Route>
-        <Route path='/' exact>
-          <Dashboard />
-        </Route>
+        <Route path='/about/:id' component={About} />
+        <Route exact path='/' component={Dashboard} />
         <Redirect to='/' />
       </Switch>
     </React.Suspense>

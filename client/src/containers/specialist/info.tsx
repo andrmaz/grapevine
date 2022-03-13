@@ -75,17 +75,7 @@ export const SpecialistInfo = ({
   })
   const handleClick = (): void => {
     incrementRecommendations()
-    //* Faking the user State for development purposes
-    const customer = JSON.parse(
-      window.localStorage.getItem('customer') as string
-    )
-    window.localStorage.setItem(
-      'customer',
-      JSON.stringify({
-        ...customer,
-        specialists: [...customer.specialists, data?.specialistForAbout],
-      })
-    )
+    // Add specialist to user's list
   }
   return (
     <Wrapper>

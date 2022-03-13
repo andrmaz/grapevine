@@ -1,8 +1,8 @@
 import * as React from 'react'
 
-import AuthRoutes from '@/routes/auth'
-import Header from '@/lib/headers'
 import {BrowserRouter as Router} from 'react-router-dom'
+import AuthRoutes from '@/routes/auth'
+import Header from '@/lib/headers/auth'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 

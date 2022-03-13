@@ -23,6 +23,19 @@ const STYLES = {
   },
 }
 
+export default function Spinner(props: SpinnerProps): JSX.Element {
+  const styles = STYLES[props.size] as React.CSSProperties
+  if (!styles) {
+    throw new Error(`Unknown size passed to Spinner: ${props.size}`)
+  }
+  return (
+    <SpinnerContainer>
+      <LoadingSpinner {...props} style={styles} data-testid='spinner' />
+    </SpinnerContainer>
+  )
+}
+
+
 const SpinnerContainer = styled.div`
   height: 100%;
   width: 100%;
@@ -48,15 +61,3 @@ const LoadingSpinner = styled.div<SpinnerProps>`
     }
   }
 `
-
-export default function Spinner(props: SpinnerProps): JSX.Element {
-  const styles = STYLES[props.size] as React.CSSProperties
-  if (!styles) {
-    throw new Error(`Unknown size passed to Spinner: ${props.size}`)
-  }
-  return (
-    <SpinnerContainer>
-      <LoadingSpinner {...props} style={styles} data-testid='spinner' />
-    </SpinnerContainer>
-  )
-}

@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import InputGroup from '@/lib/input/group'
+import InputGroup from '@/lib/inputs/group'
 import {MessagesList} from '@/components/message/list'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'

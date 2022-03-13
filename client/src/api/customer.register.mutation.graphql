@@ -1,0 +1,18 @@
+# Mutation to insert a new customer in the database
+mutation RegisterCustomer($registerCustomerInput: CustomerInput) {
+  registerCustomer(input: $registerCustomerInput) {
+    code
+    success
+    message
+    user {
+      userInfo {
+        name
+        id
+        email
+        role
+      }
+      token
+      expiresAt
+    }
+  }
+}

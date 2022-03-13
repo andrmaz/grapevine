@@ -41,6 +41,28 @@ export type AddressInput = {
   zipcode?: Maybe<Scalars['String']>;
 };
 
+export type AuthenticationResponse = {
+  __typename?: 'AuthenticationResponse';
+  /** Similar to HTTP status code, represents the status of the mutation */
+  code: Scalars['Int'];
+  /** Human-readable message for the UI */
+  message: Scalars['String'];
+  /** Indicates whether the mutation was successful */
+  success: Scalars['Boolean'];
+  /** Authenticated user after a successful mutation */
+  user?: Maybe<AuthenticationResult>;
+};
+
+export type AuthenticationResult = {
+  __typename?: 'AuthenticationResult';
+  /** the expiration date of the authorization token */
+  expiresAt?: Maybe<Scalars['Int']>;
+  /** the jsonwebtoken represents the user information */
+  token: Scalars['String'];
+  /** the primary authentication information */
+  userInfo: User;
+};
+
 /** a business organization that makes, buys, or sells goods or provides services in exchange for money */
 export type Company = {
   __typename?: 'Company';
@@ -72,6 +94,8 @@ export type Customer = {
   id: Scalars['ID'];
   /** the first and last name of the customer */
   name: Scalars['String'];
+  /** the permissions granted to the customer */
+  role: Role;
   /** a list of specialists who have been recommended by the customer */
   specialists?: Maybe<Array<Maybe<Specialist>>>;
 };
@@ -115,16 +139,23 @@ export type GeoInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  /** Mutation to authorize an existing customer */
+  authorizeCustomer: AuthenticationResponse;
   /** Mutation to increment the specialist's recommendations property */
   incrementRecommendations: SpecialistResponse;
   /** Mutation to create a new customer */
-  registerCustomer: CustomerResponse;
+  registerCustomer: AuthenticationResponse;
   /** Mutation to create a new specialist */
-  registerSpecialist: SpecialistResponse;
+  registerSpecialist: AuthenticationResponse;
   /** Mutation to remove a specific customer */
   removeCustomer: CustomerResponse;
   /** Mutation to remove a specific specialist */
   removeSpecialist: SpecialistResponse;
+};
+
+
+export type MutationAuthorizeCustomerArgs = {
+  input?: Maybe<UserInput>;
 };
 
 
@@ -144,7 +175,7 @@ export type MutationRegisterSpecialistArgs = {
 
 
 export type MutationRemoveCustomerArgs = {
-  id: Scalars['ID'];
+  id?: Maybe<Scalars['ID']>;
 };
 
 
@@ -179,6 +210,12 @@ export type QuerySpecialistForAboutArgs = {
   id: Scalars['ID'];
 };
 
+export enum Role {
+  Admin = 'ADMIN',
+  Creator = 'CREATOR',
+  User = 'USER'
+}
+
 /** a member of a profession or any person who earns a living from a specified professional activity */
 export type Specialist = {
   __typename?: 'Specialist';
@@ -198,6 +235,8 @@ export type Specialist = {
   phone?: Maybe<Scalars['String']>;
   /** number of times the specialist has been recommended by customers */
   recommendations?: Maybe<Scalars['Int']>;
+  /** the permissions granted to the specialist */
+  role: Role;
   /** a central location of web pages that are related and accessed using a browser */
   website?: Maybe<Scalars['String']>;
 };
@@ -231,6 +270,25 @@ export type SpecialistResponse = {
   success: Scalars['Boolean'];
 };
 
+export type User = {
+  __typename?: 'User';
+  /** the email address of the user */
+  email: Scalars['String'];
+  /** the unique identifier of the user */
+  id: Scalars['ID'];
+  /** the first and last name of the user */
+  name: Scalars['String'];
+  /** the permissions granted to the user */
+  role: Role;
+};
+
+export type UserInput = {
+  /** the email address of the user */
+  email: Scalars['String'];
+  /** the first and last name of the user */
+  name: Scalars['String'];
+};
+
 import { ObjectId } from 'mongodb';
 export type AddressDbObject = {
   city: string,
@@ -251,6 +309,7 @@ export type CustomerDbObject = {
   email: string,
   _id: ObjectId,
   name: string,
+  role: string,
   specialists?: Maybe<Array<Maybe<SpecialistDbObject['_id']>>>,
 };
 
@@ -267,5 +326,6 @@ export type SpecialistDbObject = {
   _id: ObjectId,
   name: string,
   phone?: Maybe<string>,
+  role: string,
   website?: Maybe<string>,
 };

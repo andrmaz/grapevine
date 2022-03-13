@@ -3,7 +3,6 @@ import * as React from 'react'
 import {DialogContent, DialogOverlay} from '@reach/dialog'
 import {animated, useTransition} from '@react-spring/web'
 
-import {SpecialistChat} from '@/containers/specialist/chat'
 import UnstyledButton from '@/lib/buttons/unstyled'
 import VisuallyHidden from '@reach/visually-hidden'
 import {XCircle} from 'react-feather'
@@ -13,6 +12,47 @@ import {theme} from '@/themes'
 interface DialogProps {
   isOpen: boolean
   onDismiss: () => void
+}
+
+export default function Dialog({
+  isOpen,
+  onDismiss,
+  children,
+}: React.PropsWithChildren<DialogProps>): JSX.Element {
+  const transitions = useTransition(isOpen, {
+    from: {opacity: 0, y: -10},
+    enter: {opacity: 1, y: 0},
+    leave: {opacity: 0, y: 10},
+  })
+  return (
+    <>
+      {transitions(
+        (styles, item) =>
+          item && (
+            <Overlay
+              isOpen={isOpen}
+              onDismiss={onDismiss}
+              style={{opacity: styles.opacity}}
+            >
+              <Content
+                aria-label='dialog-content'
+                style={{
+                  transform: styles.y.to(
+                    value => `translate3d(0px, ${value}px, 0px)`
+                  ),
+                }}
+              >
+                <CloseButton onClick={onDismiss}>
+                  <VisuallyHidden>Dismiss menu</VisuallyHidden>
+                  <XCircle />
+                </CloseButton>
+                {children}
+              </Content>
+            </Overlay>
+          )
+      )}
+    </>
+  )
 }
 
 const Overlay = styled(animated(DialogOverlay))`
@@ -56,40 +96,3 @@ const CloseButton = styled(UnstyledButton)`
     }
   }
 `
-
-export default function Dialog({isOpen, onDismiss}: DialogProps): JSX.Element {
-  const transitions = useTransition(isOpen, {
-    from: {opacity: 0, y: -10},
-    enter: {opacity: 1, y: 0},
-    leave: {opacity: 0, y: 10},
-  })
-  return (
-    <>
-      {transitions(
-        (styles, item) =>
-          item && (
-            <Overlay
-              isOpen={isOpen}
-              onDismiss={onDismiss}
-              style={{opacity: styles.opacity}}
-            >
-              <Content
-                aria-label='dialog-content'
-                style={{
-                  transform: styles.y.to(
-                    value => `translate3d(0px, ${value}px, 0px)`
-                  ),
-                }}
-              >
-                <CloseButton onClick={onDismiss}>
-                  <VisuallyHidden>Dismiss menu</VisuallyHidden>
-                  <XCircle />
-                </CloseButton>
-                <SpecialistChat />
-              </Content>
-            </Overlay>
-          )
-      )}
-    </>
-  )
-}

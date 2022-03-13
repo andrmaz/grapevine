@@ -28,12 +28,12 @@ const resolvers: Resolvers = {
     // insert a new customer in the database
     registerCustomer: async (_, {input}, {dataSources}) => {
       try {
-        const customer = await dataSources.customers.insertCustomer(input)
+        const user = await dataSources.customers.insertCustomer(input)
         return {
           code: 200,
           success: true,
           message: `Successfully registered as a customer`,
-          customer,
+          user,
         }
       } catch (err: unknown) {
         if (err instanceof GraphQLError) {
@@ -41,14 +41,14 @@ const resolvers: Resolvers = {
             code: err.extensions?.response.status,
             success: false,
             message: err.extensions?.response.body,
-            customer: null,
+            user: null,
           }
         } else {
           return {
             code: 500,
             success: false,
             message: `Something went wrong while processing the request: ${err}`,
-            customer: null,
+            user: null,
           }
         }
       }
@@ -77,6 +77,34 @@ const resolvers: Resolvers = {
             success: false,
             message: `Something went wrong while processing the request: ${err}`,
             specialist: null,
+          }
+        }
+      }
+    },
+    // insert a new customer in the database
+    authorizeCustomer: async (_, {input}, {dataSources}) => {
+      try {
+        const user = await dataSources.customers.authorizeCustomer(input)
+        return {
+          code: 200,
+          success: true,
+          message: `Successfully authenticated as a customer`,
+          user,
+        }
+      } catch (err: unknown) {
+        if (err instanceof GraphQLError) {
+          return {
+            code: err.extensions?.response.status,
+            success: false,
+            message: err.extensions?.response.body,
+            user: null,
+          }
+        } else {
+          return {
+            code: 500,
+            success: false,
+            message: `Something went wrong while processing the request: ${err}`,
+            user: null,
           }
         }
       }
@@ -219,13 +247,13 @@ const resolvers: Resolvers = {
         }
       }
     },
-    removeCustomer: async (_, {id}, {dataSources}) => {
+    removeCustomer: async (_, __, {dataSources}) => {
       try {
-        const customer = await dataSources.customers.removeCustomer(id)
+        const customer = await dataSources.customers.removeCustomer()
         return {
           code: 200,
           success: true,
-          message: `Successfully removed customer ${id}`,
+          message: `Successfully removed customer ${customer.id}`,
           customer,
         }
       } catch (err: unknown) {
