@@ -1,8 +1,8 @@
 # grapevine
 
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-![CodeQL](https://github.com/andrmaz/grapevine/actions/workflows/codeql-analysis.yml/badge.svg)
-[![Build and Test](https://github.com/andrmaz/grapevine/actions/workflows/build-and-test.yml/badge.svg?event=status)](https://github.com/andrmaz/grapevine/actions/workflows/build-and-test.yml)
+[![CodeQL](https://github.com/andrmaz/grapevine/actions/workflows/codeql-analysis.yml/badge.svg?event=push)](https://github.com/andrmaz/grapevine/actions/workflows/codeql-analysis.yml)
+[![Build and Test](https://github.com/andrmaz/grapevine/actions/workflows/build-and-test.yml/badge.svg?event=push)](https://github.com/andrmaz/grapevine/actions/workflows/build-and-test.yml)
 
 Web-based marketing software application
 
