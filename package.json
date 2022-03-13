@@ -30,6 +30,7 @@
   "scripts": {
     "requirements-check": "node scripts/check_node_version.js",
     "prepare": "husky install",
+    "preinstall": "concurrently \"cd client && npm ci\" \"cd server && npm ci\"",
     "postinstall": "npm run requirements-check",
     "cm": "cz",
     "lint": "eslint --ext js,jsx,ts,tsx --fix",
@@ -38,8 +39,7 @@
     "start": "concurrently \"cd client && npm run dev\" \"cd server && npm start\"",
     "dev": "concurrently \"cd client && npm run dev\" \"cd server && npm run dev\"",
     "build": "concurrently \"cd client && npm run build\" \"cd server && npm run tsc\"",
-    "test": "cd client && npm run test",
-    "clean-install": "concurrently \"cd client && npm ci\" \"cd server && npm ci\""
+    "test": "cd client && npm run test"
   },
   "repository": {
     "type": "git",
