@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import SearchBar, {SearchBarProps} from '@/lib/bars/search'
+import {SearchBar, SearchBarProps} from '@/lib/bars/search'
 import {render, screen} from 'test-utils'
 
 import faker from '@faker-js/faker'

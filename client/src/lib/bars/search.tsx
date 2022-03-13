@@ -8,33 +8,10 @@ export interface SearchBarProps {
   setSearch: React.Dispatch<React.SetStateAction<string>>
 }
 
-const Wrapper = styled.div`
-  position: fixed; /* Fixed SearchBar (stay in place on scroll) */
-  z-index: 1; /* Stay on top */
-  display: flex;
-  align-items: center;
-  height: 64px;
-  width: 568px;
-  padding: 8px;
-  border-right: 1px solid black;
-  border-bottom: 1px solid black;
-  background-color: var(--color-base);
-  ${theme.breakpoints.medium} {
-    width: 100%;
-  }
-  ${theme.mode.dark} {
-    background-color: var(--color-blue);
-  }
-`
-const Input = styled.input`
-  padding: 1px 2px;
-  border-width: 2px;
-`
-
-export default function SearchBar({
+export const SearchBar = ({
   search,
   setSearch,
-}: SearchBarProps): JSX.Element {
+}: SearchBarProps): JSX.Element => {
   const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const searchValue = event.target.value.toLowerCase()
     setSearch(searchValue)
@@ -59,3 +36,26 @@ export default function SearchBar({
     </Wrapper>
   )
 }
+
+const Wrapper = styled.div`
+  position: fixed; /* Fixed SearchBar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  display: flex;
+  align-items: center;
+  height: 64px;
+  width: 568px;
+  padding: 8px;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  background-color: var(--color-base);
+  ${theme.breakpoints.medium} {
+    width: 100%;
+  }
+  ${theme.mode.dark} {
+    background-color: var(--color-blue);
+  }
+`
+const Input = styled.input`
+  padding: 1px 2px;
+  border-width: 2px;
+`

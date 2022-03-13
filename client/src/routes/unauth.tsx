@@ -1,10 +1,10 @@
 import * as React from 'react'
 
-import Register from '@/pages/register'
-import Login from '@/pages/login'
-import Spinner from '@/lib/loaders/spinner'
-
 import {Redirect, Route, Switch} from 'react-router-dom'
+
+import Login from '@/pages/login'
+import Register from '@/pages/register'
+import {Spinner} from '@/lib/loaders/spinner'
 
 export default function UnauthRoutes(): JSX.Element {
   return (

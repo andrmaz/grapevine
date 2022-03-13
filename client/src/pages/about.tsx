@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import {GetSpecialistQueryVariables} from '/__generated__/types'
 import {SpecialistInfo} from '@/containers/specialist/info'
-import Spinner from '@/lib/loaders/spinner'
+import {Spinner} from '@/lib/loaders/spinner'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 import {useParams} from 'react-router'

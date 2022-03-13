@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import {ApolloError} from '@apollo/client'
-import Spinner from '../loaders/spinner'
+import {Spinner} from '../loaders/spinner'
 
 export interface QueryResultProps<T> {
   loading: boolean
@@ -10,7 +10,7 @@ export interface QueryResultProps<T> {
   children: React.ReactNode
 }
 
-export default function QueryResult<P>({
+export function QueryResult<P>({
   loading,
   error,
   data,

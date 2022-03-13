@@ -4,32 +4,6 @@ import {GetSpecialistQuery} from '/__generated__/types'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 
-const Wrapper = styled.article`
-  height: 100%;
-  width: 100%;
-  padding: 32px;
-  margin: 0;
-  margin-left: -32px;
-  border: 1px solid black;
-  z-index: 1;
-  ${theme.mode.dark} {
-    color: var(--color-gray-10);
-  }
-`
-
-const Header = styled.header`
-  width: 100%;
-  height: 30%;
-`
-const Information = styled.section`
-  width: 100%;
-  height: 50%;
-`
-const Contacts = styled.aside`
-  width: 100%;
-  height: 20%;
-`
-
 export const SpecialistCard = ({
   name,
   email,
@@ -64,3 +38,28 @@ export const SpecialistCard = ({
     </Wrapper>
   )
 }
+
+  const Wrapper = styled.article`
+    height: 100%;
+    width: 100%;
+    padding: 32px;
+    margin: 0;
+    margin-left: -32px;
+    border: 1px solid black;
+    z-index: 1;
+    ${theme.mode.dark} {
+      color: var(--color-gray-10);
+    }
+  `
+  const Header = styled.header`
+    width: 100%;
+    height: 30%;
+  `
+  const Information = styled.section`
+    width: 100%;
+    height: 50%;
+  `
+  const Contacts = styled.aside`
+    width: 100%;
+    height: 20%;
+  `

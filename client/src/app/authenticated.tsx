@@ -1,8 +1,8 @@
 import * as React from 'react'
 
-import {BrowserRouter as Router} from 'react-router-dom'
+import {AuthHeader} from '@/lib/headers/auth'
 import AuthRoutes from '@/routes/auth'
-import Header from '@/lib/headers/auth'
+import {BrowserRouter as Router} from 'react-router-dom'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 
@@ -18,7 +18,7 @@ export default function AuthenticatedApp(): JSX.Element {
   return (
     <Router>
       <Container>
-        <Header />
+        <AuthHeader />
         <AuthRoutes />
       </Container>
     </Router>
