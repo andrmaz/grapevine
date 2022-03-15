@@ -1,10 +1,11 @@
 name: Build and Test
 
 on:
-  push:
-    branches: [ development ]
   pull_request:
-    branches: [ development ]
+    branches: [development]
+    paths:
+      - '!client/src/**'
+      - '!server/src/**'
 
 jobs:
   build-and-test:
