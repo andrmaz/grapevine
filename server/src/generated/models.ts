@@ -97,7 +97,7 @@ export type Customer = {
   /** the permissions granted to the customer */
   role: Role;
   /** a list of specialists who have been recommended by the customer */
-  specialists?: Maybe<Array<Maybe<Specialist>>>;
+  specialists: Array<Maybe<Specialist>>;
 };
 
 export type CustomerInput = {
@@ -139,6 +139,7 @@ export type GeoInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addRecommendation: CustomerResponse;
   /** Mutation to authorize an existing customer */
   authorizeCustomer: AuthenticationResponse;
   /** Mutation to increment the specialist's recommendations property */
@@ -151,6 +152,11 @@ export type Mutation = {
   removeCustomer: CustomerResponse;
   /** Mutation to remove a specific specialist */
   removeSpecialist: SpecialistResponse;
+};
+
+
+export type MutationAddRecommendationArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -202,7 +208,7 @@ export type QueryCustomerForProfileArgs = {
 
 
 export type QueryRecommendationsForDashboardArgs = {
-  id: Scalars['ID'];
+  id?: Maybe<Scalars['ID']>;
 };
 
 
@@ -310,7 +316,7 @@ export type CustomerDbObject = {
   _id: ObjectId,
   name: string,
   role: string,
-  specialists?: Maybe<Array<Maybe<SpecialistDbObject['_id']>>>,
+  specialists: Array<Maybe<SpecialistDbObject['_id']>>,
 };
 
 export type GeoDbObject = {

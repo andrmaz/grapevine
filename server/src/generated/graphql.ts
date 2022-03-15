@@ -2,14 +2,15 @@ import type {GraphQLResolveInfo} from 'graphql'
 import gql from 'graphql-tag'
 export type Maybe<T> = T | null
 export type Exact<T extends {[key: string]: unknown}> = {[K in keyof T]: T[K]}
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-  {[SubKey in K]?: Maybe<T[SubKey]>}
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-  {[SubKey in K]: Maybe<T[SubKey]>}
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>
+}
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>
+}
 export type RequireFields<T, K extends keyof T> = {
   [X in Exclude<keyof T, K>]?: T[X]
-} &
-  {[P in K]-?: NonNullable<T[P]>}
+} & {[P in K]-?: NonNullable<T[P]>}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
@@ -100,7 +101,7 @@ export type Customer = {
   /** the permissions granted to the customer */
   role: Role
   /** a list of specialists who have been recommended by the customer */
-  specialists?: Maybe<Array<Maybe<Specialist>>>
+  specialists: Array<Maybe<Specialist>>
 }
 
 export type CustomerInput = {
@@ -142,6 +143,7 @@ export type GeoInput = {
 
 export type Mutation = {
   __typename?: 'Mutation'
+  addRecommendation: CustomerResponse
   /** Mutation to authorize an existing customer */
   authorizeCustomer: AuthenticationResponse
   /** Mutation to increment the specialist's recommendations property */
@@ -154,6 +156,10 @@ export type Mutation = {
   removeCustomer: CustomerResponse
   /** Mutation to remove a specific specialist */
   removeSpecialist: SpecialistResponse
+}
+
+export type MutationAddRecommendationArgs = {
+  id: Scalars['ID']
 }
 
 export type MutationAuthorizeCustomerArgs = {
@@ -197,7 +203,7 @@ export type QueryCustomerForProfileArgs = {
 }
 
 export type QueryRecommendationsForDashboardArgs = {
-  id: Scalars['ID']
+  id?: Maybe<Scalars['ID']>
 }
 
 export type QuerySpecialistForAboutArgs = {
@@ -516,7 +522,7 @@ export type CustomerResolvers<
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   role?: Resolver<ResolversTypes['Role'], ParentType, ContextType>
   specialists?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes['Specialist']>>>,
+    Array<Maybe<ResolversTypes['Specialist']>>,
     ParentType,
     ContextType
   >
@@ -551,6 +557,12 @@ export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = ResolversObject<{
+  addRecommendation?: Resolver<
+    ResolversTypes['CustomerResponse'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationAddRecommendationArgs, 'id'>
+  >
   authorizeCustomer?: Resolver<
     ResolversTypes['AuthenticationResponse'],
     ParentType,
@@ -603,7 +615,7 @@ export type QueryResolvers<
     Array<Maybe<ResolversTypes['Specialist']>>,
     ParentType,
     ContextType,
-    RequireFields<QueryRecommendationsForDashboardArgs, 'id'>
+    RequireFields<QueryRecommendationsForDashboardArgs, never>
   >
   specialistForAbout?: Resolver<
     ResolversTypes['Specialist'],

@@ -139,7 +139,7 @@ const resolvers: Resolvers = {
       }
     },
     // add a specialist to the customer recommendations list
-    /* addRecommendation: async (_, {id}, {dataSources}) => {
+    addRecommendation: async (_, {id}, {dataSources}) => {
       try {
         const customer = await dataSources.customers.addRecommendation(id)
         return {
@@ -165,7 +165,7 @@ const resolvers: Resolvers = {
           }
         }
       }
-    }, */
+    },
     /* editSpecialist: async (_, {input}, {dataSources}) => {
       try {
         const specialist = await dataSources.specialists.editSpecialist(input)
