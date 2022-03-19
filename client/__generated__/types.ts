@@ -102,7 +102,7 @@ export type Customer = {
   /** the permissions granted to the customer */
   role: Role;
   /** a list of specialists who have been recommended by the customer */
-  specialists?: Maybe<Array<Maybe<Specialist>>>;
+  specialists: Array<Maybe<Scalars['ID']>>;
 };
 
 export type CustomerInput = {
@@ -144,6 +144,7 @@ export type GeoInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addRecommendation: CustomerResponse;
   /** Mutation to authorize an existing customer */
   authorizeCustomer: AuthenticationResponse;
   /** Mutation to increment the specialist's recommendations property */
@@ -156,6 +157,11 @@ export type Mutation = {
   removeCustomer: CustomerResponse;
   /** Mutation to remove a specific specialist */
   removeSpecialist: SpecialistResponse;
+};
+
+
+export type MutationAddRecommendationArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -193,7 +199,7 @@ export type Query = {
   /** Query to get the information about a specific customer */
   customerForProfile: Customer;
   /** Query to get the customer's recommendation list */
-  recommendationsForDashboard: Array<Maybe<Specialist>>;
+  recommendationsForDashboard: Array<Specialist>;
   /** Query to get the information about a specific specialist */
   specialistForAbout: Specialist;
   /** Query to get a list of specialists for the dashboard page */
@@ -207,7 +213,7 @@ export type QueryCustomerForProfileArgs = {
 
 
 export type QueryRecommendationsForDashboardArgs = {
-  id: Scalars['ID'];
+  id?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -294,6 +300,18 @@ export type UserInput = {
   name: Scalars['String'];
 };
 
+export type AddRecommendationMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type AddRecommendationMutation = { __typename?: 'Mutation', addRecommendation: { __typename?: 'CustomerResponse', code: number, success: boolean, message: string, customer?: { __typename?: 'Customer', id: string, name: string, email: string, specialists: Array<string | null | undefined> } | null | undefined } };
+
+export type RecommendationsForDashboardQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type RecommendationsForDashboardQuery = { __typename?: 'Query', recommendationsForDashboard: Array<{ __typename?: 'Specialist', id: string, name: string }> };
+
 export type AuthorizeCustomerMutationVariables = Exact<{
   input?: InputMaybe<UserInput>;
 }>;
@@ -335,6 +353,82 @@ export const GeolocationFieldsFragmentDoc = /*#__PURE__*/ gql`
   lng
 }
     `;
+export const AddRecommendationDocument = /*#__PURE__*/ gql`
+    mutation AddRecommendation($id: ID!) {
+  addRecommendation(id: $id) {
+    code
+    success
+    message
+    customer {
+      id
+      name
+      email
+      specialists
+    }
+  }
+}
+    `;
+export type AddRecommendationMutationFn = Apollo.MutationFunction<AddRecommendationMutation, AddRecommendationMutationVariables>;
+
+/**
+ * __useAddRecommendationMutation__
+ *
+ * To run a mutation, you first call `useAddRecommendationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddRecommendationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addRecommendationMutation, { data, loading, error }] = useAddRecommendationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAddRecommendationMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddRecommendationMutation, AddRecommendationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AddRecommendationMutation, AddRecommendationMutationVariables>(AddRecommendationDocument, options);
+      }
+export type AddRecommendationMutationHookResult = ReturnType<typeof useAddRecommendationMutation>;
+export type AddRecommendationMutationResult = Apollo.MutationResult<AddRecommendationMutation>;
+export type AddRecommendationMutationOptions = Apollo.BaseMutationOptions<AddRecommendationMutation, AddRecommendationMutationVariables>;
+export const RecommendationsForDashboardDocument = /*#__PURE__*/ gql`
+    query RecommendationsForDashboard {
+  recommendationsForDashboard {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useRecommendationsForDashboardQuery__
+ *
+ * To run a query within a React component, call `useRecommendationsForDashboardQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRecommendationsForDashboardQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRecommendationsForDashboardQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useRecommendationsForDashboardQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<RecommendationsForDashboardQuery, RecommendationsForDashboardQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<RecommendationsForDashboardQuery, RecommendationsForDashboardQueryVariables>(RecommendationsForDashboardDocument, options);
+      }
+export function useRecommendationsForDashboardLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<RecommendationsForDashboardQuery, RecommendationsForDashboardQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<RecommendationsForDashboardQuery, RecommendationsForDashboardQueryVariables>(RecommendationsForDashboardDocument, options);
+        }
+export type RecommendationsForDashboardQueryHookResult = ReturnType<typeof useRecommendationsForDashboardQuery>;
+export type RecommendationsForDashboardLazyQueryHookResult = ReturnType<typeof useRecommendationsForDashboardLazyQuery>;
+export type RecommendationsForDashboardQueryResult = Apollo.QueryResult<RecommendationsForDashboardQuery, RecommendationsForDashboardQueryVariables>;
 export const AuthorizeCustomerDocument = /*#__PURE__*/ gql`
     mutation AuthorizeCustomer($input: UserInput) {
   authorizeCustomer(input: $input) {

@@ -41,8 +41,7 @@ const Wrapper = styled.section`
   width: 568px;
   height: 100%;
   padding: 4px;
-  padding-top: 64px;
-  margin: 8px 0;
+  padding-top: 72px;
   isolation: isolate;
   ${theme.breakpoints.medium} {
     width: 100%;

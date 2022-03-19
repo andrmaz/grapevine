@@ -68,7 +68,7 @@ const typeDefs = gql`
     "the place where the customer lives"
     address: Address @embedded
     "a list of specialists who have been recommended by the customer"
-    specialists: [Specialist] @link
+    specialists: [ID]! @column
     "the permissions granted to the customer"
     role: Role! @column
   }
@@ -139,7 +139,7 @@ const typeDefs = gql`
     "Query to get the information about a specific customer"
     customerForProfile(id: ID!): Customer! @auth(requires: [USER, ADMIN])
     "Query to get the customer's recommendation list"
-    recommendationsForDashboard(id: ID!): [Specialist]!
+    recommendationsForDashboard(id: ID): [Specialist!]!
       @auth(requires: [USER, ADMIN])
   }
   type Mutation {
@@ -154,7 +154,7 @@ const typeDefs = gql`
     incrementRecommendations(id: ID!): SpecialistResponse!
       @auth(requires: [USER, ADMIN])
     # "Mutation to add a specialist to the user recommendation list"
-    # addRecommendation(id: ID!): CustomerResponse!
+    addRecommendation(id: ID!): CustomerResponse! @auth(requires: [USER, ADMIN])
     # "Mutation to edit a specific specialist"
     # editSpecialist(id: ID!, input: SpecialistInput): SpecialistResponse!
     # "Mutation to edit a specific customer"
