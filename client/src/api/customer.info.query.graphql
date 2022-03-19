@@ -1,0 +1,7 @@
+# Query to get the specialists recommended by the customer
+query RecommendationsForDashboard {
+  recommendationsForDashboard {
+    id
+    name
+  }
+}

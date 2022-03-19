@@ -75,11 +75,14 @@ export default class Customers extends MongoDataSource<
       throw new AuthenticationError('Not authorized')
     }
     const customer = await this.getCustomer(sub)
-    const specialist_id = new Types.ObjectId(id)
-    if (customer?.specialists.includes(specialist_id)) {
+    if (!customer) {
+      throw new ApolloError('Resource not found', '404')
+    }
+    if (customer.specialists.includes(id)) {
       return customer
     }
     const customer_id = new Types.ObjectId(sub)
+    const specialist_id = new Types.ObjectId(id)
     const updatedCustomer =
       await CustomerModel.findByIdAndUpdate<CustomerDbObject>(
         customer_id,
@@ -98,9 +101,9 @@ export default class Customers extends MongoDataSource<
       throw new ApolloError('Resource not found', '404')
     }
     const recommendations: SpecialistDbObject[] = await Promise.all(
-      customer?.specialists.map(specialistId =>
+      customer.specialists.map(specialistId =>
         SpecialistModel.findById(specialistId)
-      )
+      ).filter(Boolean)
     )
     return recommendations
   }

@@ -2,15 +2,14 @@ import type {GraphQLResolveInfo} from 'graphql'
 import gql from 'graphql-tag'
 export type Maybe<T> = T | null
 export type Exact<T extends {[key: string]: unknown}> = {[K in keyof T]: T[K]}
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>
-}
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>
-}
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
+  {[SubKey in K]?: Maybe<T[SubKey]>}
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
+  {[SubKey in K]: Maybe<T[SubKey]>}
 export type RequireFields<T, K extends keyof T> = {
   [X in Exclude<keyof T, K>]?: T[X]
-} & {[P in K]-?: NonNullable<T[P]>}
+} &
+  {[P in K]-?: NonNullable<T[P]>}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
@@ -101,7 +100,7 @@ export type Customer = {
   /** the permissions granted to the customer */
   role: Role
   /** a list of specialists who have been recommended by the customer */
-  specialists: Array<Maybe<Specialist>>
+  specialists: Array<Maybe<Scalars['ID']>>
 }
 
 export type CustomerInput = {
@@ -191,7 +190,7 @@ export type Query = {
   /** Query to get the information about a specific customer */
   customerForProfile: Customer
   /** Query to get the customer's recommendation list */
-  recommendationsForDashboard: Array<Maybe<Specialist>>
+  recommendationsForDashboard: Array<Specialist>
   /** Query to get the information about a specific specialist */
   specialistForAbout: Specialist
   /** Query to get a list of specialists for the dashboard page */
@@ -522,7 +521,7 @@ export type CustomerResolvers<
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   role?: Resolver<ResolversTypes['Role'], ParentType, ContextType>
   specialists?: Resolver<
-    Array<Maybe<ResolversTypes['Specialist']>>,
+    Array<Maybe<ResolversTypes['ID']>>,
     ParentType,
     ContextType
   >
@@ -612,7 +611,7 @@ export type QueryResolvers<
     RequireFields<QueryCustomerForProfileArgs, 'id'>
   >
   recommendationsForDashboard?: Resolver<
-    Array<Maybe<ResolversTypes['Specialist']>>,
+    Array<ResolversTypes['Specialist']>,
     ParentType,
     ContextType,
     RequireFields<QueryRecommendationsForDashboardArgs, never>

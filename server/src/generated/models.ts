@@ -97,7 +97,7 @@ export type Customer = {
   /** the permissions granted to the customer */
   role: Role;
   /** a list of specialists who have been recommended by the customer */
-  specialists: Array<Maybe<Specialist>>;
+  specialists: Array<Maybe<Scalars['ID']>>;
 };
 
 export type CustomerInput = {
@@ -194,7 +194,7 @@ export type Query = {
   /** Query to get the information about a specific customer */
   customerForProfile: Customer;
   /** Query to get the customer's recommendation list */
-  recommendationsForDashboard: Array<Maybe<Specialist>>;
+  recommendationsForDashboard: Array<Specialist>;
   /** Query to get the information about a specific specialist */
   specialistForAbout: Specialist;
   /** Query to get a list of specialists for the dashboard page */
@@ -316,7 +316,7 @@ export type CustomerDbObject = {
   _id: ObjectId,
   name: string,
   role: string,
-  specialists: Array<Maybe<SpecialistDbObject['_id']>>,
+  specialists: Array<Maybe<string>>,
 };
 
 export type GeoDbObject = {

@@ -3,6 +3,7 @@ import * as React from 'react'
 import {
   Geo,
   GetSpecialistQueryVariables,
+  useAddRecommendationMutation,
   useGetSpecialistQuery,
   useIncrementRecommendationsMutation,
 } from '/__generated__/types'
@@ -12,6 +13,7 @@ import {SpecialistCard} from '@/components/specialist/card'
 import {SpecialistLocation} from '@/containers/specialist/location'
 import {Star} from 'react-feather'
 import {filter} from 'graphql-anywhere'
+import gql from 'graphql-tag'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 
@@ -24,9 +26,43 @@ export const SpecialistInfo = ({
   const [incrementRecommendations] = useIncrementRecommendationsMutation({
     variables: {id},
   })
+  const [addRecommendationMutation] = useAddRecommendationMutation({
+    variables: {id},
+    update(cache) {
+      cache.modify({
+        fields: {
+          recommendationsForDashboard(
+            existingRecommendations = [],
+            {readField}
+          ) {
+            const newRecommendationRef = cache.writeFragment({
+              data: data?.specialistForAbout,
+              fragment: gql`
+                fragment Recommendation on Specialist {
+                  id
+                  name
+                }
+              `,
+            })
+            // Quick safety check - if the new recommendation is already
+            // present in the cache, we don't need to add it again.
+            if (
+              existingRecommendations.some(
+                (ref: {id: string}) =>
+                  readField('id', ref) === data?.specialistForAbout.id
+              )
+            ) {
+              return existingRecommendations
+            }
+            return [...existingRecommendations, newRecommendationRef]
+          },
+        },
+      })
+    },
+  })
   const handleClick = (): void => {
     incrementRecommendations()
-    // Add specialist to user's list
+    addRecommendationMutation()
   }
   return (
     <Wrapper>

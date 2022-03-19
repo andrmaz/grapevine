@@ -1,27 +1,31 @@
 import * as React from 'react'
 
 import {Link} from 'react-router-dom'
-import {Specialist} from '/__generated__/types'
+import {QueryResult} from '@/lib/results/query-result'
 import styled from '@emotion/styled'
-import {theme} from '@/themes'
+import { theme } from '@/themes'
+import {
+  useRecommendationsForDashboardQuery,
+} from '/__generated__/types'
 
 export const RecommendationList = (): JSX.Element => {
-  // Get user's recommendations list
-  const specialists: Specialist[] = []
+  const {data, loading, error} = useRecommendationsForDashboardQuery()
   return (
     <SideBar>
       <Title>Your recommendations list</Title>
-      {specialists.length > 0 ? (
-        <List>
-          {specialists?.map(({id, name}) => (
-            <Item key={id}>
-              <NavLink to={`/about/${id}`}>{name}</NavLink>
-            </Item>
-          ))}
-        </List>
-      ) : (
-        'You have not recommended any specialists yet'
-      )}
+      <QueryResult loading={loading} data={data} error={error}>
+        {data && data.recommendationsForDashboard.length > 0 ? (
+          <List>
+            {data.recommendationsForDashboard.map(({id, name}) => (
+              <Item key={id}>
+                <NavLink to={`/about/${id}`}>{name}</NavLink>
+              </Item>
+            ))}
+          </List>
+        ) : (
+          'You have not recommended any specialists yet'
+        )}
+      </QueryResult>
     </SideBar>
   )
 }

@@ -1,0 +1,14 @@
+# Mutation to add the specialist to the customer's recommendations list
+mutation AddRecommendation($id: ID!) {
+  addRecommendation(id: $id) {
+    code
+    success
+    message
+    customer {
+      id
+      name
+      email
+      specialists
+    }
+  }
+}
