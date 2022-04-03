@@ -84,7 +84,7 @@ export type CompanyInput = {
 };
 
 /** individuals and businesses that purchase goods and services from another business */
-export type Customer = {
+export type Customer = User & {
   __typename?: 'Customer';
   /** the place where the customer lives */
   address?: Maybe<Address>;
@@ -97,7 +97,7 @@ export type Customer = {
   /** the permissions granted to the customer */
   role: Role;
   /** a list of specialists who have been recommended by the customer */
-  specialists: Array<Maybe<Scalars['ID']>>;
+  specialists: Array<Maybe<Scalars['String']>>;
 };
 
 export type CustomerInput = {
@@ -137,11 +137,42 @@ export type GeoInput = {
   lng: Scalars['String'];
 };
 
+export type Message = {
+  __typename?: 'Message';
+  /** the first and last name of the author of the message */
+  author: Scalars['String'];
+  /** the text of the message */
+  content: Scalars['String'];
+  /** the unique identifier of the message */
+  id: Scalars['ID'];
+};
+
+export type MessageInput = {
+  /** the first and last name of the author of the message */
+  author: Scalars['String'];
+  /** the text of the message */
+  content: Scalars['String'];
+};
+
+export type MessageResponse = {
+  __typename?: 'MessageResponse';
+  /** Similar to HTTP status code, represents the status of the mutation */
+  code: Scalars['Int'];
+  /** Newly created message after a successful mutation */
+  input?: Maybe<Message>;
+  /** Human-readable message for the UI */
+  message: Scalars['String'];
+  /** Indicates whether the mutation was successful */
+  success: Scalars['Boolean'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addRecommendation: CustomerResponse;
   /** Mutation to authorize an existing customer */
   authorizeCustomer: AuthenticationResponse;
+  /** Mutation to send a text message */
+  createMessage: MessageResponse;
   /** Mutation to increment the specialist's recommendations property */
   incrementRecommendations: SpecialistResponse;
   /** Mutation to create a new customer */
@@ -161,7 +192,13 @@ export type MutationAddRecommendationArgs = {
 
 
 export type MutationAuthorizeCustomerArgs = {
-  input?: Maybe<UserInput>;
+  input: UserInput;
+};
+
+
+export type MutationCreateMessageArgs = {
+  author: Scalars['String'];
+  content: Scalars['String'];
 };
 
 
@@ -171,12 +208,12 @@ export type MutationIncrementRecommendationsArgs = {
 
 
 export type MutationRegisterCustomerArgs = {
-  input?: Maybe<CustomerInput>;
+  input: CustomerInput;
 };
 
 
 export type MutationRegisterSpecialistArgs = {
-  input?: Maybe<SpecialistInput>;
+  input: SpecialistInput;
 };
 
 
@@ -223,7 +260,7 @@ export enum Role {
 }
 
 /** a member of a profession or any person who earns a living from a specified professional activity */
-export type Specialist = {
+export type Specialist = User & {
   __typename?: 'Specialist';
   /** the place where the specialist works */
   address: Address;
@@ -276,8 +313,13 @@ export type SpecialistResponse = {
   success: Scalars['Boolean'];
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  messageAdded?: Maybe<Message>;
+};
+
+/** Basis interface for customer and specialist database types */
 export type User = {
-  __typename?: 'User';
   /** the email address of the user */
   email: Scalars['String'];
   /** the unique identifier of the user */
@@ -310,12 +352,9 @@ export type CompanyDbObject = {
   name: string,
 };
 
-export type CustomerDbObject = {
+export type CustomerDbObject = UserDbInterface & {
   address?: Maybe<AddressDbObject>,
-  email: string,
-  _id: ObjectId,
-  name: string,
-  role: string,
+  role: Role,
   specialists: Array<Maybe<string>>,
 };
 
@@ -324,14 +363,24 @@ export type GeoDbObject = {
   lng: string,
 };
 
-export type SpecialistDbObject = {
+export type MessageDbObject = {
+  author: string,
+  content: string,
+  _id: ObjectId,
+};
+
+export type SpecialistDbObject = UserDbInterface & {
   address: AddressDbObject,
   avatar?: Maybe<string>,
   company: CompanyDbObject,
+  phone?: Maybe<string>,
+  role: Role,
+  website?: Maybe<string>,
+};
+
+export type UserDbInterface = {
   email: string,
   _id: ObjectId,
   name: string,
-  phone?: Maybe<string>,
-  role: string,
-  website?: Maybe<string>,
+  userType: string,
 };

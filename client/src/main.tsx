@@ -8,17 +8,26 @@ import {
   InMemoryCache,
   createHttpLink,
   from,
+  split,
 } from '@apollo/client'
 
 import App from './app'
 import {AuthProvider} from '@/services/auth/context'
+import {GraphQLWsLink} from '@apollo/client/link/subscriptions'
 import ReactDOM from 'react-dom'
 import {ThemeProvider} from '@emotion/react'
+import {createClient} from 'graphql-ws'
 import {errorLink} from '@/utils/errors'
+import { getMainDefinition } from '@apollo/client/utilities'
 import { getTokenKey } from '@/utils/storage'
 import {setContext} from '@apollo/client/link/context'
 import {theme} from '@/themes'
 
+const wsLink = new GraphQLWsLink(
+  createClient({
+    url: 'ws://localhost:4000/graphql'
+  })
+)
 const httpLink = createHttpLink({
   uri: import.meta.env.VITE_API_URL as string,
 })
@@ -35,8 +44,20 @@ const authLink = setContext((_, {headers}) => {
   }
 })
 
+const splitLink = split(
+  ({query}) => {
+    const definition = getMainDefinition(query)
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    )
+  },
+  wsLink,
+  httpLink
+)
+
 const client = new ApolloClient({
-  link: from([errorLink, authLink, httpLink]),
+  link: from([errorLink, authLink, splitLink]),
   cache: new InMemoryCache(),
 })
 

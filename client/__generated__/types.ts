@@ -313,14 +313,14 @@ export type RecommendationsForDashboardQueryVariables = Exact<{ [key: string]: n
 export type RecommendationsForDashboardQuery = { __typename?: 'Query', recommendationsForDashboard: Array<{ __typename?: 'Specialist', id: string, name: string }> };
 
 export type AuthorizeCustomerMutationVariables = Exact<{
-  input?: InputMaybe<UserInput>;
+  input: UserInput;
 }>;
 
 
 export type AuthorizeCustomerMutation = { __typename?: 'Mutation', authorizeCustomer: { __typename?: 'AuthenticationResponse', code: number, success: boolean, message: string, user?: { __typename?: 'AuthenticationResult', token: string, expiresAt?: number | null | undefined, userInfo: { __typename?: 'User', name: string, id: string, email: string, role: Role } } | null | undefined } };
 
 export type RegisterCustomerMutationVariables = Exact<{
-  registerCustomerInput?: InputMaybe<CustomerInput>;
+  registerCustomerInput: CustomerInput;
 }>;
 
 
@@ -430,7 +430,7 @@ export type RecommendationsForDashboardQueryHookResult = ReturnType<typeof useRe
 export type RecommendationsForDashboardLazyQueryHookResult = ReturnType<typeof useRecommendationsForDashboardLazyQuery>;
 export type RecommendationsForDashboardQueryResult = Apollo.QueryResult<RecommendationsForDashboardQuery, RecommendationsForDashboardQueryVariables>;
 export const AuthorizeCustomerDocument = /*#__PURE__*/ gql`
-    mutation AuthorizeCustomer($input: UserInput) {
+    mutation AuthorizeCustomer($input: UserInput!) {
   authorizeCustomer(input: $input) {
     code
     success
@@ -475,7 +475,7 @@ export type AuthorizeCustomerMutationHookResult = ReturnType<typeof useAuthorize
 export type AuthorizeCustomerMutationResult = Apollo.MutationResult<AuthorizeCustomerMutation>;
 export type AuthorizeCustomerMutationOptions = Apollo.BaseMutationOptions<AuthorizeCustomerMutation, AuthorizeCustomerMutationVariables>;
 export const RegisterCustomerDocument = /*#__PURE__*/ gql`
-    mutation RegisterCustomer($registerCustomerInput: CustomerInput) {
+    mutation RegisterCustomer($registerCustomerInput: CustomerInput!) {
   registerCustomer(input: $registerCustomerInput) {
     code
     success

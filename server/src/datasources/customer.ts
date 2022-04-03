@@ -1,16 +1,29 @@
 import {ApolloError, AuthenticationError, UserInputError} from 'apollo-server'
-import {AuthenticationResult, Role} from '../generated/graphql'
+import {
+  AuthenticationResult,
+  Customer,
+  Message,
+  Role,
+  Specialist,
+} from '../generated/graphql'
 import {
   CustomerDbObject,
   CustomerInput,
-  SpecialistDbObject,
+  MessageDbObject,
+  MessageInput,
   UserInput,
 } from '../generated/models'
 import {HydratedDocument, Types} from 'mongoose'
 import jwtDecode, {JwtPayload} from 'jwt-decode'
+import {
+  prepareTypeCustomer,
+  prepareTypeMessage,
+  prepareTypeSpecialist,
+} from '../utils/type'
 import {validateCustomerInput, validateUserInput} from '../utils/validate'
 
 import {CustomerModel} from '../models/customer'
+import {MessageModel} from '../models/message'
 import {MongoDataSource} from 'apollo-datasource-mongodb'
 import {SpecialistModel} from '../models/specialist'
 import {createToken} from '../utils/auth'
@@ -32,8 +45,9 @@ export default class Customers extends MongoDataSource<
     if (existingCustomer) {
       throw new UserInputError('Email field is not correct')
     }
-    const newCustomer: HydratedDocument<Omit<CustomerDbObject, '_id'>> =
-      new CustomerModel(input)
+    const newCustomer: HydratedDocument<CustomerDbObject> = new CustomerModel(
+      input
+    )
     if (!newCustomer) {
       throw new ApolloError('Something went wrong', '500')
     }
@@ -61,37 +75,41 @@ export default class Customers extends MongoDataSource<
     const expiresAt = decodedToken.exp
     return {token, userInfo, expiresAt}
   }
-  async getCustomer(id: string): Promise<CustomerDbObject | null> {
+  async getCustomer(id: string): Promise<Customer> {
     const customer_id = new Types.ObjectId(id)
-    const customer = await CustomerModel.findById<CustomerDbObject>(customer_id)
+    const customer = await CustomerModel.findById<CustomerDbObject>(
+      customer_id
+    ).lean()
     if (!customer) {
       throw new ApolloError('Resource not found', '404')
     }
-    return customer
+    return prepareTypeCustomer(customer)
   }
-  async addRecommendation(id: string): Promise<CustomerDbObject | null> {
+  async addRecommendation(id: string): Promise<Customer> {
     const sub = this.context.user.sub
     if (!sub) {
       throw new AuthenticationError('Not authorized')
     }
-    const customer = await this.getCustomer(sub)
+    const customer = await CustomerModel.findById<CustomerDbObject>(sub)
     if (!customer) {
       throw new ApolloError('Resource not found', '404')
     }
     if (customer.specialists.includes(id)) {
-      return customer
+      throw new ApolloError('Something went wrong', '500')
     }
     const customer_id = new Types.ObjectId(sub)
-    const specialist_id = new Types.ObjectId(id)
     const updatedCustomer =
       await CustomerModel.findByIdAndUpdate<CustomerDbObject>(
         customer_id,
-        {$push: {specialists: specialist_id}},
+        {$push: {specialists: id}},
         {new: true}
-      )
-    return updatedCustomer
+      ).lean()
+    if (!updatedCustomer) {
+      throw new ApolloError('Something went wrong', '500')
+    }
+    return prepareTypeCustomer(updatedCustomer)
   }
-  async getRecommendations(): Promise<SpecialistDbObject[]> {
+  async getRecommendations(): Promise<Specialist[]> {
     const id = this.context.user.sub
     if (!id) {
       throw new AuthenticationError('Not authorized')
@@ -100,12 +118,12 @@ export default class Customers extends MongoDataSource<
     if (!customer) {
       throw new ApolloError('Resource not found', '404')
     }
-    const recommendations: SpecialistDbObject[] = await Promise.all(
-      customer.specialists.map(specialistId =>
-        SpecialistModel.findById(specialistId)
-      ).filter(Boolean)
+    const specialists = await Promise.all(
+      customer.specialists
+        .map(specialistId => SpecialistModel.findById(specialistId).lean())
+        .filter(Boolean)
     )
-    return recommendations
+    return specialists.map(specialist => prepareTypeSpecialist(specialist))
   }
   /* async editCustomer(input: CustomerInput): Promise<CustomerDbObject | null> {
     const id = this.context.customer._id
@@ -116,13 +134,20 @@ export default class Customers extends MongoDataSource<
     )
     return customer
   } */
-  async removeCustomer(): Promise<CustomerDbObject | null> {
+  async removeCustomer(): Promise<Customer> {
     const sub = this.context.user.sub
     const id = new Types.ObjectId(sub)
-    const customer = await CustomerModel.findByIdAndDelete<CustomerDbObject>(id)
+    const customer = await CustomerModel.findByIdAndDelete<CustomerDbObject>(
+      id
+    ).lean()
     if (!customer) {
       throw new ApolloError('Resource not found', '404')
     }
-    return customer
+    return prepareTypeCustomer(customer)
+  }
+  async createMessage(input: MessageInput): Promise<Message> {
+    const message: HydratedDocument<MessageDbObject> = new MessageModel(input)
+    const savedMessage = await message.save()
+    return prepareTypeMessage(savedMessage)
   }
 }

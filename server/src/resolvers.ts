@@ -1,7 +1,29 @@
-import {GraphQLError} from 'graphql'
-import type {Resolvers} from './generated/graphql'
+import {Resolvers, Role} from './generated/graphql'
 
-const resolvers: Resolvers = {
+import Customers from './datasources/customer'
+import {GraphQLError} from 'graphql'
+import {PubSub} from 'graphql-subscriptions'
+import Specialists from './datasources/specialist'
+
+const pubsub = new PubSub()
+
+type ContextType = {
+  dataSources: {customers: Customers; specialists: Specialists}
+}
+const resolvers: Resolvers<ContextType> = {
+  User: {
+    __resolveType(user) {
+      // Only Specialist has creator role
+      if (user.role === Role.Creator) {
+        return 'Specialist'
+      }
+      // Only Customer has user role
+      if (user.role === Role.User) {
+        return 'Customer'
+      }
+      return null // GraphQLError is thrown
+    },
+  },
   Query: {
     // returns an array of specialist that will be used to populate
     // the dashboard grid of our web client
@@ -20,8 +42,8 @@ const resolvers: Resolvers = {
     },
     // return a list of specialists that will be used to populate
     // the customer's recommendation list of our web client
-    recommendationsForDashboard: async (_, {id}, {dataSources}) => {
-      return dataSources.customers.getRecommendations(id)
+    recommendationsForDashboard: async (_, __, {dataSources}) => {
+      return dataSources.customers.getRecommendations()
     },
   },
   Mutation: {
@@ -56,12 +78,12 @@ const resolvers: Resolvers = {
     // insert a new specialist in the database
     registerSpecialist: async (_, {input}, {dataSources}) => {
       try {
-        const specialist = await dataSources.specialists.insertSpecialist(input)
+        const user = await dataSources.specialists.insertSpecialist(input)
         return {
           code: 200,
           success: true,
           message: `Successfully registered as a specialist`,
-          specialist,
+          user,
         }
       } catch (err: unknown) {
         if (err instanceof GraphQLError) {
@@ -69,14 +91,14 @@ const resolvers: Resolvers = {
             code: err.extensions?.response.status,
             success: false,
             message: err.extensions?.response.body,
-            specialist: null,
+            user: null,
           }
         } else {
           return {
             code: 500,
             success: false,
             message: `Something went wrong while processing the request: ${err}`,
-            specialist: null,
+            user: null,
           }
         }
       }
@@ -253,7 +275,7 @@ const resolvers: Resolvers = {
         return {
           code: 200,
           success: true,
-          message: `Successfully removed customer ${customer.id}`,
+          message: `Successfully removed customer ${customer?.id}`,
           customer,
         }
       } catch (err: unknown) {
@@ -273,6 +295,39 @@ const resolvers: Resolvers = {
           }
         }
       }
+    },
+    createMessage: async (_, args, {dataSources}) => {
+      try {
+        pubsub.publish('MESSAGE_CREATED', {messageAdded: args})
+        const input = await dataSources.customers.createMessage(args)
+        return {
+          code: 200,
+          success: true,
+          message: `Successfully added a new message`,
+          input,
+        }
+      } catch (err: unknown) {
+        if (err instanceof GraphQLError) {
+          return {
+            code: err.extensions?.response.status,
+            success: false,
+            message: err.extensions?.response.body,
+            input: null,
+          }
+        } else {
+          return {
+            code: 500,
+            success: false,
+            message: 'Something went wrong while processing the request',
+            input: null,
+          }
+        }
+      }
+    },
+  },
+  Subscription: {
+    messageAdded: {
+      subscribe: () => pubsub.asyncIterator(['MESSAGE_CREATED']),
     },
   },
 }

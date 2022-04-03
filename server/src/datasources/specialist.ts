@@ -1,24 +1,21 @@
+import {AuthenticationResult, Specialist} from '../generated/graphql'
 import {Role, SpecialistDbObject, SpecialistInput} from '../generated/models'
 import jwtDecode, {JwtPayload} from 'jwt-decode'
 
 import {ApolloError} from 'apollo-server'
-import {AuthenticationResult} from '../generated/graphql'
 import {HydratedDocument} from 'mongoose'
 import {MongoDataSource} from 'apollo-datasource-mongodb'
-import {ObjectId} from 'mongodb'
 import {SpecialistModel} from '../models/specialist'
 import {createToken} from '../utils/auth'
-import {validateSpecialistInput} from '../utils/validate'
+import {prepareTypeSpecialist} from '../utils/type'
+import { validateSpecialistInput } from '../utils/validate'
 
 // This is optional
 interface Context {
   specialist: SpecialistDbObject
 }
 
-export default class Specialists extends MongoDataSource<
-  SpecialistDbObject,
-  Context
-> {
+export default class Specialists extends MongoDataSource<SpecialistDbObject, Context> {
   async insertSpecialist(
     input: SpecialistInput
   ): Promise<AuthenticationResult> {
@@ -36,31 +33,33 @@ export default class Specialists extends MongoDataSource<
     const expiresAt = decodedToken.exp
     return {token, userInfo, expiresAt}
   }
-  async getSpecialist(id: ObjectId): Promise<SpecialistDbObject> {
-    const specialist = await SpecialistModel.findById<SpecialistDbObject>(id)
+  async getSpecialist(id: string): Promise<Specialist> {
+    const specialist = await SpecialistModel.findById<SpecialistDbObject>(
+      id
+    ).lean()
     if (!specialist) {
       throw new ApolloError('Resource not found', '404')
     }
-    return specialist
+    return prepareTypeSpecialist(specialist)
   }
-  async getSpecialists(): Promise<SpecialistDbObject[]> {
-    const specialists = await SpecialistModel.find<SpecialistDbObject>()
+  async getSpecialists(): Promise<Specialist[]> {
+    const specialists = await SpecialistModel.find<SpecialistDbObject>().lean()
     if (!specialists) {
       throw new ApolloError('Resource not found', '404')
     }
-    return specialists
+    return specialists.map(specialist => prepareTypeSpecialist(specialist))
   }
-  async incrementRecommendations(id: ObjectId): Promise<SpecialistDbObject> {
+  async incrementRecommendations(id: string): Promise<Specialist> {
     const specialist =
       await SpecialistModel.findByIdAndUpdate<SpecialistDbObject>(
         id,
         {$inc: {recommendations: 1}},
         {new: true}
-      )
+      ).lean()
     if (!specialist) {
       throw new ApolloError('Something went wrong', '500')
     }
-    return specialist
+    return prepareTypeSpecialist(specialist)
   }
   /* async editSpecialist(
     input: SpecialistInput
@@ -74,12 +73,12 @@ export default class Specialists extends MongoDataSource<
       )
     return specialist
   } */
-  async removeSpecialist(id: ObjectId): Promise<SpecialistDbObject> {
+  async removeSpecialist(id: string): Promise<Specialist> {
     const specialist =
-      await SpecialistModel.findByIdAndDelete<SpecialistDbObject>(id)
+      await SpecialistModel.findByIdAndDelete<SpecialistDbObject>(id).lean()
     if (!specialist) {
       throw new ApolloError('Resource not found', '404')
     }
-    return specialist
+    return prepareTypeSpecialist(specialist)
   }
 }

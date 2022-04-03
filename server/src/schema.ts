@@ -33,15 +33,26 @@ const typeDefs = gql`
     "the sector of the economy the specialist operates in"
     bs: String! @column
   }
+  "Basis interface for customer and specialist database types"
+  interface User @abstractEntity(discriminatorField: "userType") {
+    "the unique identifier of the user"
+    id: ID! @id
+    "the first and last name of the user"
+    name: String! @column
+    "the email address of the user"
+    email: String! @column
+    "the permissions granted to the user"
+    role: Role!
+  }
   "a member of a profession or any person who earns a living from a specified professional activity"
-  type Specialist @entity {
+  type Specialist implements User @entity {
     # properties go here
     "the unique identifier of the specialist"
-    id: ID! @id
+    id: ID!
     "the first and last name of the specialist"
-    name: String! @column
+    name: String!
     "the business email address of the specialist"
-    email: String! @column
+    email: String!
     "the place where the specialist works"
     address: Address! @embedded
     "the business phone number of the specialist"
@@ -58,19 +69,27 @@ const typeDefs = gql`
     role: Role! @column
   }
   "individuals and businesses that purchase goods and services from another business"
-  type Customer @entity {
+  type Customer implements User @entity {
     "the unique identifier of the customer"
-    id: ID! @id
+    id: ID!
     "the first and last name of the customer"
-    name: String! @column
+    name: String!
     "the email address of the customer"
-    email: String! @column
+    email: String!
     "the place where the customer lives"
     address: Address @embedded
     "a list of specialists who have been recommended by the customer"
-    specialists: [ID]! @column
+    specialists: [String]! @column
     "the permissions granted to the customer"
     role: Role! @column
+  }
+  type Message @entity {
+    "the unique identifier of the message"
+    id: ID! @id
+    "the first and last name of the author of the message"
+    author: String! @column
+    "the text of the message"
+    content: String! @column
   }
   # Inputs go here
   input GeoInput {
@@ -129,6 +148,12 @@ const typeDefs = gql`
     "the email address of the user"
     email: String!
   }
+  input MessageInput {
+    "the first and last name of the author of the message"
+    author: String!
+    "the text of the message"
+    content: String!
+  }
   type Query {
     # Queries go here
     "Query to get a list of specialists for the dashboard page"
@@ -145,11 +170,11 @@ const typeDefs = gql`
   type Mutation {
     # Mutations go here
     "Mutation to create a new specialist"
-    registerSpecialist(input: SpecialistInput): AuthenticationResponse!
+    registerSpecialist(input: SpecialistInput!): AuthenticationResponse!
     "Mutation to create a new customer"
-    registerCustomer(input: CustomerInput): AuthenticationResponse!
+    registerCustomer(input: CustomerInput!): AuthenticationResponse!
     "Mutation to authorize an existing customer"
-    authorizeCustomer(input: UserInput): AuthenticationResponse!
+    authorizeCustomer(input: UserInput!): AuthenticationResponse!
     "Mutation to increment the specialist's recommendations property"
     incrementRecommendations(id: ID!): SpecialistResponse!
       @auth(requires: [USER, ADMIN])
@@ -164,16 +189,11 @@ const typeDefs = gql`
       @auth(requires: [CREATOR, ADMIN])
     "Mutation to remove a specific customer"
     removeCustomer(id: ID): CustomerResponse! @auth(requires: [USER, ADMIN])
+    "Mutation to send a text message"
+    createMessage(author: String!, content: String!): MessageResponse!
   }
-  type User {
-    "the unique identifier of the user"
-    id: ID!
-    "the first and last name of the user"
-    name: String!
-    "the email address of the user"
-    email: String!
-    "the permissions granted to the user"
-    role: Role!
+  type Subscription {
+    messageAdded: Message
   }
   type AuthenticationResult {
     "the primary authentication information"
@@ -212,6 +232,16 @@ const typeDefs = gql`
     message: String!
     "Newly updated specialist after a successful mutation"
     specialist: Specialist
+  }
+  type MessageResponse {
+    "Similar to HTTP status code, represents the status of the mutation"
+    code: Int!
+    "Indicates whether the mutation was successful"
+    success: Boolean!
+    "Human-readable message for the UI"
+    message: String!
+    "Newly created message after a successful mutation"
+    input: Message
   }
 `
 export default typeDefs
