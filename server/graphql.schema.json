@@ -757,8 +757,8 @@
         "description": null,
         "fields": [
           {
-            "name": "author",
-            "description": "the first and last name of the author of the message",
+            "name": "content",
+            "description": "the text of the message",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -773,8 +773,8 @@
             "deprecationReason": null
           },
           {
-            "name": "content",
-            "description": "the text of the message",
+            "name": "from",
+            "description": "the first and last name of the sender of the message",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -803,6 +803,22 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "to",
+            "description": "the first and last name of the recipient of the message",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -817,8 +833,8 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "author",
-            "description": "the first and last name of the author of the message",
+            "name": "content",
+            "description": "the text of the message",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -833,8 +849,24 @@
             "deprecationReason": null
           },
           {
-            "name": "content",
-            "description": "the text of the message",
+            "name": "from",
+            "description": "the first and last name of the sender of the message",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "to",
+            "description": "the first and last name of the recipient of the message",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -931,7 +963,7 @@
         "fields": [
           {
             "name": "addRecommendation",
-            "description": null,
+            "description": "Mutation to add a specialist to the user recommendation list",
             "args": [
               {
                 "name": "id",
@@ -1000,7 +1032,7 @@
             "description": "Mutation to send a text message",
             "args": [
               {
-                "name": "author",
+                "name": "content",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
@@ -1016,7 +1048,23 @@
                 "deprecationReason": null
               },
               {
-                "name": "content",
+                "name": "from",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "to",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
@@ -1244,6 +1292,63 @@
                 "kind": "OBJECT",
                 "name": "Customer",
                 "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "messagesForChat",
+            "description": "Query to get the specialist chat messages",
+            "args": [
+              {
+                "name": "from",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "to",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Message",
+                    "ofType": null
+                  }
+                }
               }
             },
             "isDeprecated": false,

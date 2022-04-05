@@ -1,21 +1,30 @@
-import {AuthenticationResult, Specialist} from '../generated/graphql'
-import {Role, SpecialistDbObject, SpecialistInput} from '../generated/models'
+import {AuthenticationResult, Message, Specialist} from '../generated/graphql'
+import {
+  MessageDbObject,
+  Role,
+  SpecialistDbObject,
+  SpecialistInput,
+} from '../generated/models'
 import jwtDecode, {JwtPayload} from 'jwt-decode'
+import {prepareTypeMessage, prepareTypeSpecialist} from '../utils/type'
 
 import {ApolloError} from 'apollo-server'
 import {HydratedDocument} from 'mongoose'
+import {MessageModel} from '../models/message'
 import {MongoDataSource} from 'apollo-datasource-mongodb'
 import {SpecialistModel} from '../models/specialist'
 import {createToken} from '../utils/auth'
-import {prepareTypeSpecialist} from '../utils/type'
-import { validateSpecialistInput } from '../utils/validate'
+import {validateSpecialistInput} from '../utils/validate'
 
 // This is optional
 interface Context {
   specialist: SpecialistDbObject
 }
 
-export default class Specialists extends MongoDataSource<SpecialistDbObject, Context> {
+export default class Specialists extends MongoDataSource<
+  SpecialistDbObject,
+  Context
+> {
   async insertSpecialist(
     input: SpecialistInput
   ): Promise<AuthenticationResult> {
@@ -48,6 +57,15 @@ export default class Specialists extends MongoDataSource<SpecialistDbObject, Con
       throw new ApolloError('Resource not found', '404')
     }
     return specialists.map(specialist => prepareTypeSpecialist(specialist))
+  }
+  async getMessages(from: string, to: string): Promise<Message[]> {
+    const messages = await MessageModel.find<MessageDbObject>({
+      $or: [
+        {from, to},
+        {from: to, to: from},
+      ],
+    }).sort({createdAt: 1})
+    return messages.map(message => prepareTypeMessage(message))
   }
   async incrementRecommendations(id: string): Promise<Specialist> {
     const specialist =

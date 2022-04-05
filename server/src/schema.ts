@@ -86,8 +86,10 @@ const typeDefs = gql`
   type Message @entity {
     "the unique identifier of the message"
     id: ID! @id
-    "the first and last name of the author of the message"
-    author: String! @column
+    "the first and last name of the sender of the message"
+    from: String! @column
+    "the first and last name of the recipient of the message"
+    to: String! @column
     "the text of the message"
     content: String! @column
   }
@@ -149,8 +151,10 @@ const typeDefs = gql`
     email: String!
   }
   input MessageInput {
-    "the first and last name of the author of the message"
-    author: String!
+    "the first and last name of the sender of the message"
+    from: String!
+    "the first and last name of the recipient of the message"
+    to: String!
     "the text of the message"
     content: String!
   }
@@ -166,6 +170,9 @@ const typeDefs = gql`
     "Query to get the customer's recommendation list"
     recommendationsForDashboard(id: ID): [Specialist!]!
       @auth(requires: [USER, ADMIN])
+    "Query to get the specialist chat messages"
+    messagesForChat(from: String!, to: String!): [Message!]!
+      @auth(requires: [USER, ADMIN])
   }
   type Mutation {
     # Mutations go here
@@ -178,7 +185,7 @@ const typeDefs = gql`
     "Mutation to increment the specialist's recommendations property"
     incrementRecommendations(id: ID!): SpecialistResponse!
       @auth(requires: [USER, ADMIN])
-    # "Mutation to add a specialist to the user recommendation list"
+    "Mutation to add a specialist to the user recommendation list"
     addRecommendation(id: ID!): CustomerResponse! @auth(requires: [USER, ADMIN])
     # "Mutation to edit a specific specialist"
     # editSpecialist(id: ID!, input: SpecialistInput): SpecialistResponse!
@@ -190,7 +197,11 @@ const typeDefs = gql`
     "Mutation to remove a specific customer"
     removeCustomer(id: ID): CustomerResponse! @auth(requires: [USER, ADMIN])
     "Mutation to send a text message"
-    createMessage(author: String!, content: String!): MessageResponse!
+    createMessage(
+      from: String!
+      to: String!
+      content: String!
+    ): MessageResponse!
   }
   type Subscription {
     messageAdded: Message

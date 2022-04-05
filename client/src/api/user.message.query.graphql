@@ -1,0 +1,9 @@
+# Query to get the list of all the messages
+query MessagesForChat($from: String!, $to: String!) {
+  messagesForChat(from: $from, to: $to) {
+    id
+    from
+    to
+    content
+  }
+}

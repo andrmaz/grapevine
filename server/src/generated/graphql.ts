@@ -142,19 +142,23 @@ export type GeoInput = {
 
 export type Message = {
   __typename?: 'Message'
-  /** the first and last name of the author of the message */
-  author: Scalars['String']
   /** the text of the message */
   content: Scalars['String']
+  /** the first and last name of the sender of the message */
+  from: Scalars['String']
   /** the unique identifier of the message */
   id: Scalars['ID']
+  /** the first and last name of the recipient of the message */
+  to: Scalars['String']
 }
 
 export type MessageInput = {
-  /** the first and last name of the author of the message */
-  author: Scalars['String']
   /** the text of the message */
   content: Scalars['String']
+  /** the first and last name of the sender of the message */
+  from: Scalars['String']
+  /** the first and last name of the recipient of the message */
+  to: Scalars['String']
 }
 
 export type MessageResponse = {
@@ -171,6 +175,7 @@ export type MessageResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation'
+  /** Mutation to add a specialist to the user recommendation list */
   addRecommendation: CustomerResponse
   /** Mutation to authorize an existing customer */
   authorizeCustomer: AuthenticationResponse
@@ -197,8 +202,9 @@ export type MutationAuthorizeCustomerArgs = {
 }
 
 export type MutationCreateMessageArgs = {
-  author: Scalars['String']
   content: Scalars['String']
+  from: Scalars['String']
+  to: Scalars['String']
 }
 
 export type MutationIncrementRecommendationsArgs = {
@@ -225,6 +231,8 @@ export type Query = {
   __typename?: 'Query'
   /** Query to get the information about a specific customer */
   customerForProfile: Customer
+  /** Query to get the specialist chat messages */
+  messagesForChat: Array<Message>
   /** Query to get the customer's recommendation list */
   recommendationsForDashboard: Array<Specialist>
   /** Query to get the information about a specific specialist */
@@ -235,6 +243,11 @@ export type Query = {
 
 export type QueryCustomerForProfileArgs = {
   id: Scalars['ID']
+}
+
+export type QueryMessagesForChatArgs = {
+  from: Scalars['String']
+  to: Scalars['String']
 }
 
 export type QueryRecommendationsForDashboardArgs = {
@@ -605,9 +618,10 @@ export type MessageResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']
 > = ResolversObject<{
-  author?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  from?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  to?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
@@ -642,7 +656,7 @@ export type MutationResolvers<
     ResolversTypes['MessageResponse'],
     ParentType,
     ContextType,
-    RequireFields<MutationCreateMessageArgs, 'author' | 'content'>
+    RequireFields<MutationCreateMessageArgs, 'content' | 'from' | 'to'>
   >
   incrementRecommendations?: Resolver<
     ResolversTypes['SpecialistResponse'],
@@ -685,6 +699,12 @@ export type QueryResolvers<
     ParentType,
     ContextType,
     RequireFields<QueryCustomerForProfileArgs, 'id'>
+  >
+  messagesForChat?: Resolver<
+    Array<ResolversTypes['Message']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryMessagesForChatArgs, 'from' | 'to'>
   >
   recommendationsForDashboard?: Resolver<
     Array<ResolversTypes['Specialist']>,

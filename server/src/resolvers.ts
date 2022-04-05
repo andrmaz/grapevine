@@ -45,6 +45,11 @@ const resolvers: Resolvers<ContextType> = {
     recommendationsForDashboard: async (_, __, {dataSources}) => {
       return dataSources.customers.getRecommendations()
     },
+    // return a list of messages that will be used to populate
+    // the specialist's chat of our web client
+    messagesForChat: async (_, {from, to}, {dataSources}) => {
+      return dataSources.specialists.getMessages(from, to)
+    },
   },
   Mutation: {
     // insert a new customer in the database
@@ -298,8 +303,8 @@ const resolvers: Resolvers<ContextType> = {
     },
     createMessage: async (_, args, {dataSources}) => {
       try {
-        pubsub.publish('MESSAGE_CREATED', {messageAdded: args})
         const input = await dataSources.customers.createMessage(args)
+        pubsub.publish('MESSAGE_CREATED', {messageAdded: input})
         return {
           code: 200,
           success: true,

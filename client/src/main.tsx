@@ -25,7 +25,7 @@ import {theme} from '@/themes'
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: 'ws://localhost:4000/graphql'
+    url: import.meta.env.VITE_WS_URL as string,
   })
 )
 const httpLink = createHttpLink({
@@ -35,7 +35,7 @@ const httpLink = createHttpLink({
 const authLink = setContext((_, {headers}) => {
   // get the authentication token from local storage if it exists
   const token = getTokenKey()
-  // return the headers to the context so httpLink can read them
+  // return the headers to the context so splitLink can read them
   return {
     headers: {
       ...headers,

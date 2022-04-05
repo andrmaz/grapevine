@@ -1,14 +1,25 @@
 import * as React from 'react'
 
+import {GetSpecialistQueryVariables, useCreateMessageMutation} from '/__generated__/types'
+
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
+import {useAuthState} from '@/services/auth/context'
 
-export const InputGroup = (): JSX.Element => {
-  const [text, setText] = React.useState<string>('')
+export const InputGroup = ({id}: GetSpecialistQueryVariables): JSX.Element => {
+  const {user} = useAuthState()
+  const [content, setContent] = React.useState<string>('')
   const ref = React.useRef<HTMLInputElement | null>(null)
+  const [createMessageMutation] = useCreateMessageMutation({
+    variables: {
+      from: user?.id || '',
+      to: id,
+      content,
+    },
+  })
   const handleClick = (): void => {
-    console.info('message sent!', text)
-    setText('')
+    createMessageMutation()
+    setContent('')
     ref.current?.focus()
   }
   return (
@@ -17,11 +28,11 @@ export const InputGroup = (): JSX.Element => {
         type='text'
         name='message'
         placeholder='Type your message ...'
-        value={text}
-        onChange={event => setText(event.target.value)}
+        value={content}
+        onChange={event => setContent(event.target.value)}
         ref={ref}
       />
-      <Button disabled={!text.length} onClick={handleClick}>
+      <Button disabled={!content.length} onClick={handleClick}>
         Send
       </Button>
     </Wrapper>

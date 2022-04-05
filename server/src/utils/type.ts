@@ -22,7 +22,7 @@ export const prepareTypeSpecialist = (
 }
 
 export const prepareTypeMessage = (dbObject: MessageDbObject): Message => {
-  const {_id, author, content} = dbObject
+  const {_id, from, to, content} = dbObject
   const id = _id.toString()
-  return {id, author, content}
+  return {id, from, to, content}
 }

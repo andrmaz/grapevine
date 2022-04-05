@@ -89,7 +89,7 @@ export type CompanyInput = {
 };
 
 /** individuals and businesses that purchase goods and services from another business */
-export type Customer = {
+export type Customer = User & {
   __typename?: 'Customer';
   /** the place where the customer lives */
   address?: Maybe<Address>;
@@ -102,7 +102,7 @@ export type Customer = {
   /** the permissions granted to the customer */
   role: Role;
   /** a list of specialists who have been recommended by the customer */
-  specialists: Array<Maybe<Scalars['ID']>>;
+  specialists: Array<Maybe<Scalars['String']>>;
 };
 
 export type CustomerInput = {
@@ -142,11 +142,47 @@ export type GeoInput = {
   lng: Scalars['String'];
 };
 
+export type Message = {
+  __typename?: 'Message';
+  /** the text of the message */
+  content: Scalars['String'];
+  /** the first and last name of the sender of the message */
+  from: Scalars['String'];
+  /** the unique identifier of the message */
+  id: Scalars['ID'];
+  /** the first and last name of the recipient of the message */
+  to: Scalars['String'];
+};
+
+export type MessageInput = {
+  /** the text of the message */
+  content: Scalars['String'];
+  /** the first and last name of the sender of the message */
+  from: Scalars['String'];
+  /** the first and last name of the recipient of the message */
+  to: Scalars['String'];
+};
+
+export type MessageResponse = {
+  __typename?: 'MessageResponse';
+  /** Similar to HTTP status code, represents the status of the mutation */
+  code: Scalars['Int'];
+  /** Newly created message after a successful mutation */
+  input?: Maybe<Message>;
+  /** Human-readable message for the UI */
+  message: Scalars['String'];
+  /** Indicates whether the mutation was successful */
+  success: Scalars['Boolean'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  /** Mutation to add a specialist to the user recommendation list */
   addRecommendation: CustomerResponse;
   /** Mutation to authorize an existing customer */
   authorizeCustomer: AuthenticationResponse;
+  /** Mutation to send a text message */
+  createMessage: MessageResponse;
   /** Mutation to increment the specialist's recommendations property */
   incrementRecommendations: SpecialistResponse;
   /** Mutation to create a new customer */
@@ -166,7 +202,14 @@ export type MutationAddRecommendationArgs = {
 
 
 export type MutationAuthorizeCustomerArgs = {
-  input?: InputMaybe<UserInput>;
+  input: UserInput;
+};
+
+
+export type MutationCreateMessageArgs = {
+  content: Scalars['String'];
+  from: Scalars['String'];
+  to: Scalars['String'];
 };
 
 
@@ -176,12 +219,12 @@ export type MutationIncrementRecommendationsArgs = {
 
 
 export type MutationRegisterCustomerArgs = {
-  input?: InputMaybe<CustomerInput>;
+  input: CustomerInput;
 };
 
 
 export type MutationRegisterSpecialistArgs = {
-  input?: InputMaybe<SpecialistInput>;
+  input: SpecialistInput;
 };
 
 
@@ -198,6 +241,8 @@ export type Query = {
   __typename?: 'Query';
   /** Query to get the information about a specific customer */
   customerForProfile: Customer;
+  /** Query to get the specialist chat messages */
+  messagesForChat: Array<Message>;
   /** Query to get the customer's recommendation list */
   recommendationsForDashboard: Array<Specialist>;
   /** Query to get the information about a specific specialist */
@@ -209,6 +254,12 @@ export type Query = {
 
 export type QueryCustomerForProfileArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryMessagesForChatArgs = {
+  from: Scalars['String'];
+  to: Scalars['String'];
 };
 
 
@@ -228,7 +279,7 @@ export enum Role {
 }
 
 /** a member of a profession or any person who earns a living from a specified professional activity */
-export type Specialist = {
+export type Specialist = User & {
   __typename?: 'Specialist';
   /** the place where the specialist works */
   address: Address;
@@ -281,8 +332,13 @@ export type SpecialistResponse = {
   success: Scalars['Boolean'];
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  messageAdded?: Maybe<Message>;
+};
+
+/** Basis interface for customer and specialist database types */
 export type User = {
-  __typename?: 'User';
   /** the email address of the user */
   email: Scalars['String'];
   /** the unique identifier of the user */
@@ -317,14 +373,14 @@ export type AuthorizeCustomerMutationVariables = Exact<{
 }>;
 
 
-export type AuthorizeCustomerMutation = { __typename?: 'Mutation', authorizeCustomer: { __typename?: 'AuthenticationResponse', code: number, success: boolean, message: string, user?: { __typename?: 'AuthenticationResult', token: string, expiresAt?: number | null | undefined, userInfo: { __typename?: 'User', name: string, id: string, email: string, role: Role } } | null | undefined } };
+export type AuthorizeCustomerMutation = { __typename?: 'Mutation', authorizeCustomer: { __typename?: 'AuthenticationResponse', code: number, success: boolean, message: string, user?: { __typename?: 'AuthenticationResult', token: string, expiresAt?: number | null | undefined, userInfo: { __typename?: 'Customer', name: string, id: string, email: string, role: Role } | { __typename?: 'Specialist', name: string, id: string, email: string, role: Role } } | null | undefined } };
 
 export type RegisterCustomerMutationVariables = Exact<{
   registerCustomerInput: CustomerInput;
 }>;
 
 
-export type RegisterCustomerMutation = { __typename?: 'Mutation', registerCustomer: { __typename?: 'AuthenticationResponse', code: number, success: boolean, message: string, user?: { __typename?: 'AuthenticationResult', token: string, expiresAt?: number | null | undefined, userInfo: { __typename?: 'User', name: string, id: string, email: string, role: Role } } | null | undefined } };
+export type RegisterCustomerMutation = { __typename?: 'Mutation', registerCustomer: { __typename?: 'AuthenticationResponse', code: number, success: boolean, message: string, user?: { __typename?: 'AuthenticationResult', token: string, expiresAt?: number | null | undefined, userInfo: { __typename?: 'Customer', name: string, id: string, email: string, role: Role } | { __typename?: 'Specialist', name: string, id: string, email: string, role: Role } } | null | undefined } };
 
 export type IncrementRecommendationsMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -346,6 +402,28 @@ export type GetSpecialistsQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetSpecialistsQuery = { __typename?: 'Query', specialistsForDashboard: Array<{ __typename?: 'Specialist', id: string, name: string, address: { __typename?: 'Address', city: string }, company: { __typename?: 'Company', bs: string } }> };
 
 export type GeolocationFieldsFragment = { __typename?: 'Geo', lat: string, lng: string };
+
+export type CreateMessageMutationVariables = Exact<{
+  from: Scalars['String'];
+  to: Scalars['String'];
+  content: Scalars['String'];
+}>;
+
+
+export type CreateMessageMutation = { __typename?: 'Mutation', createMessage: { __typename?: 'MessageResponse', code: number, success: boolean, message: string, input?: { __typename?: 'Message', from: string, to: string, content: string } | null | undefined } };
+
+export type MessagesForChatQueryVariables = Exact<{
+  from: Scalars['String'];
+  to: Scalars['String'];
+}>;
+
+
+export type MessagesForChatQuery = { __typename?: 'Query', messagesForChat: Array<{ __typename?: 'Message', id: string, from: string, to: string, content: string }> };
+
+export type MessageAddedSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MessageAddedSubscription = { __typename?: 'Subscription', messageAdded?: { __typename?: 'Message', id: string, from: string, to: string, content: string } | null | undefined };
 
 export const GeolocationFieldsFragmentDoc = /*#__PURE__*/ gql`
     fragment GeolocationFields on Geo {
@@ -652,3 +730,116 @@ export function useGetSpecialistsLazyQuery(baseOptions?: ApolloReactHooks.LazyQu
 export type GetSpecialistsQueryHookResult = ReturnType<typeof useGetSpecialistsQuery>;
 export type GetSpecialistsLazyQueryHookResult = ReturnType<typeof useGetSpecialistsLazyQuery>;
 export type GetSpecialistsQueryResult = Apollo.QueryResult<GetSpecialistsQuery, GetSpecialistsQueryVariables>;
+export const CreateMessageDocument = /*#__PURE__*/ gql`
+    mutation CreateMessage($from: String!, $to: String!, $content: String!) {
+  createMessage(from: $from, to: $to, content: $content) {
+    code
+    success
+    message
+    input {
+      from
+      to
+      content
+    }
+  }
+}
+    `;
+export type CreateMessageMutationFn = Apollo.MutationFunction<CreateMessageMutation, CreateMessageMutationVariables>;
+
+/**
+ * __useCreateMessageMutation__
+ *
+ * To run a mutation, you first call `useCreateMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createMessageMutation, { data, loading, error }] = useCreateMessageMutation({
+ *   variables: {
+ *      from: // value for 'from'
+ *      to: // value for 'to'
+ *      content: // value for 'content'
+ *   },
+ * });
+ */
+export function useCreateMessageMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateMessageMutation, CreateMessageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<CreateMessageMutation, CreateMessageMutationVariables>(CreateMessageDocument, options);
+      }
+export type CreateMessageMutationHookResult = ReturnType<typeof useCreateMessageMutation>;
+export type CreateMessageMutationResult = Apollo.MutationResult<CreateMessageMutation>;
+export type CreateMessageMutationOptions = Apollo.BaseMutationOptions<CreateMessageMutation, CreateMessageMutationVariables>;
+export const MessagesForChatDocument = /*#__PURE__*/ gql`
+    query MessagesForChat($from: String!, $to: String!) {
+  messagesForChat(from: $from, to: $to) {
+    id
+    from
+    to
+    content
+  }
+}
+    `;
+
+/**
+ * __useMessagesForChatQuery__
+ *
+ * To run a query within a React component, call `useMessagesForChatQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMessagesForChatQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMessagesForChatQuery({
+ *   variables: {
+ *      from: // value for 'from'
+ *      to: // value for 'to'
+ *   },
+ * });
+ */
+export function useMessagesForChatQuery(baseOptions: ApolloReactHooks.QueryHookOptions<MessagesForChatQuery, MessagesForChatQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<MessagesForChatQuery, MessagesForChatQueryVariables>(MessagesForChatDocument, options);
+      }
+export function useMessagesForChatLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MessagesForChatQuery, MessagesForChatQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<MessagesForChatQuery, MessagesForChatQueryVariables>(MessagesForChatDocument, options);
+        }
+export type MessagesForChatQueryHookResult = ReturnType<typeof useMessagesForChatQuery>;
+export type MessagesForChatLazyQueryHookResult = ReturnType<typeof useMessagesForChatLazyQuery>;
+export type MessagesForChatQueryResult = Apollo.QueryResult<MessagesForChatQuery, MessagesForChatQueryVariables>;
+export const MessageAddedDocument = /*#__PURE__*/ gql`
+    subscription MessageAdded {
+  messageAdded {
+    id
+    from
+    to
+    content
+  }
+}
+    `;
+
+/**
+ * __useMessageAddedSubscription__
+ *
+ * To run a query within a React component, call `useMessageAddedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useMessageAddedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMessageAddedSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMessageAddedSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<MessageAddedSubscription, MessageAddedSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useSubscription<MessageAddedSubscription, MessageAddedSubscriptionVariables>(MessageAddedDocument, options);
+      }
+export type MessageAddedSubscriptionHookResult = ReturnType<typeof useMessageAddedSubscription>;
+export type MessageAddedSubscriptionResult = Apollo.SubscriptionResult<MessageAddedSubscription>;

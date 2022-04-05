@@ -17,7 +17,7 @@ export default function About(): JSX.Element {
       <SpecialistInfo id={id} />
       {/* Only visible to Customer */}
       <React.Suspense fallback={<Spinner size='medium' />}>
-        <ContactBar />
+        <ContactBar id={id} />
       </React.Suspense>
     </Container>
   )
