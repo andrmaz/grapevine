@@ -87,7 +87,7 @@ export type CompanyInput = {
 }
 
 /** individuals and businesses that purchase goods and services from another business */
-export type Customer = {
+export type Customer = User & {
   __typename?: 'Customer'
   /** the place where the customer lives */
   address?: Maybe<Address>
@@ -100,7 +100,7 @@ export type Customer = {
   /** the permissions granted to the customer */
   role: Role
   /** a list of specialists who have been recommended by the customer */
-  specialists: Array<Maybe<Scalars['ID']>>
+  specialists: Array<Maybe<Scalars['String']>>
 }
 
 export type CustomerInput = {
@@ -140,11 +140,47 @@ export type GeoInput = {
   lng: Scalars['String']
 }
 
+export type Message = {
+  __typename?: 'Message'
+  /** the text of the message */
+  content: Scalars['String']
+  /** the first and last name of the sender of the message */
+  from: Scalars['String']
+  /** the unique identifier of the message */
+  id: Scalars['ID']
+  /** the first and last name of the recipient of the message */
+  to: Scalars['String']
+}
+
+export type MessageInput = {
+  /** the text of the message */
+  content: Scalars['String']
+  /** the first and last name of the sender of the message */
+  from: Scalars['String']
+  /** the first and last name of the recipient of the message */
+  to: Scalars['String']
+}
+
+export type MessageResponse = {
+  __typename?: 'MessageResponse'
+  /** Similar to HTTP status code, represents the status of the mutation */
+  code: Scalars['Int']
+  /** Newly created message after a successful mutation */
+  input?: Maybe<Message>
+  /** Human-readable message for the UI */
+  message: Scalars['String']
+  /** Indicates whether the mutation was successful */
+  success: Scalars['Boolean']
+}
+
 export type Mutation = {
   __typename?: 'Mutation'
+  /** Mutation to add a specialist to the user recommendation list */
   addRecommendation: CustomerResponse
   /** Mutation to authorize an existing customer */
   authorizeCustomer: AuthenticationResponse
+  /** Mutation to send a text message */
+  createMessage: MessageResponse
   /** Mutation to increment the specialist's recommendations property */
   incrementRecommendations: SpecialistResponse
   /** Mutation to create a new customer */
@@ -162,7 +198,13 @@ export type MutationAddRecommendationArgs = {
 }
 
 export type MutationAuthorizeCustomerArgs = {
-  input?: Maybe<UserInput>
+  input: UserInput
+}
+
+export type MutationCreateMessageArgs = {
+  content: Scalars['String']
+  from: Scalars['String']
+  to: Scalars['String']
 }
 
 export type MutationIncrementRecommendationsArgs = {
@@ -170,11 +212,11 @@ export type MutationIncrementRecommendationsArgs = {
 }
 
 export type MutationRegisterCustomerArgs = {
-  input?: Maybe<CustomerInput>
+  input: CustomerInput
 }
 
 export type MutationRegisterSpecialistArgs = {
-  input?: Maybe<SpecialistInput>
+  input: SpecialistInput
 }
 
 export type MutationRemoveCustomerArgs = {
@@ -189,6 +231,8 @@ export type Query = {
   __typename?: 'Query'
   /** Query to get the information about a specific customer */
   customerForProfile: Customer
+  /** Query to get the specialist chat messages */
+  messagesForChat: Array<Message>
   /** Query to get the customer's recommendation list */
   recommendationsForDashboard: Array<Specialist>
   /** Query to get the information about a specific specialist */
@@ -199,6 +243,11 @@ export type Query = {
 
 export type QueryCustomerForProfileArgs = {
   id: Scalars['ID']
+}
+
+export type QueryMessagesForChatArgs = {
+  from: Scalars['String']
+  to: Scalars['String']
 }
 
 export type QueryRecommendationsForDashboardArgs = {
@@ -216,7 +265,7 @@ export enum Role {
 }
 
 /** a member of a profession or any person who earns a living from a specified professional activity */
-export type Specialist = {
+export type Specialist = User & {
   __typename?: 'Specialist'
   /** the place where the specialist works */
   address: Address
@@ -269,8 +318,13 @@ export type SpecialistResponse = {
   success: Scalars['Boolean']
 }
 
+export type Subscription = {
+  __typename?: 'Subscription'
+  messageAdded?: Maybe<Message>
+}
+
+/** Basis interface for customer and specialist database types */
 export type User = {
-  __typename?: 'User'
   /** the email address of the user */
   email: Scalars['String']
   /** the unique identifier of the user */
@@ -412,6 +466,9 @@ export type ResolversTypes = ResolversObject<{
   GeoInput: GeoInput
   ID: ResolverTypeWrapper<Scalars['ID']>
   Int: ResolverTypeWrapper<Scalars['Int']>
+  Message: ResolverTypeWrapper<Message>
+  MessageInput: MessageInput
+  MessageResponse: ResolverTypeWrapper<MessageResponse>
   Mutation: ResolverTypeWrapper<{}>
   Query: ResolverTypeWrapper<{}>
   Role: Role
@@ -419,7 +476,8 @@ export type ResolversTypes = ResolversObject<{
   SpecialistInput: SpecialistInput
   SpecialistResponse: ResolverTypeWrapper<SpecialistResponse>
   String: ResolverTypeWrapper<Scalars['String']>
-  User: ResolverTypeWrapper<User>
+  Subscription: ResolverTypeWrapper<{}>
+  User: ResolversTypes['Customer'] | ResolversTypes['Specialist']
   UserInput: UserInput
 }>
 
@@ -439,13 +497,17 @@ export type ResolversParentTypes = ResolversObject<{
   GeoInput: GeoInput
   ID: Scalars['ID']
   Int: Scalars['Int']
+  Message: Message
+  MessageInput: MessageInput
+  MessageResponse: MessageResponse
   Mutation: {}
   Query: {}
   Specialist: Specialist
   SpecialistInput: SpecialistInput
   SpecialistResponse: SpecialistResponse
   String: Scalars['String']
-  User: User
+  Subscription: {}
+  User: ResolversParentTypes['Customer'] | ResolversParentTypes['Specialist']
   UserInput: UserInput
 }>
 
@@ -521,7 +583,7 @@ export type CustomerResolvers<
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   role?: Resolver<ResolversTypes['Role'], ParentType, ContextType>
   specialists?: Resolver<
-    Array<Maybe<ResolversTypes['ID']>>,
+    Array<Maybe<ResolversTypes['String']>>,
     ParentType,
     ContextType
   >
@@ -552,6 +614,28 @@ export type GeoResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
+export type MessageResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']
+> = ResolversObject<{
+  content?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  from?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  to?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}>
+
+export type MessageResponseResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['MessageResponse'] = ResolversParentTypes['MessageResponse']
+> = ResolversObject<{
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  input?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType>
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}>
+
 export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
@@ -566,7 +650,13 @@ export type MutationResolvers<
     ResolversTypes['AuthenticationResponse'],
     ParentType,
     ContextType,
-    RequireFields<MutationAuthorizeCustomerArgs, never>
+    RequireFields<MutationAuthorizeCustomerArgs, 'input'>
+  >
+  createMessage?: Resolver<
+    ResolversTypes['MessageResponse'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateMessageArgs, 'content' | 'from' | 'to'>
   >
   incrementRecommendations?: Resolver<
     ResolversTypes['SpecialistResponse'],
@@ -578,13 +668,13 @@ export type MutationResolvers<
     ResolversTypes['AuthenticationResponse'],
     ParentType,
     ContextType,
-    RequireFields<MutationRegisterCustomerArgs, never>
+    RequireFields<MutationRegisterCustomerArgs, 'input'>
   >
   registerSpecialist?: Resolver<
     ResolversTypes['AuthenticationResponse'],
     ParentType,
     ContextType,
-    RequireFields<MutationRegisterSpecialistArgs, never>
+    RequireFields<MutationRegisterSpecialistArgs, 'input'>
   >
   removeCustomer?: Resolver<
     ResolversTypes['CustomerResponse'],
@@ -609,6 +699,12 @@ export type QueryResolvers<
     ParentType,
     ContextType,
     RequireFields<QueryCustomerForProfileArgs, 'id'>
+  >
+  messagesForChat?: Resolver<
+    Array<ResolversTypes['Message']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryMessagesForChatArgs, 'from' | 'to'>
   >
   recommendationsForDashboard?: Resolver<
     Array<ResolversTypes['Specialist']>,
@@ -665,15 +761,31 @@ export type SpecialistResponseResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
+export type SubscriptionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']
+> = ResolversObject<{
+  messageAdded?: SubscriptionResolver<
+    Maybe<ResolversTypes['Message']>,
+    'messageAdded',
+    ParentType,
+    ContextType
+  >
+}>
+
 export type UserResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']
 > = ResolversObject<{
+  __resolveType: TypeResolveFn<
+    'Customer' | 'Specialist',
+    ParentType,
+    ContextType
+  >
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   role?: Resolver<ResolversTypes['Role'], ParentType, ContextType>
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
 export type Resolvers<ContextType = any> = ResolversObject<{
@@ -684,10 +796,13 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Customer?: CustomerResolvers<ContextType>
   CustomerResponse?: CustomerResponseResolvers<ContextType>
   Geo?: GeoResolvers<ContextType>
+  Message?: MessageResolvers<ContextType>
+  MessageResponse?: MessageResponseResolvers<ContextType>
   Mutation?: MutationResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
   Specialist?: SpecialistResolvers<ContextType>
   SpecialistResponse?: SpecialistResponseResolvers<ContextType>
+  Subscription?: SubscriptionResolvers<ContextType>
   User?: UserResolvers<ContextType>
 }>
 

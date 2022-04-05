@@ -22,6 +22,8 @@ generates:
     plugins:
       - 'typescript'
       - 'typescript-mongodb'
+    config:
+      enumsAsString: false
   ./graphql.schema.json:
     plugins:
       - 'introspection'

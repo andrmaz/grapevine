@@ -1,0 +1,13 @@
+# Mutation to create a new message
+mutation CreateMessage($from: String!, $to: String!, $content: String!) {
+  createMessage(from: $from, to: $to, content: $content) {
+    code
+    success
+    message
+    input {
+      from
+      to
+      content
+    }
+  }
+}

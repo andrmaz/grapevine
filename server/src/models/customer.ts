@@ -9,7 +9,7 @@ export const customerSchema = new mongoose.Schema(
     email: {type: String, required: true},
     address: {type: addressSchema, required: false},
     specialists: {
-      type: [mongoose.Schema.Types.ObjectId],
+      type: [String],
       ref: 'Specialist',
       default: [],
     },

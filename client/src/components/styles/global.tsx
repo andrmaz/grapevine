@@ -5,13 +5,18 @@ import {Global, css} from '@emotion/react'
 import {theme} from '@/themes'
 
 function GlobalStyles(): JSX.Element {
-  const {colors} = theme
+  const {colors, motion} = theme
   return (
     <Global
       styles={css`
         @media (pointer: coarse) {
           html {
             --min-tap-height: 44px;
+          }
+        }
+        ${motion.enabled} {
+          html {
+            scroll-behavior: smooth;
           }
         }
         html {

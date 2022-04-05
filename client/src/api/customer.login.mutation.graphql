@@ -1,5 +1,5 @@
 # Mutation to authenticate the customer
-mutation AuthorizeCustomer($input: UserInput) {
+mutation AuthorizeCustomer($input: UserInput!) {
   authorizeCustomer(input: $input) {
     code
     success

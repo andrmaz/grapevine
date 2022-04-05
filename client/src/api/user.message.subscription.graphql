@@ -1,0 +1,9 @@
+# Subscription for listening to new messages
+subscription MessageAdded {
+  messageAdded {
+    id
+    from
+    to
+    content
+  }
+}
