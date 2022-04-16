@@ -2,8 +2,8 @@ import * as React from 'react'
 
 import {GetSpecialistsQuery, useGetSpecialistsQuery} from '/__generated__/types'
 
-import {SearchBar} from '@/lib/bars/search'
-import {SpecialistGrid} from '@/components/specialist/grid'
+import {SearchBar} from '@/components/bar/search'
+import {SpecialistGrid} from '@/screens/specialist/grid'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 

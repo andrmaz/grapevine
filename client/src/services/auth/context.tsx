@@ -6,7 +6,7 @@ import type {User} from '/__generated__/types'
 
 type State = {user: User | null}
 type Action = {type: 'login'; user: User} | {type: 'logout'}
-type Dispatch = (action: Action) => void
+export type Dispatch = (action: Action) => void
 
 const StateContext = React.createContext<State | undefined>(undefined)
 StateContext.displayName = 'Auth State Context'

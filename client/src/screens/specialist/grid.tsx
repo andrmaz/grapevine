@@ -2,8 +2,8 @@ import * as React from 'react'
 
 import {ApolloError} from '@apollo/client'
 import {GetSpecialistsQuery} from '/__generated__/types'
-import {QueryResult} from '@/lib/results/query-result'
-import {SpecialistItem} from '@/components/specialist/item'
+import {QueryResult} from '@/components/results/query-result'
+import {SpecialistItem} from '@/screens/specialist/item'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 

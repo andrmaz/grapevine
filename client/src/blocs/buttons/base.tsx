@@ -1,10 +1,11 @@
 import * as React from 'react'
+
 import styled from '@emotion/styled'
 
 export const Button: React.FC<
   React.ButtonHTMLAttributes<HTMLButtonElement>
-> = ({children, ...props}): JSX.Element => {
-  return <StyledButton {...props}>{children}</StyledButton>
+> = ({children, ...delegated}): JSX.Element => {
+  return <StyledButton {...delegated}>{children}</StyledButton>
 }
 
 const StyledButton = styled.button`

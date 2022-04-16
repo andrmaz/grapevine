@@ -3,7 +3,7 @@ import * as React from 'react'
 import {DialogContent, DialogOverlay} from '@reach/dialog'
 import {animated, useTransition} from '@react-spring/web'
 
-import UnstyledButton from '@/lib/buttons/unstyled'
+import UnstyledButton from '@/blocs/buttons/unstyled'
 import VisuallyHidden from '@reach/visually-hidden'
 import {XCircle} from 'react-feather'
 import styled from '@emotion/styled'

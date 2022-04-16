@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import {GlobalStyles} from '@/components/styles/global'
-import {Spinner} from '@/lib/loaders/spinner'
+import {Spinner} from '@/components/loaders/spinner'
 import {useAuthState} from '@/services/auth/context'
 
 const AuthenticatedApp = React.lazy(() => import('./authenticated'))

@@ -2,13 +2,13 @@ import * as React from 'react'
 
 import { GetSpecialistQueryVariables } from '/__generated__/types'
 import {MessageCircle} from 'react-feather'
-import {SpecialistChat} from '@/containers/specialist/chat'
-import {Spinner} from '@/lib/loaders/spinner'
-import UnstyledButton from '@/lib/buttons/unstyled'
+import {Spinner} from '@/components/loaders/spinner'
+import UnstyledButton from '@/blocs/buttons/unstyled'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 
-const Dialog = React.lazy(() => import('@/lib/dialogs'))
+const Dialog = React.lazy(() => import('@/components/dialog/transition'))
+const SpecialistChat = React.lazy(() => import('@/containers/specialist/chat'))
 
 export default function ContactBar({id}: GetSpecialistQueryVariables): JSX.Element {
   const [isOpen, setIsOpen] = React.useState<boolean>(false)
