@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import {Link} from 'react-router-dom'
-import {QueryResult} from '@/lib/results/query-result'
+import {QueryResult} from '@/components/results/query-result'
 import styled from '@emotion/styled'
 import { theme } from '@/themes'
 import {
@@ -37,6 +37,7 @@ const SideBar = styled.nav`
   z-index: 1; /* Stay on top */
   overflow-x: hidden; /* Disable horizontal scroll */
   border-right: 2px solid;
+  border-left: 2px solid;
   padding: 8px 4px;
   ${theme.breakpoints.medium} {
     display: none;
@@ -44,6 +45,7 @@ const SideBar = styled.nav`
   ${theme.mode.dark} {
     color: var(--color-gray-10);
     border-right-color: var(--color-blue);
+    border-left-color: var(--color-blue);
   }
 `
 const Title = styled.h4`

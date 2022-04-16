@@ -7,16 +7,16 @@ import {
   useMessagesForChatQuery,
 } from '/__generated__/types'
 
-import {InputGroup} from '@/lib/inputs/group'
-import {MessagesList} from '@/components/message/list'
-import {QueryResult} from '@/lib/results/query-result'
+import {InputGroup} from '@/screens/message/input'
+import {MessagesList} from '@/screens/message/list'
+import {QueryResult} from '@/components/results/query-result'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 import {useAuthState} from '@/services/auth/context'
 
-export const SpecialistChat = ({
+export default function SpecialistChat({
   id,
-}: GetSpecialistQueryVariables): JSX.Element => {
+}: GetSpecialistQueryVariables): JSX.Element {
   const {user} = useAuthState()
   const {subscribeToMore, loading, error, data} = useMessagesForChatQuery({
     variables: {

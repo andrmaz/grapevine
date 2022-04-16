@@ -376,7 +376,7 @@ export type AuthorizeCustomerMutationVariables = Exact<{
 export type AuthorizeCustomerMutation = { __typename?: 'Mutation', authorizeCustomer: { __typename?: 'AuthenticationResponse', code: number, success: boolean, message: string, user?: { __typename?: 'AuthenticationResult', token: string, expiresAt?: number | null | undefined, userInfo: { __typename?: 'Customer', name: string, id: string, email: string, role: Role } | { __typename?: 'Specialist', name: string, id: string, email: string, role: Role } } | null | undefined } };
 
 export type RegisterCustomerMutationVariables = Exact<{
-  registerCustomerInput: CustomerInput;
+  input: CustomerInput;
 }>;
 
 
@@ -553,8 +553,8 @@ export type AuthorizeCustomerMutationHookResult = ReturnType<typeof useAuthorize
 export type AuthorizeCustomerMutationResult = Apollo.MutationResult<AuthorizeCustomerMutation>;
 export type AuthorizeCustomerMutationOptions = Apollo.BaseMutationOptions<AuthorizeCustomerMutation, AuthorizeCustomerMutationVariables>;
 export const RegisterCustomerDocument = /*#__PURE__*/ gql`
-    mutation RegisterCustomer($registerCustomerInput: CustomerInput!) {
-  registerCustomer(input: $registerCustomerInput) {
+    mutation RegisterCustomer($input: CustomerInput!) {
+  registerCustomer(input: $input) {
     code
     success
     message
@@ -586,7 +586,7 @@ export type RegisterCustomerMutationFn = Apollo.MutationFunction<RegisterCustome
  * @example
  * const [registerCustomerMutation, { data, loading, error }] = useRegisterCustomerMutation({
  *   variables: {
- *      registerCustomerInput: // value for 'registerCustomerInput'
+ *      input: // value for 'input'
  *   },
  * });
  */

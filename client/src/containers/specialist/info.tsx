@@ -3,19 +3,14 @@ import * as React from 'react'
 import {
   Geo,
   GetSpecialistQueryVariables,
-  useAddRecommendationMutation,
   useGetSpecialistQuery,
-  useIncrementRecommendationsMutation,
 } from '/__generated__/types'
 
-import {QueryResult} from '@/lib/results/query-result'
-import {SpecialistCard} from '@/components/specialist/card'
+import {QueryResult} from '@/components/results/query-result'
+import {SpecialistDetails} from './details'
 import {SpecialistLocation} from '@/containers/specialist/location'
-import {Star} from 'react-feather'
 import {filter} from 'graphql-anywhere'
-import gql from 'graphql-tag'
 import styled from '@emotion/styled'
-import {theme} from '@/themes'
 
 export const SpecialistInfo = ({
   id,
@@ -23,47 +18,6 @@ export const SpecialistInfo = ({
   const {loading, error, data} = useGetSpecialistQuery({
     variables: {id},
   })
-  const [incrementRecommendations] = useIncrementRecommendationsMutation({
-    variables: {id},
-  })
-  const [addRecommendationMutation] = useAddRecommendationMutation({
-    variables: {id},
-    update(cache) {
-      cache.modify({
-        fields: {
-          recommendationsForDashboard(
-            existingRecommendations = [],
-            {readField}
-          ) {
-            const newRecommendationRef = cache.writeFragment({
-              data: data?.specialistForAbout,
-              fragment: gql`
-                fragment Recommendation on Specialist {
-                  id
-                  name
-                }
-              `,
-            })
-            // Quick safety check - if the new recommendation is already
-            // present in the cache, we don't need to add it again.
-            if (
-              existingRecommendations.some(
-                (ref: {id: string}) =>
-                  readField('id', ref) === data?.specialistForAbout.id
-              )
-            ) {
-              return existingRecommendations
-            }
-            return [...existingRecommendations, newRecommendationRef]
-          },
-        },
-      })
-    },
-  })
-  const handleClick = (): void => {
-    incrementRecommendations()
-    addRecommendationMutation()
-  }
   return (
     <Wrapper>
       <QueryResult loading={loading} error={error} data={data}>
@@ -77,17 +31,12 @@ export const SpecialistInfo = ({
             <SpecialistLocation
               geo={filter<Geo>(
                 SpecialistLocation.fragments.specialist,
-                data?.specialistForAbout.address.geo
+                data.specialistForAbout.address.geo
               )}
             />
           ) : null}
         </Column>
-        <Details>
-          <Icon size={40} onClick={handleClick} />
-          {data?.specialistForAbout ? (
-            <SpecialistCard {...data?.specialistForAbout} />
-          ) : null}
-        </Details>
+        <SpecialistDetails id={id} data={data} />
       </QueryResult>
     </Wrapper>
   )
@@ -119,23 +68,4 @@ const Image = styled.img`
   height: 100%;
   width: 100%;
   object-fit: cover;
-`
-const Details = styled.section`
-  position: relative;
-  height: 100%;
-  width: 60%;
-  padding: 16px;
-  padding-top: 200px;
-  display: flex;
-`
-const Icon = styled(Star)`
-  position: absolute;
-  top: 0;
-  right: 0;
-  &:hover {
-    color: var(--color-green);
-  }
-  ${theme.mode.dark} {
-    color: var(--color-base);
-  }
 `
