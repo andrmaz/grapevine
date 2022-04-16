@@ -9,8 +9,17 @@ export const Button: React.FC<
 }
 
 const StyledButton = styled.button`
-  padding: 8px 16px;
+  padding: 4px 8px;
   border-radius: 4px;
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 0.8rem;
+  background-color: var(--color-indigo);
+  color: var(--color-base);
+  cursor: pointer;
+  &:hover {
+    background-color: var(--color-indigo-10);
+  }
+  &:disabled {
+    background-color: var(--color-gray-20);
+    color: var(--color-gray-80);
+  }
 `

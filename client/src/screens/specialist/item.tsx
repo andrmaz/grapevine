@@ -1,9 +1,10 @@
 import * as React from 'react'
 
+import { Button } from '@/blocs/buttons/base'
 import {GetSpecialistsQuery} from '/__generated__/types'
-import {Link} from 'react-router-dom'
 import styled from '@emotion/styled'
-import {theme} from '@/themes'
+import { theme } from '@/themes'
+import {useHistory} from 'react-router-dom'
 
 export const SpecialistItem = ({
   id,
@@ -11,6 +12,8 @@ export const SpecialistItem = ({
   address: {city},
   company: {bs},
 }: GetSpecialistsQuery['specialistsForDashboard'][0]): JSX.Element => {
+  const history = useHistory()
+  const onClick = (): void => history.push(`/about/${id}`)
   return (
     <Item>
       <Header>
@@ -26,9 +29,7 @@ export const SpecialistItem = ({
         <Address>{city}</Address>
       </Information>
       <Contact>
-        <Button>
-          <StyledLink to={`/about/${id}`}>See all information</StyledLink>
-        </Button>
+        <Button onClick={onClick}>See more</Button>
       </Contact>
     </Item>
   )
@@ -93,24 +94,10 @@ const Name = styled.p`
 `
 const Business = styled.p``
 const Address = styled.p``
-
 const Contact = styled.aside`
   width: 100%;
   height: 20%;
   display: flex;
   justify-content: center;
   align-items: center;
-`
-const Button = styled.button`
-  background-color: var(--color-indigo);
-  border-radius: 8px;
-  cursor: pointer;
-  &:hover {
-    background-color: var(--color-indigo-10);
-  }
-`
-const StyledLink = styled(Link)`
-  font-size: 0.7rem;
-  color: var(--color-base);
-  text-decoration: none;
 `

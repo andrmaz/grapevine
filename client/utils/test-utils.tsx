@@ -1,9 +1,17 @@
 import * as React from 'react'
 
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 import {RenderOptions, RenderResult, render} from '@testing-library/react'
 
-const AllTheProviders: React.FC = ({children}) => {
-  return <>{children}</>
+import { AuthProvider } from '@/services/auth/context'
+
+const AllTheProviders: React.FC = ({ children }) => {
+  const client = new ApolloClient({cache: new InMemoryCache()})
+  return (
+    <ApolloProvider client={client}>
+      <AuthProvider>{children}</AuthProvider>
+    </ApolloProvider>
+  )
 }
 
 const customRender = (
