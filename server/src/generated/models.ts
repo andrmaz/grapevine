@@ -141,20 +141,20 @@ export type Message = {
   __typename?: 'Message';
   /** the text of the message */
   content: Scalars['String'];
-  /** the first and last name of the sender of the message */
+  /** the unique identifier of the sender of the message */
   from: Scalars['String'];
   /** the unique identifier of the message */
   id: Scalars['ID'];
-  /** the first and last name of the recipient of the message */
+  /** the unique identifier of the recipient of the message */
   to: Scalars['String'];
 };
 
 export type MessageInput = {
   /** the text of the message */
   content: Scalars['String'];
-  /** the first and last name of the sender of the message */
+  /** the unique identifier of the sender of the message */
   from: Scalars['String'];
-  /** the first and last name of the recipient of the message */
+  /** the unique identifier of the recipient of the message */
   to: Scalars['String'];
 };
 
@@ -162,10 +162,10 @@ export type MessageResponse = {
   __typename?: 'MessageResponse';
   /** Similar to HTTP status code, represents the status of the mutation */
   code: Scalars['Int'];
-  /** Newly created message after a successful mutation */
-  input?: Maybe<Message>;
   /** Human-readable message for the UI */
   message: Scalars['String'];
+  /** Newly created message after a successful mutation */
+  output?: Maybe<Message>;
   /** Indicates whether the mutation was successful */
   success: Scalars['Boolean'];
 };
@@ -202,9 +202,7 @@ export type MutationAuthorizeCustomerArgs = {
 
 
 export type MutationCreateMessageArgs = {
-  content: Scalars['String'];
-  from: Scalars['String'];
-  to: Scalars['String'];
+  input: MessageInput;
 };
 
 
@@ -368,7 +366,6 @@ export type CompanyDbObject = {
 
 export type CustomerDbObject = UserDbInterface & {
   address?: Maybe<AddressDbObject>,
-  role: Role,
   specialists: Array<Maybe<string>>,
 };
 
@@ -389,7 +386,6 @@ export type SpecialistDbObject = UserDbInterface & {
   avatar?: Maybe<string>,
   company: CompanyDbObject,
   phone?: Maybe<string>,
-  role: Role,
   website?: Maybe<string>,
 };
 

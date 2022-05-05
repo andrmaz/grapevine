@@ -42,7 +42,7 @@ const typeDefs = gql`
     "the email address of the user"
     email: String! @column
     "the permissions granted to the user"
-    role: Role!
+    role: Role! # this field won't get a generated MongoDB field
   }
   "a member of a profession or any person who earns a living from a specified professional activity"
   type Specialist implements User @entity {
@@ -66,7 +66,7 @@ const typeDefs = gql`
     "number of times the specialist has been recommended by customers"
     recommendations: Int # this field won't get a generated MongoDB field
     "the permissions granted to the specialist"
-    role: Role! @column
+    role: Role! # this field won't get a generated MongoDB field
   }
   "individuals and businesses that purchase goods and services from another business"
   type Customer implements User @entity {
@@ -81,14 +81,14 @@ const typeDefs = gql`
     "a list of specialists who have been recommended by the customer"
     specialists: [String]! @column
     "the permissions granted to the customer"
-    role: Role! @column
+    role: Role! # this field won't get a generated MongoDB field
   }
   type Message @entity {
     "the unique identifier of the message"
     id: ID! @id
-    "the first and last name of the sender of the message"
+    "the unique identifier of the sender of the message"
     from: String! @column
-    "the first and last name of the recipient of the message"
+    "the unique identifier of the recipient of the message"
     to: String! @column
     "the text of the message"
     content: String! @column
@@ -151,9 +151,9 @@ const typeDefs = gql`
     email: String!
   }
   input MessageInput {
-    "the first and last name of the sender of the message"
+    "the unique identifier of the sender of the message"
     from: String!
-    "the first and last name of the recipient of the message"
+    "the unique identifier of the recipient of the message"
     to: String!
     "the text of the message"
     content: String!
@@ -197,11 +197,8 @@ const typeDefs = gql`
     "Mutation to remove a specific customer"
     removeCustomer(id: ID): CustomerResponse! @auth(requires: [USER, ADMIN])
     "Mutation to send a text message"
-    createMessage(
-      from: String!
-      to: String!
-      content: String!
-    ): MessageResponse!
+    createMessage(input: MessageInput!): MessageResponse!
+      @auth(requires: [CREATOR, USER, ADMIN])
   }
   type Subscription {
     messageAdded: Message
@@ -252,7 +249,7 @@ const typeDefs = gql`
     "Human-readable message for the UI"
     message: String!
     "Newly created message after a successful mutation"
-    input: Message
+    output: Message
   }
 `
 export default typeDefs

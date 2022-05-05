@@ -1,4 +1,3 @@
-import {ApolloError, AuthenticationError, UserInputError} from 'apollo-server'
 import {
   AuthenticationResult,
   Customer,
@@ -11,8 +10,16 @@ import {
   CustomerInput,
   MessageDbObject,
   MessageInput,
+  SpecialistDbObject,
   UserInput,
 } from '../generated/models'
+import {
+  EmailFieldError,
+  GenericServerError,
+  NotAuthorizeError,
+  NotFoundError,
+  WrongCredentialsError,
+} from '../utils/errors'
 import {HydratedDocument, Types} from 'mongoose'
 import jwtDecode, {JwtPayload} from 'jwt-decode'
 import {
@@ -43,13 +50,13 @@ export default class Customers extends MongoDataSource<
       email: input.email,
     })
     if (existingCustomer) {
-      throw new UserInputError('Email field is not correct')
+      throw new EmailFieldError()
     }
     const newCustomer: HydratedDocument<CustomerDbObject> = new CustomerModel(
       input
     )
     if (!newCustomer) {
-      throw new ApolloError('Something went wrong', '500')
+      throw new GenericServerError()
     }
     const savedCustomer = await newCustomer.save()
     const {id, name, email} = savedCustomer
@@ -65,7 +72,7 @@ export default class Customers extends MongoDataSource<
       email: input.email,
     })
     if (!existingCustomer) {
-      throw new AuthenticationError('Wrong credentials')
+      throw new WrongCredentialsError()
     }
     const {_id, name, email} = existingCustomer
     const id = _id.toString()
@@ -81,21 +88,21 @@ export default class Customers extends MongoDataSource<
       customer_id
     ).lean()
     if (!customer) {
-      throw new ApolloError('Resource not found', '404')
+      throw new NotFoundError()
     }
     return prepareTypeCustomer(customer)
   }
   async addRecommendation(id: string): Promise<Customer> {
     const sub = this.context.user.sub
     if (!sub) {
-      throw new AuthenticationError('Not authorized')
+      throw new NotAuthorizeError()
     }
     const customer = await CustomerModel.findById<CustomerDbObject>(sub)
     if (!customer) {
-      throw new ApolloError('Resource not found', '404')
+      throw new NotFoundError()
     }
     if (customer.specialists.includes(id)) {
-      throw new ApolloError('Something went wrong', '500')
+      throw new GenericServerError()
     }
     const customer_id = new Types.ObjectId(sub)
     const updatedCustomer =
@@ -105,24 +112,26 @@ export default class Customers extends MongoDataSource<
         {new: true}
       ).lean()
     if (!updatedCustomer) {
-      throw new ApolloError('Something went wrong', '500')
+      throw new GenericServerError()
     }
     return prepareTypeCustomer(updatedCustomer)
   }
   async getRecommendations(): Promise<Specialist[]> {
     const id = this.context.user.sub
     if (!id) {
-      throw new AuthenticationError('Not authorized')
+      throw new NotAuthorizeError()
     }
     const customer = await this.getCustomer(id)
     if (!customer) {
-      throw new ApolloError('Resource not found', '404')
+      throw new NotFoundError()
     }
-    const specialists = await Promise.all(
+    const specialists = (await Promise.all(
       customer.specialists
-        .map(specialistId => SpecialistModel.findById(specialistId).lean())
+        .map(specialistId =>
+          SpecialistModel.findById<SpecialistDbObject>(specialistId).lean()
+        )
         .filter(Boolean)
-    )
+    )) as SpecialistDbObject[]
     return specialists.map(specialist => prepareTypeSpecialist(specialist))
   }
   /* async editCustomer(input: CustomerInput): Promise<CustomerDbObject | null> {
@@ -141,7 +150,7 @@ export default class Customers extends MongoDataSource<
       id
     ).lean()
     if (!customer) {
-      throw new ApolloError('Resource not found', '404')
+      throw new NotFoundError()
     }
     return prepareTypeCustomer(customer)
   }

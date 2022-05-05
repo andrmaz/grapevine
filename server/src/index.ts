@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import 'dotenv/config'
 
 import {getRole, getUser} from './utils/auth'
@@ -22,7 +23,7 @@ import {useServer} from 'graphql-ws/lib/use/ws'
 
 ;
 
-(async function useStartApolloServer(typeDefs, resolvers) {
+(async function startApolloServer(typeDefs, resolvers) {
   // Create an Express app and HTTP server; we will attach both the WebSocket
   // server and the ApolloServer to this HTTP server.
   const app = express()

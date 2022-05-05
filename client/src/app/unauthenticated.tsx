@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { BrowserRouter as Router } from 'react-router-dom'
+import {BrowserRouter as Router} from 'react-router-dom'
 import {UnauthHeader} from '@/components/header/unauth'
 import UnauthRoutes from '@/routes/unauth'
 import styled from '@emotion/styled'
@@ -18,7 +18,7 @@ export default function UnauthenticatedApp(): JSX.Element {
 }
 
 const Container = styled.div`
-  min-height: 100%;
+  height: 100%;
   width: 100%;
   ${theme.mode.dark} {
     background-color: var(--color-gray-80);

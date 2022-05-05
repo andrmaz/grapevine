@@ -146,20 +146,20 @@ export type Message = {
   __typename?: 'Message';
   /** the text of the message */
   content: Scalars['String'];
-  /** the first and last name of the sender of the message */
+  /** the unique identifier of the sender of the message */
   from: Scalars['String'];
   /** the unique identifier of the message */
   id: Scalars['ID'];
-  /** the first and last name of the recipient of the message */
+  /** the unique identifier of the recipient of the message */
   to: Scalars['String'];
 };
 
 export type MessageInput = {
   /** the text of the message */
   content: Scalars['String'];
-  /** the first and last name of the sender of the message */
+  /** the unique identifier of the sender of the message */
   from: Scalars['String'];
-  /** the first and last name of the recipient of the message */
+  /** the unique identifier of the recipient of the message */
   to: Scalars['String'];
 };
 
@@ -167,10 +167,10 @@ export type MessageResponse = {
   __typename?: 'MessageResponse';
   /** Similar to HTTP status code, represents the status of the mutation */
   code: Scalars['Int'];
-  /** Newly created message after a successful mutation */
-  input?: Maybe<Message>;
   /** Human-readable message for the UI */
   message: Scalars['String'];
+  /** Newly created message after a successful mutation */
+  output?: Maybe<Message>;
   /** Indicates whether the mutation was successful */
   success: Scalars['Boolean'];
 };
@@ -207,9 +207,7 @@ export type MutationAuthorizeCustomerArgs = {
 
 
 export type MutationCreateMessageArgs = {
-  content: Scalars['String'];
-  from: Scalars['String'];
-  to: Scalars['String'];
+  input: MessageInput;
 };
 
 
@@ -404,13 +402,11 @@ export type GetSpecialistsQuery = { __typename?: 'Query', specialistsForDashboar
 export type GeolocationFieldsFragment = { __typename?: 'Geo', lat: string, lng: string };
 
 export type CreateMessageMutationVariables = Exact<{
-  from: Scalars['String'];
-  to: Scalars['String'];
-  content: Scalars['String'];
+  input: MessageInput;
 }>;
 
 
-export type CreateMessageMutation = { __typename?: 'Mutation', createMessage: { __typename?: 'MessageResponse', code: number, success: boolean, message: string, input?: { __typename?: 'Message', from: string, to: string, content: string } | null | undefined } };
+export type CreateMessageMutation = { __typename?: 'Mutation', createMessage: { __typename?: 'MessageResponse', code: number, success: boolean, message: string, output?: { __typename?: 'Message', from: string, to: string, content: string } | null | undefined } };
 
 export type MessagesForChatQueryVariables = Exact<{
   from: Scalars['String'];
@@ -731,12 +727,12 @@ export type GetSpecialistsQueryHookResult = ReturnType<typeof useGetSpecialistsQ
 export type GetSpecialistsLazyQueryHookResult = ReturnType<typeof useGetSpecialistsLazyQuery>;
 export type GetSpecialistsQueryResult = Apollo.QueryResult<GetSpecialistsQuery, GetSpecialistsQueryVariables>;
 export const CreateMessageDocument = /*#__PURE__*/ gql`
-    mutation CreateMessage($from: String!, $to: String!, $content: String!) {
-  createMessage(from: $from, to: $to, content: $content) {
+    mutation CreateMessage($input: MessageInput!) {
+  createMessage(input: $input) {
     code
     success
     message
-    input {
+    output {
       from
       to
       content
@@ -759,9 +755,7 @@ export type CreateMessageMutationFn = Apollo.MutationFunction<CreateMessageMutat
  * @example
  * const [createMessageMutation, { data, loading, error }] = useCreateMessageMutation({
  *   variables: {
- *      from: // value for 'from'
- *      to: // value for 'to'
- *      content: // value for 'content'
+ *      input: // value for 'input'
  *   },
  * });
  */

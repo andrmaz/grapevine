@@ -74,7 +74,7 @@ const resolvers: Resolvers<ContextType> = {
           return {
             code: 500,
             success: false,
-            message: `Something went wrong while processing the request: ${err}`,
+            message: `Something went wrong while registering the customer: ${err}`,
             user: null,
           }
         }
@@ -102,7 +102,7 @@ const resolvers: Resolvers<ContextType> = {
           return {
             code: 500,
             success: false,
-            message: `Something went wrong while processing the request: ${err}`,
+            message: `Something went wrong while registering the specialist: ${err}`,
             user: null,
           }
         }
@@ -130,7 +130,7 @@ const resolvers: Resolvers<ContextType> = {
           return {
             code: 500,
             success: false,
-            message: `Something went wrong while processing the request: ${err}`,
+            message: `Something went wrong while authorizing the customer: ${err}`,
             user: null,
           }
         }
@@ -159,7 +159,7 @@ const resolvers: Resolvers<ContextType> = {
           return {
             code: 500,
             success: false,
-            message: 'Something went wrong while processing the request',
+            message: 'Something went wrong while incrementing recommendations',
             specialist: null,
           }
         }
@@ -187,7 +187,7 @@ const resolvers: Resolvers<ContextType> = {
           return {
             code: 500,
             success: false,
-            message: `Something went wrong while processing the request: ${err}`,
+            message: `Something went wrong while adding a recommendation`,
             customer: null,
           }
         }
@@ -268,7 +268,7 @@ const resolvers: Resolvers<ContextType> = {
           return {
             code: 500,
             success: false,
-            message: 'Something went wrong while processing the request',
+            message: 'Something went wrong while removing the specialist',
             specialist: null,
           }
         }
@@ -280,7 +280,7 @@ const resolvers: Resolvers<ContextType> = {
         return {
           code: 200,
           success: true,
-          message: `Successfully removed customer ${customer?.id}`,
+          message: `Successfully removed customer ${customer.id}`,
           customer,
         }
       } catch (err: unknown) {
@@ -295,21 +295,21 @@ const resolvers: Resolvers<ContextType> = {
           return {
             code: 500,
             success: false,
-            message: 'Something went wrong while processing the request',
+            message: 'Something went wrong while removing the customer',
             customer: null,
           }
         }
       }
     },
-    createMessage: async (_, args, {dataSources}) => {
+    createMessage: async (_, {input}, {dataSources}) => {
       try {
-        const input = await dataSources.customers.createMessage(args)
-        pubsub.publish('MESSAGE_CREATED', {messageAdded: input})
+        const output = await dataSources.customers.createMessage(input)
+        pubsub.publish('MESSAGE_CREATED', {messageAdded: output})
         return {
           code: 200,
           success: true,
           message: `Successfully added a new message`,
-          input,
+          output,
         }
       } catch (err: unknown) {
         if (err instanceof GraphQLError) {
@@ -317,14 +317,14 @@ const resolvers: Resolvers<ContextType> = {
             code: err.extensions?.response.status,
             success: false,
             message: err.extensions?.response.body,
-            input: null,
+            output: null,
           }
         } else {
           return {
             code: 500,
             success: false,
-            message: 'Something went wrong while processing the request',
-            input: null,
+            message: 'Something went wrong while creating a new message',
+            output: null,
           }
         }
       }
