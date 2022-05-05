@@ -1,49 +1,55 @@
+import {
+  BusinessRequiredError,
+  CityRequiredError,
+  CompanyRequiredError,
+  EmailFieldError,
+  EmailRequiredError,
+  NameRequiredError,
+} from './errors'
 import {CustomerInput, SpecialistInput, UserInput} from '../generated/models'
-
-import {UserInputError} from 'apollo-server'
 
 function validateUserInput(input: UserInput): void {
   if (!input.email.length) {
-    throw new UserInputError('Email address is required')
+    throw new EmailRequiredError()
   }
   if (!input.email.includes('@')) {
-    throw new UserInputError('Invalid email address')
+    throw new EmailFieldError()
   }
   if (!input.name.length) {
-    throw new UserInputError('Name field is required')
+    throw new NameRequiredError()
   }
 }
 
 function validateCustomerInput(input: CustomerInput): void {
   if (!input.email.length) {
-    throw new UserInputError('Email address is required')
+    throw new EmailRequiredError()
   }
   if (!input.email.includes('@')) {
-    throw new UserInputError('Invalid email address')
+    throw new EmailFieldError()
   }
   if (!input.name.length) {
-    throw new UserInputError('Name field is required')
+    throw new NameRequiredError()
   }
 }
 
 function validateSpecialistInput(input: SpecialistInput): void {
   if (!input.email.length) {
-    throw new UserInputError('Email address is required')
+    throw new EmailRequiredError()
   }
   if (!input.email.includes('@')) {
-    throw new UserInputError('Invalid email address')
+    throw new EmailFieldError()
   }
   if (!input.name.length) {
-    throw new UserInputError('Name field is required')
+    throw new NameRequiredError()
   }
   if (!input.address?.city.length) {
-    throw new UserInputError('City field is required')
+    throw new CityRequiredError()
   }
   if (!input.company.name.length) {
-    throw new UserInputError('Company name is required')
+    throw new CompanyRequiredError()
   }
   if (!input.company.bs.length) {
-    throw new UserInputError('Company business is required')
+    throw new BusinessRequiredError()
   }
 }
 

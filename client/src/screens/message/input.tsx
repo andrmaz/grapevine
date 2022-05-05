@@ -1,6 +1,9 @@
 import * as React from 'react'
 
-import {GetSpecialistQueryVariables, useCreateMessageMutation} from '/__generated__/types'
+import {
+  GetSpecialistQueryVariables,
+  useCreateMessageMutation,
+} from '/__generated__/types'
 
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
@@ -12,9 +15,11 @@ export const InputGroup = ({id}: GetSpecialistQueryVariables): JSX.Element => {
   const ref = React.useRef<HTMLInputElement | null>(null)
   const [createMessageMutation] = useCreateMessageMutation({
     variables: {
-      from: user?.id || '',
-      to: id,
-      content,
+      input: {
+        from: user?.id || '',
+        to: id,
+        content,
+      },
     },
   })
   const handleClick = (): void => {

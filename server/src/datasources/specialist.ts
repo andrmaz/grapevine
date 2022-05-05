@@ -1,14 +1,18 @@
-import {AuthenticationResult, Message, Specialist} from '../generated/graphql'
+import {
+  AuthenticationResult,
+  Message,
+  Role,
+  Specialist,
+} from '../generated/graphql'
+import {GenericServerError, NotFoundError} from '../utils/errors'
 import {
   MessageDbObject,
-  Role,
   SpecialistDbObject,
   SpecialistInput,
 } from '../generated/models'
 import jwtDecode, {JwtPayload} from 'jwt-decode'
 import {prepareTypeMessage, prepareTypeSpecialist} from '../utils/type'
 
-import {ApolloError} from 'apollo-server'
 import {HydratedDocument} from 'mongoose'
 import {MessageModel} from '../models/message'
 import {MongoDataSource} from 'apollo-datasource-mongodb'
@@ -18,7 +22,7 @@ import {validateSpecialistInput} from '../utils/validate'
 
 // This is optional
 interface Context {
-  specialist: SpecialistDbObject
+  user: JwtPayload
 }
 
 export default class Specialists extends MongoDataSource<
@@ -32,7 +36,7 @@ export default class Specialists extends MongoDataSource<
     const newSpecialist: HydratedDocument<Omit<SpecialistDbObject, '_id'>> =
       new SpecialistModel(input)
     if (!newSpecialist) {
-      throw new ApolloError('Something went wrong', '500')
+      throw new GenericServerError()
     }
     const savedSpecialist = await newSpecialist.save()
     const {id, name, email} = savedSpecialist
@@ -47,14 +51,14 @@ export default class Specialists extends MongoDataSource<
       id
     ).lean()
     if (!specialist) {
-      throw new ApolloError('Resource not found', '404')
+      throw new NotFoundError()
     }
     return prepareTypeSpecialist(specialist)
   }
   async getSpecialists(): Promise<Specialist[]> {
     const specialists = await SpecialistModel.find<SpecialistDbObject>().lean()
     if (!specialists) {
-      throw new ApolloError('Resource not found', '404')
+      throw new NotFoundError()
     }
     return specialists.map(specialist => prepareTypeSpecialist(specialist))
   }
@@ -64,7 +68,12 @@ export default class Specialists extends MongoDataSource<
         {from, to},
         {from: to, to: from},
       ],
-    }).sort({createdAt: 1})
+    })
+      .sort({createdAt: 1})
+      .lean()
+    if (!messages) {
+      throw new NotFoundError()
+    }
     return messages.map(message => prepareTypeMessage(message))
   }
   async incrementRecommendations(id: string): Promise<Specialist> {
@@ -75,7 +84,7 @@ export default class Specialists extends MongoDataSource<
         {new: true}
       ).lean()
     if (!specialist) {
-      throw new ApolloError('Something went wrong', '500')
+      throw new GenericServerError()
     }
     return prepareTypeSpecialist(specialist)
   }
@@ -95,7 +104,7 @@ export default class Specialists extends MongoDataSource<
     const specialist =
       await SpecialistModel.findByIdAndDelete<SpecialistDbObject>(id).lean()
     if (!specialist) {
-      throw new ApolloError('Resource not found', '404')
+      throw new NotFoundError()
     }
     return prepareTypeSpecialist(specialist)
   }

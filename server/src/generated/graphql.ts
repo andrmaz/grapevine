@@ -144,20 +144,20 @@ export type Message = {
   __typename?: 'Message'
   /** the text of the message */
   content: Scalars['String']
-  /** the first and last name of the sender of the message */
+  /** the unique identifier of the sender of the message */
   from: Scalars['String']
   /** the unique identifier of the message */
   id: Scalars['ID']
-  /** the first and last name of the recipient of the message */
+  /** the unique identifier of the recipient of the message */
   to: Scalars['String']
 }
 
 export type MessageInput = {
   /** the text of the message */
   content: Scalars['String']
-  /** the first and last name of the sender of the message */
+  /** the unique identifier of the sender of the message */
   from: Scalars['String']
-  /** the first and last name of the recipient of the message */
+  /** the unique identifier of the recipient of the message */
   to: Scalars['String']
 }
 
@@ -165,10 +165,10 @@ export type MessageResponse = {
   __typename?: 'MessageResponse'
   /** Similar to HTTP status code, represents the status of the mutation */
   code: Scalars['Int']
-  /** Newly created message after a successful mutation */
-  input?: Maybe<Message>
   /** Human-readable message for the UI */
   message: Scalars['String']
+  /** Newly created message after a successful mutation */
+  output?: Maybe<Message>
   /** Indicates whether the mutation was successful */
   success: Scalars['Boolean']
 }
@@ -202,9 +202,7 @@ export type MutationAuthorizeCustomerArgs = {
 }
 
 export type MutationCreateMessageArgs = {
-  content: Scalars['String']
-  from: Scalars['String']
-  to: Scalars['String']
+  input: MessageInput
 }
 
 export type MutationIncrementRecommendationsArgs = {
@@ -630,8 +628,8 @@ export type MessageResponseResolvers<
   ParentType extends ResolversParentTypes['MessageResponse'] = ResolversParentTypes['MessageResponse']
 > = ResolversObject<{
   code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
-  input?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType>
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  output?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType>
   success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
@@ -656,7 +654,7 @@ export type MutationResolvers<
     ResolversTypes['MessageResponse'],
     ParentType,
     ContextType,
-    RequireFields<MutationCreateMessageArgs, 'content' | 'from' | 'to'>
+    RequireFields<MutationCreateMessageArgs, 'input'>
   >
   incrementRecommendations?: Resolver<
     ResolversTypes['SpecialistResponse'],

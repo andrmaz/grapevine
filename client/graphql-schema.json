@@ -673,7 +673,7 @@
           },
           {
             "name": "from",
-            "description": "the first and last name of the sender of the message",
+            "description": "the unique identifier of the sender of the message",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -689,7 +689,7 @@
           },
           {
             "name": "to",
-            "description": "the first and last name of the recipient of the message",
+            "description": "the unique identifier of the recipient of the message",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -1122,7 +1122,7 @@
         "inputFields": [
           {
             "name": "from",
-            "description": "the first and last name of the sender of the message",
+            "description": "the unique identifier of the sender of the message",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -1138,7 +1138,7 @@
           },
           {
             "name": "to",
-            "description": "the first and last name of the recipient of the message",
+            "description": "the unique identifier of the recipient of the message",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -1607,46 +1607,14 @@
             "description": "Mutation to send a text message",
             "args": [
               {
-                "name": "from",
+                "name": "input",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "to",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "content",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
+                    "kind": "INPUT_OBJECT",
+                    "name": "MessageInput",
                     "ofType": null
                   }
                 },
@@ -2035,7 +2003,7 @@
             "deprecationReason": null
           },
           {
-            "name": "input",
+            "name": "output",
             "description": "Newly created message after a successful mutation",
             "args": [],
             "type": {
