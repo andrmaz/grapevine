@@ -1,17 +1,19 @@
 import * as React from 'react'
 
-import { Form, Input, Label, Submit, Wrapper } from '@/blocs/forms/signin'
-import { UserInput, useAuthorizeCustomerMutation } from '/__generated__/types'
+import {Form, Input, Label, Submit, Wrapper} from '@/blocs/forms/signin'
+import {UserInput, useAuthorizeCustomerMutation} from '/__generated__/types'
 
-import { handleAuthorize } from '@/helpers/auth'
-import { useAuthDispatch } from '@/services/auth/context'
-import { useHistory } from 'react-router-dom'
+import {handleAuthorize} from '@/helpers/auth'
+import {useAuthDispatch} from '@/services/auth/context'
+import {useHistory} from 'react-router-dom'
 
 export default function Login(): JSX.Element {
-  const dispatch = useAuthDispatch()
   const history = useHistory()
+  const dispatch = useAuthDispatch()
+
   const [input, setInput] = React.useState<UserInput>({name: '', email: ''})
-  const { name, email } = input
+  const {name, email} = input
+
   const [authorizeCustomerMutation] = useAuthorizeCustomerMutation({
     variables: {input},
     onCompleted: data => handleAuthorize(data, dispatch, history),

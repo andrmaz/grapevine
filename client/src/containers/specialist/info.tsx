@@ -18,6 +18,7 @@ export const SpecialistInfo = ({
   const {loading, error, data} = useGetSpecialistQuery({
     variables: {id},
   })
+  const geo = data?.specialistForAbout.address.geo
   return (
     <Wrapper>
       <QueryResult loading={loading} error={error} data={data}>
@@ -27,16 +28,13 @@ export const SpecialistInfo = ({
               src={`https://avatars.dicebear.com/api/personas/${data?.specialistForAbout.name}.svg`}
             />
           </Avatar>
-          {data?.specialistForAbout.address.geo ? (
+          {geo ? (
             <SpecialistLocation
-              geo={filter<Geo>(
-                SpecialistLocation.fragments.specialist,
-                data.specialistForAbout.address.geo
-              )}
+              geo={filter<Geo>(SpecialistLocation.fragments.specialist, geo)}
             />
           ) : null}
         </Column>
-        <SpecialistDetails id={id} data={data} />
+        {data ? <SpecialistDetails {...data} /> : null}
       </QueryResult>
     </Wrapper>
   )

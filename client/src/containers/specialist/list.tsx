@@ -9,17 +9,21 @@ import {theme} from '@/themes'
 
 export const SpecialistList = (): JSX.Element => {
   const {loading, error, data} = useGetSpecialistsQuery()
+  const _specialists = data?.specialistsForDashboard
+
+  const [search, setSearch] = React.useState<string>('')
   const [specialists, setSpecialists] = React.useState<
     GetSpecialistsQuery['specialistsForDashboard'] | undefined
-  >(() => data?.specialistsForDashboard)
-  const [search, setSearch] = React.useState<string>('')
+  >(() => _specialists)
+
   React.useEffect(() => {
     setSpecialists(
-      data?.specialistsForDashboard?.filter(specialist =>
+      _specialists?.filter(specialist =>
         specialist.company.bs.toLowerCase().includes(search)
       )
     )
-  }, [data?.specialistsForDashboard, search])
+  }, [_specialists, search])
+
   return (
     <Wrapper>
       <SearchBar search={search} setSearch={setSearch} />

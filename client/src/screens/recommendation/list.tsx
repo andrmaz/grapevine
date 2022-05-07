@@ -3,20 +3,19 @@ import * as React from 'react'
 import {Link} from 'react-router-dom'
 import {QueryResult} from '@/components/results/query-result'
 import styled from '@emotion/styled'
-import { theme } from '@/themes'
-import {
-  useRecommendationsForDashboardQuery,
-} from '/__generated__/types'
+import {theme} from '@/themes'
+import {useRecommendationsForDashboardQuery} from '/__generated__/types'
 
 export const RecommendationList = (): JSX.Element => {
   const {data, loading, error} = useRecommendationsForDashboardQuery()
+  const recommendations = data?.recommendationsForDashboard
   return (
     <SideBar>
       <Title>Your recommendations list</Title>
       <QueryResult loading={loading} data={data} error={error}>
-        {data && data.recommendationsForDashboard.length > 0 ? (
+        {recommendations && recommendations?.length > 0 ? (
           <List>
-            {data.recommendationsForDashboard.map(({id, name}) => (
+            {recommendations.map(({id, name}) => (
               <Item key={id}>
                 <NavLink to={`/about/${id}`}>{name}</NavLink>
               </Item>
@@ -66,4 +65,3 @@ const NavLink = styled(Link)`
     color: var(--color-yellow);
   }
 `
-

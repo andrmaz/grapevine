@@ -7,7 +7,7 @@ import {
   useMessagesForChatQuery,
 } from '/__generated__/types'
 
-import {InputGroup} from '@/screens/message/input'
+import {MessageInput} from '@/screens/message/input'
 import {MessagesList} from '@/screens/message/list'
 import {QueryResult} from '@/components/results/query-result'
 import styled from '@emotion/styled'
@@ -44,7 +44,7 @@ export default function SpecialistChat({
           }
         />
       </QueryResult>
-      <InputGroup id={id} />
+      <MessageInput id={id} />
     </Wrapper>
   )
 }

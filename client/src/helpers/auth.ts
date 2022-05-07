@@ -8,7 +8,7 @@ import type {Dispatch} from '@/services/auth/context'
 import type {History} from 'history'
 import {setTokenKey} from '@/utils/storage'
 
-const handleSuccess = (
+const _handleSuccess = (
   dispatch: Dispatch,
   history: History,
   token?: string,
@@ -26,7 +26,7 @@ export const handleAuthorize = (
 ): void => {
   const success = data.authorizeCustomer.success
   if (success)
-    handleSuccess(
+    _handleSuccess(
       dispatch,
       history,
       data.authorizeCustomer.user?.token,
@@ -41,7 +41,7 @@ export const handleRegister = (
 ): void => {
   const success = data.registerCustomer.success
   if (success)
-    handleSuccess(
+    _handleSuccess(
       dispatch,
       history,
       data.registerCustomer.user?.token,

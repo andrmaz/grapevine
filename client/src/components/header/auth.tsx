@@ -8,7 +8,7 @@ import {useAuthDispatch} from '@/services/auth/context'
 
 export const AuthHeader = (): JSX.Element => {
   const dispatch = useAuthDispatch()
-  const clear = (): void => {
+  const handleClick = (): void => {
     dispatch({type: 'logout'})
     removeAuthKeys()
     // https://www.apollographql.com/docs/react/caching/advanced-topics/#resetting-the-cache
@@ -21,7 +21,7 @@ export const AuthHeader = (): JSX.Element => {
           <StyledLink to='/'>Dashboard</StyledLink>
         </Item>
         <StyledItem>
-          <StyledLink to='/signin' onClick={clear}>
+          <StyledLink to='/signin' onClick={handleClick}>
             Sign Out
           </StyledLink>
         </StyledItem>

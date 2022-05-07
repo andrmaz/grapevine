@@ -1,21 +1,23 @@
 import * as React from 'react'
 
 import {CustomerInput, useRegisterCustomerMutation} from '/__generated__/types'
-import { Form, Input, Label, Submit, Wrapper } from '@/blocs/forms/signin'
+import {Form, Input, Label, Submit, Wrapper} from '@/blocs/forms/signin'
 
 import {handleRegister} from '@/helpers/auth'
 import {useAuthDispatch} from '@/services/auth/context'
 import {useHistory} from 'react-router-dom'
 
 export default function Register(): JSX.Element {
-  const dispatch = useAuthDispatch()
   const history = useHistory()
+  const dispatch = useAuthDispatch()
+
   const [input, setInput] = React.useState<CustomerInput>({
     name: '',
     email: '',
     address: undefined,
   })
   const {name, email} = input
+
   const [registerCustomerMutation] = useRegisterCustomerMutation({
     variables: {input},
     onCompleted: data => handleRegister(data, dispatch, history),
@@ -23,6 +25,7 @@ export default function Register(): JSX.Element {
       console.error(error.name)
     },
   })
+  
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (
     event
   ): void => {

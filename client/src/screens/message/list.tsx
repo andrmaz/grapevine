@@ -4,18 +4,21 @@ import {Message} from '/__generated__/types'
 import styled from '@emotion/styled'
 import {useAuthState} from '@/services/auth/context'
 
-type Props = {
+type MessagesListProps = {
   messages?: Message[]
   subscribeToMessages: () => void
 }
-export const MessagesList: React.FC<Props> = ({
+
+export const MessagesList: React.FC<MessagesListProps> = ({
   messages,
   subscribeToMessages,
 }): JSX.Element => {
   const {user} = useAuthState()
   const ref = React.useRef<HTMLElement | null>(null)
+
   React.useLayoutEffect(() => ref.current?.scrollIntoView())
   React.useEffect(() => subscribeToMessages(), [subscribeToMessages])
+
   return (
     <Wrapper>
       {messages?.map(({id, content, from}, index, messages) => {
