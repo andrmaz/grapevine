@@ -42,7 +42,6 @@ const SpinnerContainer = styled.div`
   justify-content: center;
   align-items: center;
 `
-
 const LoadingSpinner = styled.div<SpinnerProps>`
   border: 16px solid var(--color-gray);
   border-top: 16px solid

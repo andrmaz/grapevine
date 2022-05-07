@@ -9,7 +9,7 @@ import styled from '@emotion/styled'
 import {theme} from '@/themes'
 import {useAuthState} from '@/services/auth/context'
 
-export const InputGroup = ({id}: GetSpecialistQueryVariables): JSX.Element => {
+export const MessageInput = ({id}: GetSpecialistQueryVariables): JSX.Element => {
   const {user} = useAuthState()
   const [content, setContent] = React.useState<string>('')
   const ref = React.useRef<HTMLInputElement | null>(null)
