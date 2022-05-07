@@ -145,8 +145,6 @@ const typeDefs = gql`
     address: AddressInput
   }
   input UserInput {
-    "the first and last name of the user"
-    name: String!
     "the email address of the user"
     email: String!
   }

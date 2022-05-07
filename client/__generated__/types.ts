@@ -350,8 +350,6 @@ export type User = {
 export type UserInput = {
   /** the email address of the user */
   email: Scalars['String'];
-  /** the first and last name of the user */
-  name: Scalars['String'];
 };
 
 export type AddRecommendationMutationVariables = Exact<{

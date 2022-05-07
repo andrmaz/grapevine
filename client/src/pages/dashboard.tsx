@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import {RecommendationList} from '@/screens/recommendation/list'
+import {RecommendationList} from '@/containers/recommendation/list'
 import {SpecialistList} from '@/containers/specialist/list'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'

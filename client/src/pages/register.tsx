@@ -14,9 +14,8 @@ export default function Register(): JSX.Element {
   const [input, setInput] = React.useState<CustomerInput>({
     name: '',
     email: '',
-    address: undefined,
   })
-  const {name, email} = input
+  const {name, email, address} = input
 
   const [registerCustomerMutation] = useRegisterCustomerMutation({
     variables: {input},
@@ -25,13 +24,16 @@ export default function Register(): JSX.Element {
       console.error(error.name)
     },
   })
-  
+
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (
     event
   ): void => {
     const name = event.target.name as keyof CustomerInput
     const value = event.target.value
-    setInput(input => ({...input, [name]: value}))
+    const address = name === 'address'
+    address
+      ? setInput(input => ({...input, [name]: {city: value}}))
+      : setInput(input => ({...input, [name]: value}))
   }
   const onSubmit = (event: React.SyntheticEvent): void => {
     event.preventDefault()
@@ -60,6 +62,16 @@ export default function Register(): JSX.Element {
             value={email}
             onChange={onChange}
             required
+          />
+        </div>
+        <div>
+          <Label htmlFor='address'>City:</Label>
+          <Input
+            type='text'
+            id='address'
+            name='address'
+            value={address?.city}
+            onChange={onChange}
           />
         </div>
         <Submit type='submit' />

@@ -1077,22 +1077,6 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "name",
-            "description": "the first and last name of the user",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "email",
             "description": "the email address of the user",
             "type": {

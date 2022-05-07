@@ -15,9 +15,6 @@ function validateUserInput(input: UserInput): void {
   if (!input.email.includes('@')) {
     throw new EmailFieldError()
   }
-  if (!input.name.length) {
-    throw new NameRequiredError()
-  }
 }
 
 function validateCustomerInput(input: CustomerInput): void {
