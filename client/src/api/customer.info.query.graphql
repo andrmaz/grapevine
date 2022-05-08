@@ -1,6 +1,6 @@
-# Query to get the specialists recommended by the customer
-query RecommendationsForDashboard {
-  recommendationsForDashboard {
+# Query to get all the information about the customer
+query CustomerForProfile($id: ID!) {
+  customerForProfile(id: $id) {
     id
     name
   }

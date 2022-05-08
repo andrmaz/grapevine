@@ -352,6 +352,20 @@ export type UserInput = {
   email: Scalars['String'];
 };
 
+export type CustomerForProfileQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type CustomerForProfileQuery = { __typename?: 'Query', customerForProfile: { __typename?: 'Customer', id: string, name: string } };
+
+export type AuthorizeCustomerMutationVariables = Exact<{
+  input: UserInput;
+}>;
+
+
+export type AuthorizeCustomerMutation = { __typename?: 'Mutation', authorizeCustomer: { __typename?: 'AuthenticationResponse', code: number, success: boolean, message: string, user?: { __typename?: 'AuthenticationResult', token: string, expiresAt?: number | null | undefined, userInfo: { __typename?: 'Customer', name: string, id: string, email: string, role: Role } | { __typename?: 'Specialist', name: string, id: string, email: string, role: Role } } | null | undefined } };
+
 export type AddRecommendationMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -363,13 +377,6 @@ export type RecommendationsForDashboardQueryVariables = Exact<{ [key: string]: n
 
 
 export type RecommendationsForDashboardQuery = { __typename?: 'Query', recommendationsForDashboard: Array<{ __typename?: 'Specialist', id: string, name: string }> };
-
-export type AuthorizeCustomerMutationVariables = Exact<{
-  input: UserInput;
-}>;
-
-
-export type AuthorizeCustomerMutation = { __typename?: 'Mutation', authorizeCustomer: { __typename?: 'AuthenticationResponse', code: number, success: boolean, message: string, user?: { __typename?: 'AuthenticationResult', token: string, expiresAt?: number | null | undefined, userInfo: { __typename?: 'Customer', name: string, id: string, email: string, role: Role } | { __typename?: 'Specialist', name: string, id: string, email: string, role: Role } } | null | undefined } };
 
 export type RegisterCustomerMutationVariables = Exact<{
   input: CustomerInput;
@@ -425,6 +432,87 @@ export const GeolocationFieldsFragmentDoc = /*#__PURE__*/ gql`
   lng
 }
     `;
+export const CustomerForProfileDocument = /*#__PURE__*/ gql`
+    query CustomerForProfile($id: ID!) {
+  customerForProfile(id: $id) {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useCustomerForProfileQuery__
+ *
+ * To run a query within a React component, call `useCustomerForProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCustomerForProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCustomerForProfileQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useCustomerForProfileQuery(baseOptions: ApolloReactHooks.QueryHookOptions<CustomerForProfileQuery, CustomerForProfileQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<CustomerForProfileQuery, CustomerForProfileQueryVariables>(CustomerForProfileDocument, options);
+      }
+export function useCustomerForProfileLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<CustomerForProfileQuery, CustomerForProfileQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<CustomerForProfileQuery, CustomerForProfileQueryVariables>(CustomerForProfileDocument, options);
+        }
+export type CustomerForProfileQueryHookResult = ReturnType<typeof useCustomerForProfileQuery>;
+export type CustomerForProfileLazyQueryHookResult = ReturnType<typeof useCustomerForProfileLazyQuery>;
+export type CustomerForProfileQueryResult = Apollo.QueryResult<CustomerForProfileQuery, CustomerForProfileQueryVariables>;
+export const AuthorizeCustomerDocument = /*#__PURE__*/ gql`
+    mutation AuthorizeCustomer($input: UserInput!) {
+  authorizeCustomer(input: $input) {
+    code
+    success
+    message
+    user {
+      userInfo {
+        name
+        id
+        email
+        role
+      }
+      token
+      expiresAt
+    }
+  }
+}
+    `;
+export type AuthorizeCustomerMutationFn = Apollo.MutationFunction<AuthorizeCustomerMutation, AuthorizeCustomerMutationVariables>;
+
+/**
+ * __useAuthorizeCustomerMutation__
+ *
+ * To run a mutation, you first call `useAuthorizeCustomerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAuthorizeCustomerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [authorizeCustomerMutation, { data, loading, error }] = useAuthorizeCustomerMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAuthorizeCustomerMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AuthorizeCustomerMutation, AuthorizeCustomerMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AuthorizeCustomerMutation, AuthorizeCustomerMutationVariables>(AuthorizeCustomerDocument, options);
+      }
+export type AuthorizeCustomerMutationHookResult = ReturnType<typeof useAuthorizeCustomerMutation>;
+export type AuthorizeCustomerMutationResult = Apollo.MutationResult<AuthorizeCustomerMutation>;
+export type AuthorizeCustomerMutationOptions = Apollo.BaseMutationOptions<AuthorizeCustomerMutation, AuthorizeCustomerMutationVariables>;
 export const AddRecommendationDocument = /*#__PURE__*/ gql`
     mutation AddRecommendation($id: ID!) {
   addRecommendation(id: $id) {
@@ -501,51 +589,6 @@ export function useRecommendationsForDashboardLazyQuery(baseOptions?: ApolloReac
 export type RecommendationsForDashboardQueryHookResult = ReturnType<typeof useRecommendationsForDashboardQuery>;
 export type RecommendationsForDashboardLazyQueryHookResult = ReturnType<typeof useRecommendationsForDashboardLazyQuery>;
 export type RecommendationsForDashboardQueryResult = Apollo.QueryResult<RecommendationsForDashboardQuery, RecommendationsForDashboardQueryVariables>;
-export const AuthorizeCustomerDocument = /*#__PURE__*/ gql`
-    mutation AuthorizeCustomer($input: UserInput!) {
-  authorizeCustomer(input: $input) {
-    code
-    success
-    message
-    user {
-      userInfo {
-        name
-        id
-        email
-        role
-      }
-      token
-      expiresAt
-    }
-  }
-}
-    `;
-export type AuthorizeCustomerMutationFn = Apollo.MutationFunction<AuthorizeCustomerMutation, AuthorizeCustomerMutationVariables>;
-
-/**
- * __useAuthorizeCustomerMutation__
- *
- * To run a mutation, you first call `useAuthorizeCustomerMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAuthorizeCustomerMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [authorizeCustomerMutation, { data, loading, error }] = useAuthorizeCustomerMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useAuthorizeCustomerMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AuthorizeCustomerMutation, AuthorizeCustomerMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useMutation<AuthorizeCustomerMutation, AuthorizeCustomerMutationVariables>(AuthorizeCustomerDocument, options);
-      }
-export type AuthorizeCustomerMutationHookResult = ReturnType<typeof useAuthorizeCustomerMutation>;
-export type AuthorizeCustomerMutationResult = Apollo.MutationResult<AuthorizeCustomerMutation>;
-export type AuthorizeCustomerMutationOptions = Apollo.BaseMutationOptions<AuthorizeCustomerMutation, AuthorizeCustomerMutationVariables>;
 export const RegisterCustomerDocument = /*#__PURE__*/ gql`
     mutation RegisterCustomer($input: CustomerInput!) {
   registerCustomer(input: $input) {

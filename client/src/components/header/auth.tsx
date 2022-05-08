@@ -1,18 +1,24 @@
 import * as React from 'react'
 
-import { Item, List, StyledLink, Wrapper } from '@/blocs/headers/nav'
+import {Item, List, StyledLink, Wrapper} from '@/blocs/headers/nav'
+import {useAuthDispatch, useAuthState} from '@/services/auth/context'
 
 import {removeAuthKeys} from '@/utils/storage'
 import styled from '@emotion/styled'
-import {useAuthDispatch} from '@/services/auth/context'
+import {useCustomerForProfileQuery} from '/__generated__/types'
 
 export const AuthHeader = (): JSX.Element => {
+  const {user} = useAuthState()
   const dispatch = useAuthDispatch()
+  const {client} = useCustomerForProfileQuery({
+    variables: {
+      id: user?.id || '',
+    },
+  })
   const handleClick = (): void => {
     dispatch({type: 'logout'})
     removeAuthKeys()
-    // https://www.apollographql.com/docs/react/caching/advanced-topics/#resetting-the-cache
-    /* logout().then(() => client.resetStore()) */
+    client.clearStore()
   }
   return (
     <Wrapper>

@@ -7,17 +7,20 @@ export const errorLink = onError(
         switch (err.extensions?.code) {
           // Apollo Server sets code to UNAUTHENTICATED
           // when an AuthenticationError is thrown in a resolver
-          case 'UNAUTHENTICATED':
+          case 'UNAUTHENTICATED': {
             //* Modify the operation context with a new token
-            /* const oldHeaders = operation.getContext().headers
+            const oldHeaders = operation.getContext().headers
+            console.log(operation.getContext())
+            const token = null //getNewToken()
             operation.setContext({
               headers: {
                 ...oldHeaders,
-                authorization: getNewToken(),
+                authorization: token ? `Bearer ${token}` : '',
               },
-            }) */
+            })
             // Retry the request, returning the new observable
             return forward(operation)
+          }
         }
       }
     }
