@@ -11,8 +11,8 @@ export default function Login(): JSX.Element {
   const history = useHistory()
   const dispatch = useAuthDispatch()
 
-  const [input, setInput] = React.useState<UserInput>({name: '', email: ''})
-  const {name, email} = input
+  const [input, setInput] = React.useState<UserInput>({email: ''})
+  const {email} = input
 
   const [authorizeCustomerMutation] = useAuthorizeCustomerMutation({
     variables: {input},
@@ -35,16 +35,6 @@ export default function Login(): JSX.Element {
   return (
     <Wrapper>
       <Form onSubmit={onSubmit}>
-        <div>
-          <Label htmlFor='name'>Full name:</Label>
-          <Input
-            type='text'
-            id='name'
-            name='name'
-            value={name}
-            onChange={onChange}
-          />
-        </div>
         <div>
           <Label htmlFor='email'>Email:</Label>
           <Input
