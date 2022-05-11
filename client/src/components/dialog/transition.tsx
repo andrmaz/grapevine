@@ -9,7 +9,7 @@ import {XCircle} from 'react-feather'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 
-interface DialogProps {
+export interface DialogProps {
   isOpen: boolean
   onDismiss: () => void
 }
@@ -42,7 +42,7 @@ export default function Dialog({
                   ),
                 }}
               >
-                <CloseButton onClick={onDismiss}>
+                <CloseButton onClick={onDismiss} data-testid='dismiss'>
                   <VisuallyHidden>Dismiss menu</VisuallyHidden>
                   <XCircle />
                 </CloseButton>

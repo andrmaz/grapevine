@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { GetSpecialistQueryVariables } from '/__generated__/types'
+import {GetSpecialistQueryVariables} from '/__generated__/types'
 import {MessageCircle} from 'react-feather'
 import {Spinner} from '@/components/loaders/spinner'
 import UnstyledButton from '@/blocs/buttons/unstyled'
@@ -10,13 +10,15 @@ import {theme} from '@/themes'
 const Dialog = React.lazy(() => import('@/components/dialog/transition'))
 const SpecialistChat = React.lazy(() => import('@/containers/specialist/chat'))
 
-export default function ContactBar({id}: GetSpecialistQueryVariables): JSX.Element {
+export default function ContactBar({
+  id,
+}: GetSpecialistQueryVariables): JSX.Element {
   const [isOpen, setIsOpen] = React.useState<boolean>(false)
   const onOpen = (): void => setIsOpen(true)
   const onDismiss = (): void => setIsOpen(false)
   return (
     <Wrapper>
-      <UnstyledButton onClick={onOpen}>
+      <UnstyledButton data-testid='message' onClick={onOpen}>
         <MessageCircle size={24} color={theme.colors.green} />
       </UnstyledButton>
       <React.Suspense fallback={<Spinner size='medium' />}>

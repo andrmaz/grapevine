@@ -8,10 +8,7 @@ export interface SearchBarProps {
   setSearch: React.Dispatch<React.SetStateAction<string>>
 }
 
-export const SearchBar = ({
-  search,
-  setSearch,
-}: SearchBarProps): JSX.Element => {
+export const SearchBar = ({search, setSearch}: SearchBarProps): JSX.Element => {
   const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const searchValue = event.target.value.toLowerCase()
     setSearch(searchValue)
