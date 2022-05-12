@@ -14,7 +14,6 @@ it('does not render a dialog', () => {
 })
 it('renders a dialog', () => {
   render(<Dialog {...props} />)
-  screen.debug()
   expect(screen.getByRole('dialog')).toBeInTheDocument()
 })
 it('expects a dismiss button to be present', async () => {
