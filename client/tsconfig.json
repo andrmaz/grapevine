@@ -28,6 +28,6 @@
       "test-utils": ["utils/test-utils"]
     }
   },
-  "include": ["src/*", "src/**/*", "__tests__", "config/jest-setup.ts"],
-  "exclude": ["node_modules", "src/api/*.graphql", "scripts/*.js"],
+  "include": ["src/**/*", "__tests__", "config/jest-setup.ts", "utils/*"],
+  "exclude": ["node_modules", "src/api/*.graphql", "scripts/*"],
 }

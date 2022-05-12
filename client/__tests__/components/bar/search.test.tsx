@@ -7,19 +7,16 @@ import faker from '@faker-js/faker'
 
 const props = {
   search: '',
-  setSearch: jest.fn(),
+  setSearch: jest.fn(() => 'value'),
 } as SearchBarProps
+const search = faker.lorem.word()
 
 it('renders a search bar', () => {
   render(<SearchBar {...props} />)
   expect(screen.getByRole('searchbox')).toBeInTheDocument()
 })
 it('accepts a search term', () => {
-  const search = faker.lorem.word()
   render(<SearchBar {...props} search={search} />)
   expect(screen.getByRole('searchbox')).toHaveValue(search)
 })
-it('has a max length property', () => {
-  render(<SearchBar {...props} />)
-  expect(screen.getByRole('searchbox')).toHaveProperty('maxLength', 30)
-})
+it.todo('accepts a user input value')

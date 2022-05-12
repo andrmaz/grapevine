@@ -7,7 +7,10 @@ module.exports = {
   coverageDirectory: 'coverage',
   moduleDirectories: ['node_modules', 'utils', '<rootDir>/'],
   moduleFileExtensions: ['tsx', 'ts', 'js', 'jsx', 'json', 'node'],
-  moduleNameMapper: {'^@/(.*)$': '<rootDir>/src/$1'},
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^/(.*)$': '<rootDir>/$1',
+  },
   modulePathIgnorePatterns: ['<rootDir>/dist/'],
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/dist/'],
   preset: 'ts-jest',

@@ -5,8 +5,8 @@ import {
   useCreateMessageMutation,
 } from '/__generated__/types'
 
+import { Button } from '@/blocs/buttons/base'
 import styled from '@emotion/styled'
-import {theme} from '@/themes'
 import {useAuthState} from '@/services/auth/context'
 
 export const MessageInput = ({id}: GetSpecialistQueryVariables): JSX.Element => {
@@ -37,9 +37,9 @@ export const MessageInput = ({id}: GetSpecialistQueryVariables): JSX.Element => 
         onChange={event => setContent(event.target.value)}
         ref={ref}
       />
-      <Button disabled={!content.length} onClick={handleClick}>
+      <StyledButton disabled={!content.length} onClick={handleClick}>
         Send
-      </Button>
+      </StyledButton>
     </Wrapper>
   )
 }
@@ -53,20 +53,7 @@ const Input = styled.input`
   margin-right: -20%;
   border-radius: 4px;
 `
-const Button = styled.button`
+const StyledButton = styled(Button)`
   width: 20%;
-  background-color: var(--color-indigo);
-  color: var(--color-base);
-  cursor: pointer;
   border-radius: 4px 4px 0 0;
-  &:hover {
-    background-color: var(--color-indigo-10);
-  }
-  &:disabled {
-    background-color: var(--color-gray-20);
-    color: var(--color-gray-80);
-    ${theme.mode.dark} {
-      background-color: var(--color-gray-20);
-    }
-  }
 `
