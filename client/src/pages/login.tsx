@@ -34,7 +34,7 @@ export default function Login(): JSX.Element {
   }
   return (
     <Wrapper>
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={onSubmit} data-testid='form'>
         <div>
           <Label htmlFor='email'>Email:</Label>
           <Input
@@ -45,7 +45,7 @@ export default function Login(): JSX.Element {
             onChange={onChange}
           />
         </div>
-        <Submit type='submit' />
+        <Submit type='submit' disabled={!email.length} />
       </Form>
     </Wrapper>
   )
