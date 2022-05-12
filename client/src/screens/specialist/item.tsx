@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import { Button } from '@/blocs/buttons/base'
 import {GetSpecialistsQuery} from '/__generated__/types'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
@@ -93,21 +94,10 @@ const Name = styled.p`
 `
 const Business = styled.p``
 const Address = styled.p``
-
 const Contact = styled.aside`
   width: 100%;
   height: 20%;
   display: flex;
   justify-content: center;
   align-items: center;
-`
-const Button = styled.button`
-  border-radius: 8px;
-  font-size: 0.7rem;
-  background-color: var(--color-indigo);
-  color: var(--color-base);
-  cursor: pointer;
-  &:hover {
-    background-color: var(--color-indigo-10);
-  }
 `

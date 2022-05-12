@@ -12,12 +12,12 @@ beforeEach(() => {
     </Router>
   )
 })
-it('expect a navigation to be present', () => {
+it('renders a navigation header', () => {
   expect(screen.getByRole('navigation')).toBeInTheDocument()
+})
+it('expect a sign out link to be present', () => {
+  expect(screen.getByRole('link', {name: /sign out/i})).toBeInTheDocument()
 })
 it('expect a dashboard link to be present', () => {
   expect(screen.getByRole('link', {name: /dashboard/i})).toBeInTheDocument()
-})
-it('expect a logout link to be present', () => {
-  expect(screen.getByRole('link', {name: /sign out/i})).toBeInTheDocument()
 })
