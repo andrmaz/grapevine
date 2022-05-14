@@ -15,9 +15,9 @@ beforeEach(() => {
 it('renders a navigation header', () => {
   expect(screen.getByRole('navigation')).toBeInTheDocument()
 })
-it('expect a sign out link to be present', () => {
+it('expects a sign out link to be present', () => {
   expect(screen.getByRole('link', {name: /sign out/i})).toBeInTheDocument()
 })
-it('expect a dashboard link to be present', () => {
+it('expects a dashboard link to be present', () => {
   expect(screen.getByRole('link', {name: /dashboard/i})).toBeInTheDocument()
 })

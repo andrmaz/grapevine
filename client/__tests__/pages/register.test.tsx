@@ -16,16 +16,16 @@ const city = faker.address.city()
 it('expects an email input to be present', () => {
   expect(screen.getByRole('textbox', {name: /email/i})).toBeInTheDocument()
 })
-it('expects an name input to be present', () => {
+it('expects a name input to be present', () => {
   expect(screen.getByRole('textbox', {name: /name/i})).toBeInTheDocument()
 })
 it('expects a city input to be present', () => {
   expect(screen.getByRole('textbox', {name: /city/i})).toBeInTheDocument()
 })
-it('expects an submit button to be present', () => {
+it('expects a submit button to be present', () => {
   expect(screen.getByRole('button', {name: /submit/i})).toBeInTheDocument()
 })
-it('accepts a email input value', async () => {
+it('accepts an email input value', async () => {
   await userEvent.type(screen.getByRole('textbox', {name: /email/i}), email)
   expect(screen.getByRole('textbox', {name: /email/i})).toHaveValue(email)
 })

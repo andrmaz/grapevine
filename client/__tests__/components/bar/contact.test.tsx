@@ -6,13 +6,13 @@ import ContactBar from '@/components/bar/contact'
 import faker from '@faker-js/faker'
 import userEvent from '@testing-library/user-event'
 
-beforeEach(() => {
+beforeEach(async () => {
   render(<ContactBar id={id} />)
+  await waitForElementToBeRemoved(screen.findByTestId('spinner'))
 })
 const id = faker.datatype.uuid()
 
 it('expects a message button to be present', async () => {
-  await waitForElementToBeRemoved(screen.queryByTestId('spinner'))
   expect(screen.getByTestId('message')).toBeInTheDocument()
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
 })

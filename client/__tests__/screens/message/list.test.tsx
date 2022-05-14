@@ -18,7 +18,7 @@ const id = faker.datatype.uuid()
 const to = faker.datatype.uuid()
 const message: Message = {content, from, id, to}
 
-const length = faker.datatype.number(10)
+const length = faker.datatype.number(1)
 const messages: Message[] = new Array(length).fill(message)
 const subscribeToMessages = jest.fn()
 

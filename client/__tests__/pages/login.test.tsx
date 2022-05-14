@@ -14,7 +14,7 @@ const email = faker.internet.email()
 it('expects an email input to be present', () => {
   expect(screen.getByRole('textbox', {name: /email/i})).toBeInTheDocument()
 })
-it('expects an submit button to be present', () => {
+it('expects a submit button to be present', () => {
   expect(screen.getByRole('button', {name: /submit/i})).toBeInTheDocument()
 })
 it('accepts an email input value', async () => {

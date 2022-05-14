@@ -18,7 +18,7 @@ it('expects a text input to be present', () => {
 it('expects a send button to be present', () => {
   expect(screen.getByRole('button', {name: /send/i})).toBeInTheDocument()
 })
-it('accepts an text input value', async () => {
+it('accepts a text input value', async () => {
   await userEvent.type(screen.getByRole('textbox', {name: /message/i}), text)
   expect(screen.getByRole('textbox', {name: /message/i})).toHaveValue(text)
 })
