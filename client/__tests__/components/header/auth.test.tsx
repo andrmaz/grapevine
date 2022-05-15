@@ -3,13 +3,13 @@ import * as React from 'react'
 import {render, screen} from 'test-utils'
 
 import {AuthHeader} from '@/components/header/auth'
-import {BrowserRouter as Router} from 'react-router-dom'
+import {MockedProvider} from '@apollo/client/testing'
 
 beforeEach(() => {
   render(
-    <Router>
+    <MockedProvider>
       <AuthHeader />
-    </Router>
+    </MockedProvider>
   )
 })
 it('renders a navigation header', () => {

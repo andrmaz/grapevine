@@ -3,11 +3,16 @@ import * as React from 'react'
 import {render, screen} from 'test-utils'
 
 import Login from '@/pages/login'
+import { MockedProvider } from '@apollo/client/testing'
 import faker from '@faker-js/faker'
 import userEvent from '@testing-library/user-event'
 
 beforeEach(() => {
-  render(<Login />)
+  render(
+    <MockedProvider>
+      <Login />
+    </MockedProvider>
+  )
 })
 const email = faker.internet.email()
 

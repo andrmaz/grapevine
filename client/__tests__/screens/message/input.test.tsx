@@ -3,11 +3,16 @@ import * as React from 'react'
 import {render, screen} from 'test-utils'
 
 import {MessageInput} from '@/screens/message/input'
+import {MockedProvider} from '@apollo/client/testing'
 import faker from '@faker-js/faker'
 import userEvent from '@testing-library/user-event'
 
 beforeEach(() => {
-    render(<MessageInput id={id} />)
+  render(
+    <MockedProvider>
+      <MessageInput id={id} />
+    </MockedProvider>
+  )
 })
 const id = faker.datatype.uuid()
 const text = faker.lorem.words()

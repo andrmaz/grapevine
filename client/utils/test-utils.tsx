@@ -1,16 +1,15 @@
 import * as React from 'react'
 
-import {ApolloClient, ApolloProvider, InMemoryCache} from '@apollo/client'
 import {RenderOptions, RenderResult, render} from '@testing-library/react'
 
 import {AuthProvider} from '@/services/auth/context'
+import {BrowserRouter as Router} from 'react-router-dom'
 
 const AllTheProviders: React.FC = ({children}) => {
-  const client = new ApolloClient({cache: new InMemoryCache()})
   return (
-    <ApolloProvider client={client}>
-      <AuthProvider>{children}</AuthProvider>
-    </ApolloProvider>
+    <AuthProvider>
+      <Router>{children}</Router>
+    </AuthProvider>
   )
 }
 

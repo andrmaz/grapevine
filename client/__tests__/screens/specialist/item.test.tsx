@@ -27,3 +27,6 @@ it('expects the specialist company city to be present', () => {
 it('expects the specialist company business to be present', () => {
   expect(screen.getByText(bs)).toBeInTheDocument()
 })
+it('expects a see more button to be present', () => {
+  expect(screen.getByRole('button', {name: /see more/i})).toBeInTheDocument()
+})

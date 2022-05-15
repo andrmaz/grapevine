@@ -4,15 +4,12 @@ import * as React from 'react'
 
 import {render, screen} from 'test-utils'
 
-import {BrowserRouter as Router} from 'react-router-dom'
 import {UnauthHeader} from '@/components/header/unauth'
 import userEvent from '@testing-library/user-event'
 
 beforeEach(() => {
   render(
-    <Router>
       <UnauthHeader />
-    </Router>
   )
 })
 it('expects a navigation to be present', () => {

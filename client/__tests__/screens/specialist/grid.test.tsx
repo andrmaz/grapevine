@@ -19,8 +19,7 @@ const specialist = {
   address: {city},
   company: {bs, name: company},
 }
-const length = faker.datatype.number(1)
-const specialists = new Array(length).fill(specialist)
+const specialists = new Array(1).fill(specialist)
 
 it('expects a retry message to be present', () => {
   render(<SpecialistGrid {...props} specialists={[]} />)
