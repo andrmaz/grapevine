@@ -70,6 +70,5 @@ it('renders a graphql error message', async () => {
     </MockedProvider>
   )
   await waitForElementToBeRemoved(() => screen.queryByTestId('spinner'))
-  screen.debug()
   expect(screen.getByTestId('error')).toHaveTextContent(message)
 })

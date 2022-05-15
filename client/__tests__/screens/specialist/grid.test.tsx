@@ -8,12 +8,14 @@ import faker from '@faker-js/faker'
 const props = {
   loading: false,
 } as SpecialistGridProps
+const id = faker.datatype.uuid()
 const name = faker.name.firstName()
 const email = faker.internet.email()
 const city = faker.address.city()
 const bs = faker.company.bs()
 const company = faker.company.companyName()
 const specialist = {
+  id,
   name,
   email,
   address: {city},

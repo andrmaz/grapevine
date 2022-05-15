@@ -1,22 +1,60 @@
 import * as React from 'react'
 
+import {
+  CustomerInput,
+  RegisterCustomerDocument,
+  Role,
+} from '/__generated__/types'
 import {render, screen} from 'test-utils'
 
-import { MockedProvider } from '@apollo/client/testing'
+import {MockedProvider} from '@apollo/client/testing'
 import Register from '@/pages/register'
 import faker from '@faker-js/faker'
 import userEvent from '@testing-library/user-event'
 
+const id = faker.datatype.uuid()
+const name = faker.name.firstName()
+const email = faker.internet.email()
+const city = faker.address.city()
+const message = faker.lorem.sentence()
+const input = {email, name, address: {city}} as CustomerInput
+const request = {
+  query: RegisterCustomerDocument,
+  variables: {input},
+}
+const userInfo = {
+  name,
+  id,
+  email,
+  role: Role.User,
+}
+const token = faker.random.alphaNumeric(32)
+const expiresAt = faker.datatype.number()
+const data = {
+  request,
+  result: {
+    registerCustomer: jest.fn(),
+    data: {
+      registerCustomer: {
+        code: 200,
+        success: true,
+        message,
+        user: {
+          userInfo,
+          token,
+          expiresAt,
+        },
+      },
+    },
+  },
+}
 beforeEach(() => {
   render(
-    <MockedProvider>
+    <MockedProvider mocks={[data]}>
       <Register />
     </MockedProvider>
   )
 })
-const email = faker.internet.email()
-const name = faker.name.firstName()
-const city = faker.address.city()
 
 it('expects an email input to be present', () => {
   expect(screen.getByRole('textbox', {name: /email/i})).toBeInTheDocument()

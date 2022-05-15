@@ -12,8 +12,8 @@ function removeTokenKey(): void {
 
 const USER_KEY = 'user'
 
-function setUserKey(token: string): void {
-  return localStorage.setItem(USER_KEY, token)
+function setUserKey(user: string): void {
+  return localStorage.setItem(USER_KEY, user)
 }
 function getUserKey(): string | null {
   return localStorage.getItem(USER_KEY)
