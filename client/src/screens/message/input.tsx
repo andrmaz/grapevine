@@ -5,11 +5,14 @@ import {
   useCreateMessageMutation,
 } from '/__generated__/types'
 
-import { Button } from '@/blocs/buttons/base'
+import {Button} from '@/blocs/buttons/base'
+import VisuallyHidden from '@reach/visually-hidden'
 import styled from '@emotion/styled'
 import {useAuthState} from '@/services/auth/context'
 
-export const MessageInput = ({id}: GetSpecialistQueryVariables): JSX.Element => {
+export const MessageInput = ({
+  id,
+}: GetSpecialistQueryVariables): JSX.Element => {
   const {user} = useAuthState()
   const [content, setContent] = React.useState<string>('')
   const ref = React.useRef<HTMLInputElement | null>(null)
@@ -29,9 +32,13 @@ export const MessageInput = ({id}: GetSpecialistQueryVariables): JSX.Element => 
   }
   return (
     <Wrapper>
+      <VisuallyHidden as='label' htmlFor='message'>
+        Message input
+      </VisuallyHidden>
       <Input
         type='text'
         name='message'
+        id='message'
         placeholder='Type your message ...'
         value={content}
         onChange={event => setContent(event.target.value)}

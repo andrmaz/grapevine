@@ -41,7 +41,7 @@ export default function Register(): JSX.Element {
   }
   return (
     <Wrapper>
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={onSubmit} data-testid='form'>
         <div>
           <Label htmlFor='name'>Full name:</Label>
           <Input
@@ -74,7 +74,7 @@ export default function Register(): JSX.Element {
             onChange={onChange}
           />
         </div>
-        <Submit type='submit' />
+        <Submit type='submit' disabled={!name.length || !email.length} />
       </Form>
     </Wrapper>
   )

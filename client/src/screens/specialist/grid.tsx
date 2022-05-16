@@ -7,7 +7,7 @@ import {SpecialistItem} from '@/screens/specialist/item'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 
-interface SpecialistGridProps {
+export interface SpecialistGridProps {
   loading: boolean
   error?: ApolloError
   specialists?: GetSpecialistsQuery['specialistsForDashboard']
@@ -21,7 +21,7 @@ export const SpecialistGrid = ({
   return (
     <Wrapper>
       {specialists && specialists.length < 1 && (
-        <Text>
+        <Text data-testid='retry'>
           No results match your search criteria. Try with supply-chains
         </Text>
       )}
