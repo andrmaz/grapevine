@@ -1,16 +1,12 @@
-import 'mapbox-gl/dist/mapbox-gl.css'
-
 import * as React from 'react'
 
 import {Geo, GeolocationFieldsFragmentDoc} from '/__generated__/types'
+import {MAPBOX_STYLE, MAPBOX_TOKEN} from '@/helpers/constants'
 import {Marker, StaticMap} from 'react-map-gl'
 
 import {MapPin} from 'react-feather'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
-
-const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN as string
-const MAPBOX_STYLE = import.meta.env.VITE_MAPBOX_STYLE as string
 
 export const SpecialistLocation = ({
   geo: {lat, lng},

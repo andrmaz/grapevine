@@ -4,7 +4,7 @@ import {render, screen, waitForElementToBeRemoved} from 'test-utils'
 
 import ContactBar from '@/components/bar/contact'
 import {MockedProvider} from '@apollo/client/testing'
-import faker from '@faker-js/faker'
+import { id } from '/mocks/constants'
 import userEvent from '@testing-library/user-event'
 
 beforeEach(async () => {
@@ -14,7 +14,6 @@ beforeEach(async () => {
     </MockedProvider>
   )
 })
-const id = faker.datatype.uuid()
 
 it('expects a message button to be present', async () => {
   await waitForElementToBeRemoved(() => screen.queryByTestId('spinner'))

@@ -5,18 +5,21 @@ import {
   RegisterCustomerDocument,
   Role,
 } from '/__generated__/types'
+import {
+  city,
+  email,
+  expiresAt,
+  id,
+  message,
+  name,
+  token,
+} from '/mocks/constants'
 import {render, screen} from 'test-utils'
 
 import {MockedProvider} from '@apollo/client/testing'
 import Register from '@/pages/register'
-import faker from '@faker-js/faker'
 import userEvent from '@testing-library/user-event'
 
-const id = faker.datatype.uuid()
-const name = faker.name.firstName()
-const email = faker.internet.email()
-const city = faker.address.city()
-const message = faker.lorem.sentence()
 const input = {email, name, address: {city}} as CustomerInput
 const request = {
   query: RegisterCustomerDocument,
@@ -28,29 +31,28 @@ const userInfo = {
   email,
   role: Role.User,
 }
-const token = faker.random.alphaNumeric(32)
-const expiresAt = faker.datatype.number()
-const data = {
-  request,
-  result: {
-    registerCustomer: jest.fn(),
-    data: {
-      registerCustomer: {
-        code: 200,
-        success: true,
-        message,
-        user: {
-          userInfo,
-          token,
-          expiresAt,
+const mocks = [
+  {
+    request,
+    result: {
+      data: {
+        registerCustomer: {
+          code: 200,
+          success: true,
+          message,
+          user: {
+            userInfo,
+            token,
+            expiresAt,
+          },
         },
       },
     },
   },
-}
+]
 beforeEach(() => {
   render(
-    <MockedProvider mocks={[data]}>
+    <MockedProvider mocks={mocks} addTypename={false}>
       <Register />
     </MockedProvider>
   )

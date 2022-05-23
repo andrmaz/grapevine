@@ -7,5 +7,6 @@
     "prettier.trailingComma": "none",
     "prettier.useTabs": true,
     "prettier.configPath": ".prettierrc",
-    "quokka.automaticRestart": true
+    "quokka.automaticRestart": true,
+    "wallaby.useWsl": true
 }

@@ -7,7 +7,7 @@ import faker from '@faker-js/faker'
 
 const props = {
   search: '',
-  setSearch: jest.fn(() => 'value'),
+  setSearch: jest.fn(),
 } as SearchBarProps
 const search = faker.lorem.word()
 
