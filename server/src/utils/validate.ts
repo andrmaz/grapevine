@@ -27,6 +27,9 @@ function validateCustomerInput(input: CustomerInput): void {
   if (!input.name.length) {
     throw new NameRequiredError()
   }
+  if (!input.address.city.length) {
+    throw new CityRequiredError()
+  }
 }
 
 function validateSpecialistInput(input: SpecialistInput): void {

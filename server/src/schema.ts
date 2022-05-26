@@ -142,7 +142,7 @@ const typeDefs = gql`
     "the email address of the customer"
     email: String!
     "the place where the customer lives"
-    address: AddressInput
+    address: AddressInput!
   }
   input UserInput {
     "the email address of the user"

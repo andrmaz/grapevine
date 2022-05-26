@@ -4,7 +4,6 @@ import {MessagesList, MessagesListProps} from '@/screens/message/list'
 import {content, from, id, to} from '/mocks/constants'
 
 import {Message} from '/__generated__/types'
-import faker from '@faker-js/faker'
 import {render} from 'test-utils'
 
 beforeAll(() => {
@@ -16,8 +15,7 @@ beforeEach(async () => {
 })
 const message: Message = {content, from, id, to}
 
-const length = faker.datatype.number(1)
-const messages: Message[] = new Array(length).fill(message)
+const messages: Message[] = new Array(1).fill(message)
 const subscribeToMessages = jest.fn()
 
 const props = {

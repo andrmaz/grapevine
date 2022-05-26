@@ -82,26 +82,34 @@ it('accepts a city input value', async () => {
   await userEvent.type(screen.getByRole('textbox', {name: /city/i}), city)
   expect(screen.getByRole('textbox', {name: /city/i})).toHaveValue(city)
 })
-it('does not submit the form with an empty email', async () => {
+it('does not submit the form with an empty email and city', async () => {
   const onSubmit = jest.fn()
   screen.getByTestId('form').onsubmit = onSubmit
   await userEvent.type(screen.getByRole('textbox', {name: /name/i}), name)
   await userEvent.click(screen.getByRole('button', {name: /submit/i}))
   expect(onSubmit).not.toHaveBeenCalled()
 })
-it('does not submit the form with an empty name', async () => {
+it('does not submit the form with empty name and city', async () => {
   const onSubmit = jest.fn()
   screen.getByTestId('form').onsubmit = onSubmit
   await userEvent.type(screen.getByRole('textbox', {name: /email/i}), email)
+  await userEvent.click(screen.getByRole('button', {name: /submit/i}))
+  expect(onSubmit).not.toHaveBeenCalled()
+})
+it('does not submit the form with empty name and email', async () => {
+  const onSubmit = jest.fn()
+  screen.getByTestId('form').onsubmit = onSubmit
+  await userEvent.type(screen.getByRole('textbox', {name: /city/i}), city)
   await userEvent.click(screen.getByRole('button', {name: /submit/i}))
   expect(onSubmit).not.toHaveBeenCalled()
 })
 it.todo('does not submit the form with a wrong email')
-it('submits the form with both email and name values', async () => {
+it('submits the form with email, name and city values', async () => {
   const onSubmit = jest.fn()
   screen.getByTestId('form').onsubmit = onSubmit
   await userEvent.type(screen.getByRole('textbox', {name: /email/i}), email)
   await userEvent.type(screen.getByRole('textbox', {name: /name/i}), name)
+  await userEvent.type(screen.getByRole('textbox', {name: /city/i}), city)
   await userEvent.click(screen.getByRole('button', {name: /submit/i}))
   expect(onSubmit).toHaveBeenCalledTimes(1)
 })

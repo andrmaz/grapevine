@@ -1,7 +1,21 @@
 import * as React from 'react'
 
-import {MessagesForChatDocument, Role} from '/__generated__/types'
-import {content, email, from, id, message, name, to} from '/mocks/constants'
+import {
+  MessageAddedDocument,
+  MessagesForChatDocument,
+  Role,
+} from '/__generated__/types'
+import {
+  content,
+  email,
+  from,
+  id,
+  message,
+  name,
+  text,
+  to,
+  uuid,
+} from '/mocks/constants'
 import {removeUserKey, setUserKey} from '@/utils/storage'
 import {render, screen, waitForElementToBeRemoved} from 'test-utils'
 
@@ -18,14 +32,33 @@ const mocks = [
     request,
     result: {
       data: {
-        messagesForChat: [
-          {
-            id,
-            from,
-            to,
-            content,
-          },
-        ],
+        messagesForChat: [],
+      },
+    },
+  },
+  {
+    request: {query: MessageAddedDocument},
+    result: {
+      data: {
+        messageAdded: {
+          id,
+          from,
+          to,
+          content,
+        },
+      },
+    },
+  },
+  {
+    request: {query: MessageAddedDocument},
+    result: {
+      data: {
+        messageAdded: {
+          id: uuid,
+          from: to,
+          to: from,
+          content: text,
+        },
       },
     },
   },
@@ -47,15 +80,17 @@ const user = {
 beforeAll(() => {
   const scrollIntoView = jest.fn()
   window.HTMLElement.prototype.scrollIntoView = scrollIntoView
+})
+beforeEach(() => {
   setUserKey(JSON.stringify(user))
 })
-afterAll(() => {
+afterEach(() => {
   removeUserKey()
 })
 
 it('renders a loading state', async () => {
   render(
-    <MockedProvider mocks={mocks} addTypename={false}>
+    <MockedProvider addTypename={false}>
       <SpecialistChat id={to} />
     </MockedProvider>
   )
