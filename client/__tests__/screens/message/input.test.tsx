@@ -1,38 +1,38 @@
 import * as React from 'react'
 
-import {CreateMessageDocument, Role} from '/__generated__/types'
+import {
+  CreateMessageDocument,
+  MessageInput as Input,
+  Role,
+} from '/__generated__/types'
+import {content, email, from, message, name, to} from '/mocks/constants'
 import {removeUserKey, setUserKey} from '@/utils/storage'
 import {render, screen} from 'test-utils'
 
 import {MessageInput} from '@/screens/message/input'
 import {MockedProvider} from '@apollo/client/testing'
-import faker from '@faker-js/faker'
 import userEvent from '@testing-library/user-event'
 
-const to = faker.datatype.uuid()
-const from = faker.datatype.uuid()
-const content = faker.lorem.sentence()
-const message = faker.lorem.sentence()
-const input = {from, to, content}
+const input = {from, to, content} as Input
 const request = {
   query: CreateMessageDocument,
   variables: {input},
 }
-const email = faker.internet.email()
-const name = faker.name.firstName()
-const data = {
-  request,
-  result: {
-    data: {
-      createMessage: {
-        code: 200,
-        success: true,
-        message,
-        output: input,
+const mocks = [
+  {
+    request,
+    result: {
+      data: {
+        createMessage: {
+          code: 200,
+          success: true,
+          message,
+          output: input,
+        },
       },
     },
   },
-}
+]
 
 const user = {
   id: from,
@@ -48,7 +48,7 @@ afterAll(() => {
 })
 beforeEach(() => {
   render(
-    <MockedProvider mocks={[data]}>
+    <MockedProvider mocks={mocks} addTypename={false}>
       <MessageInput id={to} />
     </MockedProvider>
   )

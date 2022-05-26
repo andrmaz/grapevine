@@ -5,18 +5,21 @@ import {
   RegisterCustomerDocument,
   Role,
 } from '/__generated__/types'
+import {
+  city,
+  email,
+  expiresAt,
+  id,
+  message,
+  name,
+  token,
+} from '/mocks/constants'
 import {render, screen} from 'test-utils'
 
 import {MockedProvider} from '@apollo/client/testing'
 import Register from '@/pages/register'
-import faker from '@faker-js/faker'
 import userEvent from '@testing-library/user-event'
 
-const id = faker.datatype.uuid()
-const name = faker.name.firstName()
-const email = faker.internet.email()
-const city = faker.address.city()
-const message = faker.lorem.sentence()
 const input = {email, name, address: {city}} as CustomerInput
 const request = {
   query: RegisterCustomerDocument,
@@ -28,29 +31,28 @@ const userInfo = {
   email,
   role: Role.User,
 }
-const token = faker.random.alphaNumeric(32)
-const expiresAt = faker.datatype.number()
-const data = {
-  request,
-  result: {
-    registerCustomer: jest.fn(),
-    data: {
-      registerCustomer: {
-        code: 200,
-        success: true,
-        message,
-        user: {
-          userInfo,
-          token,
-          expiresAt,
+const mocks = [
+  {
+    request,
+    result: {
+      data: {
+        registerCustomer: {
+          code: 200,
+          success: true,
+          message,
+          user: {
+            userInfo,
+            token,
+            expiresAt,
+          },
         },
       },
     },
   },
-}
+]
 beforeEach(() => {
   render(
-    <MockedProvider mocks={[data]}>
+    <MockedProvider mocks={mocks} addTypename={false}>
       <Register />
     </MockedProvider>
   )
@@ -80,26 +82,34 @@ it('accepts a city input value', async () => {
   await userEvent.type(screen.getByRole('textbox', {name: /city/i}), city)
   expect(screen.getByRole('textbox', {name: /city/i})).toHaveValue(city)
 })
-it('does not submit the form with an empty email', async () => {
+it('does not submit the form with an empty email and city', async () => {
   const onSubmit = jest.fn()
   screen.getByTestId('form').onsubmit = onSubmit
   await userEvent.type(screen.getByRole('textbox', {name: /name/i}), name)
   await userEvent.click(screen.getByRole('button', {name: /submit/i}))
   expect(onSubmit).not.toHaveBeenCalled()
 })
-it('does not submit the form with an empty name', async () => {
+it('does not submit the form with empty name and city', async () => {
   const onSubmit = jest.fn()
   screen.getByTestId('form').onsubmit = onSubmit
   await userEvent.type(screen.getByRole('textbox', {name: /email/i}), email)
+  await userEvent.click(screen.getByRole('button', {name: /submit/i}))
+  expect(onSubmit).not.toHaveBeenCalled()
+})
+it('does not submit the form with empty name and email', async () => {
+  const onSubmit = jest.fn()
+  screen.getByTestId('form').onsubmit = onSubmit
+  await userEvent.type(screen.getByRole('textbox', {name: /city/i}), city)
   await userEvent.click(screen.getByRole('button', {name: /submit/i}))
   expect(onSubmit).not.toHaveBeenCalled()
 })
 it.todo('does not submit the form with a wrong email')
-it('submits the form with both email and name values', async () => {
+it('submits the form with email, name and city values', async () => {
   const onSubmit = jest.fn()
   screen.getByTestId('form').onsubmit = onSubmit
   await userEvent.type(screen.getByRole('textbox', {name: /email/i}), email)
   await userEvent.type(screen.getByRole('textbox', {name: /name/i}), name)
+  await userEvent.type(screen.getByRole('textbox', {name: /city/i}), city)
   await userEvent.click(screen.getByRole('button', {name: /submit/i}))
   expect(onSubmit).toHaveBeenCalledTimes(1)
 })

@@ -7,6 +7,8 @@ import {
 
 import {SpecialistCard} from '@/screens/specialist/card'
 import {Star} from 'react-feather'
+import UnstyledButton from '@/blocs/buttons/unstyled'
+import VisuallyHidden from '@reach/visually-hidden'
 import styled from '@emotion/styled'
 import {theme} from '@/themes'
 import {useAddRecommendation} from '@/hooks/useAddRecommendation'
@@ -28,7 +30,10 @@ export const SpecialistDetails = ({
 
   return (
     <Wrapper>
-      <Icon size={40} onClick={handleClick} />
+      <UnstyledButton onClick={handleClick}>
+        <VisuallyHidden>Add to recommendations</VisuallyHidden>
+        <Icon size={40} />
+      </UnstyledButton>
       <SpecialistCard {...specialistForAbout} />
     </Wrapper>
   )

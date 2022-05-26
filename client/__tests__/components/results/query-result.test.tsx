@@ -1,17 +1,16 @@
 import * as React from 'react'
 
 import {QueryResult, QueryResultProps} from '@/components/results/query-result'
+import { message, text } from '/mocks/constants'
 import {render, screen} from 'test-utils'
 
 import {ApolloError} from '@apollo/client'
-import faker from '@faker-js/faker'
 
-const data = faker.lorem.word()
 const children = <div data-testid='child' />
 const props = {
   loading: false,
   error: undefined,
-  data,
+  data: text,
   children,
 } as QueryResultProps<string>
 
@@ -39,7 +38,6 @@ it('does not render some data', () => {
   expect(screen.queryByTestId('error')).not.toBeInTheDocument()
 })
 it('renders an error message', () => {
-  const message = faker.lorem.sentence()
   const error = {message} as ApolloError
   render(<QueryResult {...props} error={error} />)
   expect(screen.getByTestId('error')).toHaveTextContent(message)

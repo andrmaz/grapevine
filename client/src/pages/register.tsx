@@ -14,6 +14,7 @@ export default function Register(): JSX.Element {
   const [input, setInput] = React.useState<CustomerInput>({
     name: '',
     email: '',
+    address: {city: ''}
   })
   const {name, email, address} = input
 
@@ -21,7 +22,7 @@ export default function Register(): JSX.Element {
     variables: {input},
     onCompleted: data => handleRegister(data, dispatch, history),
     onError: error => {
-      console.error(error.name)
+      console.error(error.message)
     },
   })
 
@@ -72,6 +73,7 @@ export default function Register(): JSX.Element {
             name='address'
             value={address?.city}
             onChange={onChange}
+            required
           />
         </div>
         <Submit type='submit' disabled={!name.length || !email.length} />

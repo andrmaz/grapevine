@@ -105,7 +105,7 @@ export type Customer = User & {
 
 export type CustomerInput = {
   /** the place where the customer lives */
-  address?: Maybe<AddressInput>
+  address: AddressInput
   /** the email address of the customer */
   email: Scalars['String']
   /** the first and last name of the customer */

@@ -1,27 +1,28 @@
 import * as React from 'react'
 
+import {
+  bs,
+  catchPhrase,
+  city,
+  companyName,
+  email,
+  name,
+  phone,
+  street,
+  suite,
+  website,
+  zipcode,
+} from '/mocks/constants'
 import {render, screen} from 'test-utils'
 
 import {GetSpecialistQuery} from '/__generated__/types'
 import {SpecialistCard} from '@/screens/specialist/card'
-import faker from '@faker-js/faker'
 
-const name = faker.name.firstName()
-const email = faker.internet.email()
-const city = faker.address.city()
-const bs = faker.company.bs()
-const company = faker.company.companyName()
-const street = faker.address.streetName()
-const suite = faker.address.secondaryAddress()
-const zipcode = faker.address.zipCode()
-const phone = faker.phone.phoneNumber()
-const website = faker.internet.url()
-const catchPhrase = faker.company.catchPhrase()
 const props = {
   name,
   email,
   address: {city},
-  company: {bs, name: company},
+  company: {bs, name: companyName},
 } as GetSpecialistQuery['specialistForAbout']
 
 it('expects the specialist name to be present', () => {
@@ -42,7 +43,7 @@ it('expects the specialist company business to be present', () => {
 })
 it('expects the specialist company name to be present', () => {
   render(<SpecialistCard {...props} />)
-  expect(screen.getByText(company)).toBeInTheDocument()
+  expect(screen.getByText(companyName)).toBeInTheDocument()
 })
 it('expects the specialist company street not to be present', () => {
   render(<SpecialistCard {...props} />)
@@ -90,7 +91,7 @@ it('expects the specialist company catch phrase not to be present', () => {
 })
 it('expects the specialist company catch phrase to be present', () => {
   render(
-    <SpecialistCard {...props} company={{bs, name: company, catchPhrase}} />
+    <SpecialistCard {...props} company={{bs, name: companyName, catchPhrase}} />
   )
   expect(screen.queryByText(catchPhrase)).toBeInTheDocument()
 })

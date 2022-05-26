@@ -1,7 +1,9 @@
+import 'mapbox-gl/dist/mapbox-gl.css'
 import './index.css'
 
 import * as React from 'react'
 
+import {API_URL, WS_URL} from './helpers/constants'
 import {
   ApolloClient,
   ApolloProvider,
@@ -18,18 +20,18 @@ import ReactDOM from 'react-dom'
 import {ThemeProvider} from '@emotion/react'
 import {createClient} from 'graphql-ws'
 import {errorLink} from '@/utils/errors'
-import { getMainDefinition } from '@apollo/client/utilities'
-import { getTokenKey } from '@/utils/storage'
+import {getMainDefinition} from '@apollo/client/utilities'
+import {getTokenKey} from '@/utils/storage'
 import {setContext} from '@apollo/client/link/context'
 import {theme} from '@/themes'
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: import.meta.env.VITE_WS_URL as string,
+    url: WS_URL,
   })
 )
 const httpLink = createHttpLink({
-  uri: import.meta.env.VITE_API_URL as string,
+  uri: API_URL,
 })
 
 const authLink = setContext((_, {headers}) => {

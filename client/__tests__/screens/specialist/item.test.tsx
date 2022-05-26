@@ -1,17 +1,14 @@
 import * as React from 'react'
 
+import {bs, city, name} from '/mocks/constants'
 import {render, screen} from 'test-utils'
 
 import {GetSpecialistsQuery} from '/__generated__/types'
 import {SpecialistItem} from '@/screens/specialist/item'
-import faker from '@faker-js/faker'
 
 beforeEach(() => {
   render(<SpecialistItem {...props} />)
 })
-const name = faker.name.firstName()
-const city = faker.address.city()
-const bs = faker.company.bs()
 const props = {
   name,
   address: {city},

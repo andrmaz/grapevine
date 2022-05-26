@@ -529,9 +529,13 @@
             "name": "address",
             "description": "the place where the customer lives",
             "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "AddressInput",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "AddressInput",
+                "ofType": null
+              }
             },
             "defaultValue": null,
             "isDeprecated": false,

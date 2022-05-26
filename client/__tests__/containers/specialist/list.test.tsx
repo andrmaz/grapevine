@@ -1,15 +1,15 @@
 import * as React from 'react'
 
-import {id, message, name} from '/mocks/constants'
+import {bs, city, id, message, name} from '/mocks/constants'
 import {render, screen, waitForElementToBeRemoved} from 'test-utils'
 
+import {GetSpecialistsDocument} from '/__generated__/types'
 import {GraphQLError} from 'graphql'
 import {MockedProvider} from '@apollo/client/testing'
-import {RecommendationList} from '@/containers/recommendation/list'
-import {RecommendationsForDashboardDocument} from '/__generated__/types'
+import {SpecialistList} from '@/containers/specialist/list'
 
 const request = {
-  query: RecommendationsForDashboardDocument,
+  query: GetSpecialistsDocument,
   variables: {},
 }
 const mocks = [
@@ -17,10 +17,16 @@ const mocks = [
     request,
     result: {
       data: {
-        recommendationsForDashboard: [
+        specialistsForDashboard: [
           {
             id,
             name,
+            address: {
+              city,
+            },
+            company: {
+              bs,
+            },
           },
         ],
       },
@@ -39,24 +45,24 @@ const errors = {
 it('renders a loading state', () => {
   render(
     <MockedProvider mocks={mocks} addTypename={false}>
-      <RecommendationList />
+      <SpecialistList />
     </MockedProvider>
   )
   expect(screen.getByTestId('spinner')).toBeInTheDocument()
 })
-it('renders a list of recommended specialists', async () => {
+it('renders a list of specialists', async () => {
   render(
     <MockedProvider mocks={mocks} addTypename={false}>
-      <RecommendationList />
+      <SpecialistList />
     </MockedProvider>
   )
   await waitForElementToBeRemoved(() => screen.queryByTestId('spinner'))
-  expect(screen.getByRole('link')).toHaveTextContent(name)
+  expect(screen.getByText(name)).toBeInTheDocument()
 })
 it('renders a network error message', async () => {
   render(
     <MockedProvider mocks={[error]} addTypename={false}>
-      <RecommendationList />
+      <SpecialistList />
     </MockedProvider>
   )
   await waitForElementToBeRemoved(() => screen.queryByTestId('spinner'))
@@ -65,7 +71,7 @@ it('renders a network error message', async () => {
 it('renders a graphql error message', async () => {
   render(
     <MockedProvider mocks={[errors]} addTypename={false}>
-      <RecommendationList />
+      <SpecialistList />
     </MockedProvider>
   )
   await waitForElementToBeRemoved(() => screen.queryByTestId('spinner'))

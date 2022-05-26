@@ -4,7 +4,7 @@ import {Message} from '/__generated__/types'
 import styled from '@emotion/styled'
 import {useAuthState} from '@/services/auth/context'
 
-type MessagesListProps = {
+export type MessagesListProps = {
   messages?: Message[]
   subscribeToMessages: () => void
 }
