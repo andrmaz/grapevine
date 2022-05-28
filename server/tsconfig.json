@@ -26,6 +26,6 @@
     "excludeDirectories": ["**/node_modules", "build"],
     "excludeFiles": ["src/generated/*.ts", "graphql.schema.json"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "__tests__"],
   "exclude": ["node_modules"],
 }

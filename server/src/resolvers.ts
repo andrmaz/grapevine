@@ -108,7 +108,7 @@ const resolvers: Resolvers<ContextType> = {
         }
       }
     },
-    // insert a new customer in the database
+    // authorize a customer to access the application
     authorizeCustomer: async (_, {input}, {dataSources}) => {
       try {
         const user = await dataSources.customers.authorizeCustomer(input)
