@@ -28,6 +28,7 @@ describe('authorize customer mutation', () => {
     schema,
     dataSources: () => ({customers, specialists}),
   })
+
   it('successfully authenticate a customer', async () => {
     const response = {
       token,
@@ -44,7 +45,8 @@ describe('authorize customer mutation', () => {
     expect(result.data?.authorizeCustomer.success).toBeTruthy()
     expect(result.data?.authorizeCustomer.user).toEqual(response)
   })
-  it('returns an error', async () => {
+
+  it('returns an email required error', async () => {
     customers.authorizeCustomer = jest.fn(async () => {
       throw new EmailRequiredError()
     })

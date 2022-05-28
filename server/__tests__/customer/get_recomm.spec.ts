@@ -1,6 +1,13 @@
-import {creator, email, id, name, user} from '../../mocks/constants'
+import {
+  creator,
+  email,
+  name,
+  specialist,
+  user,
+  uuid,
+} from '../../mocks/constants'
 
-import {ApolloServer} from 'apollo-server'
+import {ApolloServer} from 'apollo-server-express'
 import {CustomerModel} from '../../src/models/customer'
 import Customers from '../../src/datasources/customer'
 import {DIRECTIVES} from '@graphql-codegen/typescript-mongodb'
@@ -13,9 +20,9 @@ import resolvers from '../../src/resolvers'
 import typeDefs from '../../src/schema'
 
 const query =
-  'query CustomerForProfile($id: ID!){customerForProfile(id: $id){id name}}'
+  'query RecommendationsForDashboard {recommendationsForDashboard {id name}}'
 
-describe('customer for profile query', () => {
+describe('recommendations for dashboard query', () => {
   const customers = new Customers(new CustomerModel())
   const specialists = new Specialists(new SpecialistModel())
   let schema = makeExecutableSchema({
@@ -24,36 +31,32 @@ describe('customer for profile query', () => {
   })
   schema = authDirectiveTransformer(schema, 'auth', getRole)
 
-  it('fetches the customer profile', async () => {
+  it("fetches the customer's recommendations list", async () => {
     const testServer = new ApolloServer({
       schema,
       dataSources: () => ({customers, specialists}),
-      context: () => ({user: {id, name, email, role: user}}),
+      context: () => ({user: {id: uuid, name, email, role: user}}),
     })
-    customers.getCustomer = jest.fn(async () => ({
-      id,
-      name,
-      email,
-      role: user,
-      specialists: [],
-    }))
+    customers.getRecommendations = jest.fn(async () => [specialist])
     const result = await testServer.executeOperation({
       query,
-      variables: {id},
     })
     expect(result.errors).toBeUndefined()
-    expect(result.data?.customerForProfile).toEqual({id, name})
+    expect(result.data?.recommendationsForDashboard[0]).toHaveProperty(
+      'id',
+      specialist.id
+    )
   })
 
   it('returns an authentication error', async () => {
     const testServer = new ApolloServer({
       schema,
       dataSources: () => ({customers, specialists}),
-      context: () => ({user: {id, name, email, role: creator}}),
+      context: () => ({user: {id: uuid, name, email, role: creator}}),
     })
     const result = await testServer.executeOperation({
       query,
-      variables: {id},
+      variables: {id: uuid},
     })
     expect(result.data).toBeNull()
     expect(result.errors?.[0]).toHaveProperty('message', 'Not authorized')

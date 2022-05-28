@@ -18,16 +18,6 @@ export const lng = faker.address.longitude()
 export const address = {city, street, suite, zipcode}
 export const company = {bs, name: companyName, catchPhrase}
 export const geo = {lat, lng}
-export const specialist = {
-  id,
-  name,
-  email,
-  phone,
-  website,
-  address,
-  company,
-  geo,
-}
 export const to = faker.datatype.uuid()
 export const from = faker.datatype.uuid()
 export const content = faker.lorem.words()
@@ -42,3 +32,14 @@ export const user = Role.User
 export const creator = Role.Creator
 export const admin = Role.Admin
 export const userInfo = {id, name, email, role: user}
+export const specialist = {
+  id,
+  name,
+  email,
+  phone,
+  website,
+  address,
+  company,
+  geo,
+  role: creator,
+}

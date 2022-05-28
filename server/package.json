@@ -5,9 +5,9 @@
   "main": "index.ts",
   "typings": "graphql.ts",
   "scripts": {
-    "test": "jest",
+    "test": "jest --bail",
     "test:ci": "jest --ci --bail --silent",
-    "test:watch": "jest --watch",
+    "test:watch": "jest --watch --bail",
     "start": "ts-node src/index.ts",
     "dev": "nodemon src/index.ts",
     "generate": "graphql-codegen --config codegen.yml",

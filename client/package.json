@@ -14,9 +14,9 @@
     "codegen": "npm run download-schema && npm run generate",
     "predev": "npm run generate",
     "nc": "node scripts/create_new_component.mjs",
-    "test": "jest",
+    "test": "jest --bail",
     "test:ci": "jest --ci --bail --silent",
-    "test:watch": "jest --watch",
+    "test:watch": "jest --watch --bail",
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
