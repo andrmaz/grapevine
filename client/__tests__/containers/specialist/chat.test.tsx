@@ -32,7 +32,14 @@ const mocks = [
     request,
     result: {
       data: {
-        messagesForChat: [],
+        messagesForChat: [
+          {
+            id: uuid,
+            from: to,
+            to: from,
+            content: text,
+          },
+        ],
       },
     },
   },
@@ -45,19 +52,6 @@ const mocks = [
           from,
           to,
           content,
-        },
-      },
-    },
-  },
-  {
-    request: {query: MessageAddedDocument},
-    result: {
-      data: {
-        messageAdded: {
-          id: uuid,
-          from: to,
-          to: from,
-          content: text,
         },
       },
     },

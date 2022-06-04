@@ -16,7 +16,11 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "~/*": ["src/*"],
+      "mocks/*": ["mocks/*"],
+    }
   },
   "watchOptions": {
     "watchFile": "useFsEvents",
@@ -26,6 +30,6 @@
     "excludeDirectories": ["**/node_modules", "build"],
     "excludeFiles": ["src/generated/*.ts", "graphql.schema.json"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "__tests__"],
   "exclude": ["node_modules"],
 }
