@@ -1,10 +1,10 @@
 import {ApolloServer, UserInputError} from 'apollo-server-express'
-import {EmailRequiredError, GenericServerError} from '~/utils/errors'
 import {city, email, expiresAt, name, token, userInfo} from 'mocks/constants'
 
 import {CustomerModel} from '~/models/customer'
 import Customers from '~/datasources/customer'
 import {DIRECTIVES} from '@graphql-codegen/typescript-mongodb'
+import {EmailRequiredError} from '~/utils/errors'
 import {SpecialistModel} from '~/models/specialist'
 import Specialists from '~/datasources/specialist'
 import authDirectiveTransformer from '~/directives/auth'
@@ -47,9 +47,6 @@ describe('register customer mutation', () => {
   })
 
   it('returns an user input error', async () => {
-    customers.insertCustomer = jest.fn(async () => {
-      throw new GenericServerError()
-    })
     const input = {name, address: {city}}
     const result = await testServer.executeOperation({
       query,
@@ -57,6 +54,7 @@ describe('register customer mutation', () => {
     })
     expect(result.data).toBeUndefined()
     expect(result.errors?.[0]).toBeInstanceOf(UserInputError)
+    expect(result.errors?.[0].extensions?.code).toMatch(/bad_user_input/i)
   })
 
   it('returns an email required error', async () => {
