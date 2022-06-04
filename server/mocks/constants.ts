@@ -21,7 +21,7 @@ export const address = {city, street, suite, zipcode, geo}
 export const to = faker.datatype.uuid()
 export const from = faker.datatype.uuid()
 export const content = faker.lorem.words()
-export const message = faker.lorem.sentence()
+export const sentence = faker.lorem.sentence()
 export const token = faker.random.alphaNumeric(32)
 export const expiresAt = faker.datatype.number()
 export const recommendations = faker.datatype.number(100)
@@ -32,6 +32,7 @@ export const user = Role.User
 export const creator = Role.Creator
 export const admin = Role.Admin
 export const userInfo = {id, name, email, role: user}
+export const message = {id, from, to, content}
 export const specialistForAbout = {
   id,
   name,

@@ -27,7 +27,7 @@ module.exports = {
     'react/prop-types': 'off',
     'react/jsx-uses-react': 'error',
     'react/jsx-uses-vars': 'error',
-    '@typescript-eslint/no-unused-vars': ['error'],
+    '@typescript-eslint/no-unused-vars': ['error', {ignoreRestSiblings: true}],
     '@typescript-eslint/explicit-function-return-type': [
       'warn',
       {
