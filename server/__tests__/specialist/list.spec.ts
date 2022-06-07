@@ -13,7 +13,7 @@ import resolvers from '~/resolvers'
 import typeDefs from '~/schema'
 
 const query =
-  'query getSpecialists {specialistsForDashboard {id name address {city} company{bs}}}'
+  'query GetSpecialists {specialistsForDashboard {id name address {city} company{bs}}}'
 
 describe('get specialists query', () => {
   const customers = new Customers(new CustomerModel())

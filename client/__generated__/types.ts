@@ -674,7 +674,7 @@ export type IncrementRecommendationsMutationHookResult = ReturnType<typeof useIn
 export type IncrementRecommendationsMutationResult = Apollo.MutationResult<IncrementRecommendationsMutation>;
 export type IncrementRecommendationsMutationOptions = Apollo.BaseMutationOptions<IncrementRecommendationsMutation, IncrementRecommendationsMutationVariables>;
 export const GetSpecialistDocument = /*#__PURE__*/ gql`
-    query getSpecialist($id: ID!) {
+    query GetSpecialist($id: ID!) {
   specialistForAbout(id: $id) {
     id
     name
@@ -727,7 +727,7 @@ export type GetSpecialistQueryHookResult = ReturnType<typeof useGetSpecialistQue
 export type GetSpecialistLazyQueryHookResult = ReturnType<typeof useGetSpecialistLazyQuery>;
 export type GetSpecialistQueryResult = Apollo.QueryResult<GetSpecialistQuery, GetSpecialistQueryVariables>;
 export const GetSpecialistsDocument = /*#__PURE__*/ gql`
-    query getSpecialists {
+    query GetSpecialists {
   specialistsForDashboard {
     id
     name

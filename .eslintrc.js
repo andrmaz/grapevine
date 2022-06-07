@@ -4,7 +4,12 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  ignorePatterns: ['/node_modules/*', '/client/dist/*', '!.prettierrc'],
+  ignorePatterns: [
+    '/node_modules/*',
+    '/client/dist/*',
+    '!.prettierrc',
+    '/cypress',
+  ],
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',

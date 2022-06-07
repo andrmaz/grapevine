@@ -13,9 +13,11 @@
   "devDependencies": {
     "@commitlint/cli": "^13.2.1",
     "@commitlint/config-conventional": "^13.2.0",
+    "@testing-library/cypress": "^8.0.3",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.32.0",
     "commitizen": "^4.2.4",
+    "cypress": "^10.0.2",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.5.0",
@@ -25,6 +27,7 @@
     "husky": "^7.0.4",
     "lint-staged": "^11.2.6",
     "prettier": "2.6.2",
+    "start-server-and-test": "^1.14.0",
     "typescript": "^4.7.2"
   },
   "scripts": {
@@ -38,8 +41,10 @@
     "start": "concurrently \"cd client && npm run dev\" \"cd server && npm start\"",
     "dev": "concurrently \"cd client && npm run dev\" \"cd server && npm run dev\"",
     "build": "concurrently \"cd client && npm run build\" \"cd server && npm run tsc\"",
+    "clean-install": "concurrently \"cd client && npm ci\" \"cd server && npm ci\"",
     "test": "concurrently \"cd client && npm run test:ci\" \"cd server && npm run test:ci\"",
-    "clean-install": "concurrently \"cd client && npm ci\" \"cd server && npm ci\""
+    "cy:open": "cypress open",
+    "test:e2e:dev": "start-server-and-test dev 'http-get://localhost:4000/graphql?query={ __schema { queryType { name } } }' cy:open"
   },
   "repository": {
     "type": "git",

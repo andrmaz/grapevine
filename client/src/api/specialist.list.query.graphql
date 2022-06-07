@@ -1,5 +1,5 @@
 # Query to get a list of specialists with some information
-query getSpecialists {
+query GetSpecialists {
   specialistsForDashboard {
     id
     name
