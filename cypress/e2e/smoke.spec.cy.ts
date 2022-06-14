@@ -1,7 +1,17 @@
+// type definitions for Cypress object "cy"
+/// <reference types="cypress" />
+
+// type definitions for custom commands like "createDefaultTodos"
+/// <reference types="../support" />
+
+// check this file using TypeScript if available
+// @ts-check
 import {aliasMutation, aliasQuery} from '../utils/graphql-test-utils'
 
 context('Smoke Test', () => {
   beforeEach(() => {
+    // reset and seed the database prior to every test
+    cy.exec('npm run db:reset && npm run db:seed')
     cy.intercept('POST', 'http://localhost:4000', req => {
       aliasQuery(req, 'GetSpecialist')
       aliasMutation(req, 'AuthorizeCustomer')

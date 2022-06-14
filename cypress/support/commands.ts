@@ -35,3 +35,24 @@
 //     }
 //   }
 // }
+
+const query =
+  'mutation AuthorizeCustomer($input: UserInput!) { authorizeCustomer(input: $input) {code success message user {userInfo {name id email role}token expiresAt}}}'
+
+const login = () => {
+  cy.request({
+    method: 'POST',
+    url: 'http://localhost:4000',
+    body: {query},
+    failOnStatusCode: false,
+  }).then(resp => {
+    const token = resp.body.data.authorizeCustomer.user.token
+    cy.window().its('localStorage').invoke('setItem', token)
+  })
+}
+const checkToken = (token: string) => {
+  cy.window().its('localStorage.token').should('eq', token)
+}
+
+Cypress.Commands.add('login', login)
+Cypress.Commands.add('checkToken', checkToken)

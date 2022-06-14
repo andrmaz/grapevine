@@ -8,5 +8,8 @@
     "prettier.useTabs": true,
     "prettier.configPath": ".prettierrc",
     "quokka.automaticRestart": true,
-    "wallaby.useWsl": true
+    "wallaby.useWsl": true,
+    "cSpell.words": [
+        "INITDB"
+    ]
 }

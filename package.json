@@ -28,6 +28,7 @@
     "lint-staged": "^11.2.6",
     "prettier": "2.6.2",
     "start-server-and-test": "^1.14.0",
+    "ts-node": "^10.8.1",
     "typescript": "^4.7.2"
   },
   "scripts": {
@@ -44,7 +45,9 @@
     "clean-install": "concurrently \"cd client && npm ci\" \"cd server && npm ci\"",
     "test": "concurrently \"cd client && npm run test:ci\" \"cd server && npm run test:ci\"",
     "cy:open": "cypress open",
-    "test:e2e:dev": "start-server-and-test dev 'http-get://localhost:4000/graphql?query={ __schema { queryType { name } } }' cy:open"
+    "test:e2e:dev": "start-server-and-test dev 'http-get://localhost:4000/graphql?query={ __schema { queryType { name } } }' cy:open",
+    "db:seed": "ts-node server/scripts/seed.ts",
+    "db:reset": "ts-node server/scripts/reset.ts"
   },
   "repository": {
     "type": "git",
