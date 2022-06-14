@@ -20,6 +20,6 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
-          build: npm run build
+          install-command: npm run clean-install
           start: npm run test:e2e:dev
-      - run: npm run clean-install
+          wait-on: 'http://localhost:4000'
