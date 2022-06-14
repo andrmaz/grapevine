@@ -22,3 +22,4 @@ jobs:
         with:
           build: npm run build
           start: npm run test:e2e:dev
+      - run: npm run clean-install
