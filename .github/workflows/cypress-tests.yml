@@ -15,15 +15,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Clean install dependencies and build
+      - name: Clean install dependencies
         run: |
           npm ci
           npm run clean-install
-          npm run build
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
+          # API runs on port 4000
+          # Web server runs on port 3000
           start: npm run test:e2e:dev
-          wait-on: 'http://localhost:4000'
+          # wait for all services to respond
+          wait-on: 'http://localhost:4000, http://localhost:27018'
