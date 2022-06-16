@@ -5,27 +5,43 @@ on: [push]
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [14]
     services:
       mongo:
         image: mongo:latest
         env:
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: example
-          ports: '27018:27017'
+          ports: '27017:27018'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      # Install NPM dependencies
       - name: Clean install dependencies
         run: |
           npm ci
           npm run clean-install
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
+      - name: Set NodeJs version
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      # run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
+          # we have already installed all dependencies above
+          install: false
+          # let's make sure our tests pass on Chrome browser
+          browser: chrome
           # API runs on port 4000
           # Web server runs on port 3000
-          start: npm run test:e2e:dev
+          start: npm run dev
           # wait for all services to respond
           wait-on: 'http://localhost:4000, http://localhost:27018'
+        env:
+          # pass GitHub token to allow accurately detecting a build vs a re-run build
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # uses the debug module to output additional verbose logs
+          DEBUG: '@cypress/github-action'
