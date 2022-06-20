@@ -14,7 +14,9 @@ jobs:
         env:
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: example
-          ports: '27017:27018'
+        ports: 
+          # Maps tcp port 27107 on service container to the host 27018
+          - 27017:27018
     steps:
       - name: Checkout
         uses: actions/checkout@v2
