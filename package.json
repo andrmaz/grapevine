@@ -45,7 +45,7 @@
     "clean-install": "concurrently \"cd client && npm ci\" \"cd server && npm ci\"",
     "test": "concurrently \"cd client && npm run test:ci\" \"cd server && npm run test:ci\"",
     "cy:open": "cypress open",
-    "test:e2e:dev": "start-server-and-test dev 'http-get://localhost:4000/graphql?query={ __schema { queryType { name } } }' cy:open",
+    "test:e2e:dev": "start-server-and-test dev 'http-get://localhost:4000/graphql?query={ __schema { queryType { name } } }'",
     "db:seed": "ts-node server/scripts/seed.ts",
     "db:reset": "ts-node server/scripts/reset.ts"
   },
