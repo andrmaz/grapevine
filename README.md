@@ -1,6 +1,9 @@
-# grapevine
+# Grapevine
 
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)
+[![jest](https://jestjs.io/img/jest-badge.svg)](https://github.com/facebook/jest)
+[![Cypress.io](https://img.shields.io/badge/tested%20with-Cypress-04C38E.svg)](https://www.cypress.io/)
 [![CodeQL](https://github.com/andrmaz/grapevine/actions/workflows/codeql-analysis.yml/badge.svg?event=push)](https://github.com/andrmaz/grapevine/actions/workflows/codeql-analysis.yml)
 [![Build and Test](https://github.com/andrmaz/grapevine/actions/workflows/build-and-test.yml/badge.svg?event=push)](https://github.com/andrmaz/grapevine/actions/workflows/build-and-test.yml)
 
