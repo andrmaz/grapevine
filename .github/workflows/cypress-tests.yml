@@ -1,13 +1,14 @@
-name: Cypress Tests
+name: End-to-end tests
 
 on: [push]
 
 jobs:
   cypress-run:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [14]
+    runs-on: ubuntu-20.04
+    # Cypress Docker image with Chrome v100
+    # and Firefox v98 pre-installed
+    container: cypress/browsers:node14.17.6-chrome100-ff98
+
     services:
       mongo:
         image: mongo:latest
@@ -15,20 +16,23 @@ jobs:
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: example
         ports: 
-          # Maps tcp port 27107 on service container to the host 27018
-          - 27017:27018
+          # Maps tcp port 27108 on service container to the host 27017
+          - 27018:27017
+        # Use the host system’s IPC namespace.
+        ipc: host 
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      # Install NPM dependencies
-      - name: Clean install dependencies
-        run: |
-          npm ci
-          npm run clean-install
-      - name: Set NodeJs version
-        uses: actions/setup-node@v1
+      # Install root dependencies
+      - name: Install global dependencies
+        uses: cypress-io/github-action@v4
         with:
-          node-version: ${{ matrix.node }}
+          # just perform install
+          runTests: false
+      # Install nested dependencies
+      - name: Install packages dependencies
+        run: npm run clean-install
       # run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v4
@@ -37,11 +41,13 @@ jobs:
           install: false
           # let's make sure our tests pass on Chrome browser
           browser: chrome
+          #wait for all services to respond
+          wait-on: 'http://localhost:4000, http://localhost:3000'
           # API runs on port 4000
           # Web server runs on port 3000
-          start: npm run test:e2e:dev
-          # wait for all services to respond
-          wait-on: 'http://localhost:4000, http://localhost:27018'
+          start: npm run start
+          # overwrite the Cypress run command 
+          command: npm run cy:run
         env:
           # pass GitHub token to allow accurately detecting a build vs a re-run build
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

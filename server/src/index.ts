@@ -2,6 +2,7 @@
 import 'dotenv/config'
 
 import {getRole, getUser} from './utils/auth'
+import {options, url} from './config'
 
 import {ApolloServer} from 'apollo-server-express'
 import {ApolloServerPluginDrainHttpServer} from 'apollo-server-core'
@@ -30,7 +31,7 @@ import {useServer} from 'graphql-ws/lib/use/ws'
   const httpServer = createServer(app)
 
   // Connect to MongoDB
-  connector()
+  connector(url, options)
 
   // Create the schema, which will be used separately by ApolloServer and
   // the WebSocket server.
@@ -52,7 +53,7 @@ import {useServer} from 'graphql-ws/lib/use/ws'
   })
 
   // Save the returned server's info so we can shutdown this server later
-  const serverCleanup = useServer({schema},wsServer)
+  const serverCleanup = useServer({schema}, wsServer)
 
   // Set up ApolloServer.
   const server = new ApolloServer({
@@ -100,7 +101,7 @@ import {useServer} from 'graphql-ws/lib/use/ws'
     // /graphql. Optionally provide this to match apollo-server.
     path: '/',
   })
-  
+
   const PORT = 4000
   // Now that our HTTP server is fully set up, we can listen to it.
   await new Promise<void>(resolve => httpServer.listen(PORT, resolve))

@@ -1,0 +1,17 @@
+{
+  "data": {
+    "specialistForAbout": {
+      "id": "62f6b4a713cec8ca7b7a539f",
+      "name": "Jane Doe",
+      "email": "email@address",
+      "address": {
+        "city": "Toronto"
+      },
+      "company": {
+        "name": "Amazon",
+        "bs": "Supply-chain"
+      },
+      "role": "CREATOR"
+    }
+  }
+}

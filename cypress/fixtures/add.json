@@ -1,0 +1,19 @@
+{
+  "data": {
+    "addRecommendation": {
+      "code": 200,
+      "success": true,
+      "message": "Successfully add specialist 62f6b4a713cec8ca7b7a539f to customer's list",
+      "customer": {
+        "id": "62e3055ba2b31a174438f9c3",
+        "name": "John Doe",
+        "email": "email@address",
+        "role": "USER",
+        "specialists": ["62f6b4a713cec8ca7b7a539f"],
+        "address": {
+          "city": "Toronto"
+        }
+      }
+    }
+  }
+}

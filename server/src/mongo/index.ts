@@ -1,8 +1,6 @@
-import {options, url} from '../config'
+import mongoose, {ConnectOptions} from 'mongoose'
 
-import mongoose from 'mongoose'
-
-function connector(): void {
+function connector(url: string, options: ConnectOptions): void {
   mongoose.connect(url, options, function (error) {
     if (error) {
       console.error('Initial connection error:', error.name)

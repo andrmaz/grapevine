@@ -22,6 +22,7 @@
         "plugins/**/*",
         "support/**/*",
         "../node_modules/cypress",
-        "../node_modules/@testing-library/cypress"
+        "../node_modules/@testing-library/cypress",
+        "../cypress.config.ts"
     ],
 }
