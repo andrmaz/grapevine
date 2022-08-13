@@ -19,7 +19,7 @@ jobs:
           # Maps tcp port 27108 on service container to the host 27017
           - 27018:27017
         # Use the host system’s IPC namespace.
-        ipc: host 
+        # ipc: host 
     
     steps:
       - name: Checkout
