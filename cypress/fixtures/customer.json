@@ -3,7 +3,7 @@
     "customerForProfile": {
       "id": "62e3055ba2b31a174438f9c3",
       "name": "John Doe",
-      "email": "email@address",
+      "email": "address@email",
       "role": "USER",
       "specialists": [],
       "address": {

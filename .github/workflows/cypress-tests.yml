@@ -4,36 +4,43 @@ on: [push]
 
 jobs:
   cypress-run:
-    runs-on: ubuntu-20.04
+    # Containers must run in Linux based operating systems
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+        mongodb-version: ['4.4']
     # Cypress Docker image with Chrome v100
     # and Firefox v98 pre-installed
     container: cypress/browsers:node14.17.6-chrome100-ff98
-
-    services:
-      mongo:
-        image: mongo:latest
-        env:
-          MONGO_INITDB_ROOT_USERNAME: root
-          MONGO_INITDB_ROOT_PASSWORD: example
-        ports: 
-          # Maps tcp port 27108 on service container to the host 27017
-          - 27018:27017
-        # Use the host system’s IPC namespace.
-        ipc: host 
     
     steps:
+      # Downloads a copy of the code in your repository before running CI tests
       - name: Checkout
         uses: actions/checkout@v2
-      # Install root dependencies
-      - name: Install global dependencies
+
+      # Starts a MongoDB server using custom port and credentials
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.8.0
+        with:
+          mongodb-port: 27018        
+          mongodb-db: grapevine-db
+          mongodb-username: root
+          mongodb-password: secret
+          # mongodb-version: ${{ matrix.mongodb-version }}
+
+      # Performs a clean installation of all dependencies in the `package.json` file
+      - name: Install root dependencies 
         uses: cypress-io/github-action@v4
         with:
           # just perform install
           runTests: false
-      # Install nested dependencies
-      - name: Install packages dependencies
+
+      # Performs a clean installation of all dependencies
+      - name: Install nested dependencies
         run: npm run clean-install
-      # run all Cypress tests
+
+      # Runs all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
@@ -41,14 +48,18 @@ jobs:
           install: false
           # let's make sure our tests pass on Chrome browser
           browser: chrome
-          #wait for all services to respond
+          # wait for all services to respond
           wait-on: 'http://localhost:4000, http://localhost:3000'
           # API runs on port 4000
           # Web server runs on port 3000
           start: npm run start
           # overwrite the Cypress run command 
           command: npm run cy:run
-        env:
+        # Environment variables used to connect to the database
+        env:      
+          DB_NAME: 'grapevine-db'
+          AUTH_USER: 'root'
+          AUTH_PASS: 'secret'
           # pass GitHub token to allow accurately detecting a build vs a re-run build
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # uses the debug module to output additional verbose logs

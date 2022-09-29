@@ -11,18 +11,18 @@ import {aliasMutation, aliasQuery} from '../utils/graphql-test-utils'
 context('Smoke Test', () => {
   beforeEach(() => {
     // reset and seed the database prior to every test
-    /* cy.exec('npm run db:reset && npm run db:seed', {timeout: 120000})
+    cy.exec('npm run db:reset && npm run db:seed', {timeout: 120000})
       .its('code')
-      .should('eq', 0) */
+      .should('eq', 0)
 
     cy.intercept('POST', 'http://localhost:4000', req => {
-      aliasQuery(req, 'GetSpecialist', 'specialist.json')
-      aliasQuery(req, 'GetSpecialists', 'specialists.json')
-      aliasQuery(req, 'CustomerForProfile', 'customer.json')
-      aliasQuery(req, 'RecommendationsForDashboard', 'recommendations.json')
-      aliasMutation(req, 'AuthorizeCustomer', 'authorization.json')
-      aliasMutation(req, 'IncrementRecommendations', 'increment.json')
-      aliasMutation(req, 'AddRecommendation', 'add.json')
+      aliasQuery(req, 'GetSpecialist')
+      aliasQuery(req, 'GetSpecialists')
+      aliasQuery(req, 'CustomerForProfile')
+      aliasQuery(req, 'RecommendationsForDashboard')
+      aliasMutation(req, 'AuthorizeCustomer')
+      aliasMutation(req, 'IncrementRecommendations')
+      aliasMutation(req, 'AddRecommendation')
     })
   })
 

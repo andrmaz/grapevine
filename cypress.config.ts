@@ -8,7 +8,7 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
       on('before:browser:launch', () => {
-        console.info(`Cypress running on ${config.cypressEnv}`)
+        console.info(`⚫ Cypress running on ${config.cypressEnv}`)
       })
       return config
     },

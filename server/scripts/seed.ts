@@ -1,35 +1,33 @@
-import {options, url} from '../src/config'
+//import {options, url} from '../src/config'
 
 import {CustomerModel} from '../src/models/customer'
-import Customers from '../src/datasources/customer'
 import {SpecialistModel} from '../src/models/specialist'
-import Specialists from '../src/datasources/specialist'
-import {connector} from '../src/mongo'
+//import {connector} from '../src/mongo'
+//import mongoose from 'mongoose'
 
-;
+const customer = {
+  name: 'John Doe',
+  email: 'address@email',
+  address: {city: 'Toronto'},
+}
+const specialist = {
+  name: 'Jane Doe',
+  email: 'email@address',
+  address: {city: 'Toronto'},
+  company: {bs: 'Supply-chain', name: 'Amazon'},
+}
 
-(async function seed() {
-  try {
-    connector(url, options)
-    const customers = new Customers(new CustomerModel())
-    const specialists = new Specialists(new SpecialistModel())
-    const customer = {
-      name: 'John Doe',
-      email: 'address@email',
-      address: {city: 'Toronto'},
-    }
-    await customers.insertCustomer(customer)
-    const specialist = {
-      name: 'Jane Doe',
-      email: 'email@address',
-      address: {city: 'Toronto'},
-      company: {bs: 'Supply-chain', name: 'Amazon'},
-    }
-    await specialists.insertSpecialist(specialist)
-  } catch (error) {
+async function seed(): Promise<void> {
+  await new CustomerModel(customer).save()
+  await new SpecialistModel(specialist).save()
+}
+
+export default seed()
+  .then(() => {
+    console.info('The database has been seeded')
+    process.exit(0)
+  })
+  .catch(error => {
     console.error(error)
     process.exit(1)
-  } finally {
-    process.exit(0)
-  }
-})()
+  })
