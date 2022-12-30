@@ -1,6 +1,14 @@
 name: End-to-end tests
 
-on: [push]
+on:
+  push:
+    branches: [ development ]
+  pull_request:
+    branches: [development]
+    paths:
+      - 'client/src/**'
+      - 'server/src/**'
+      - '!server/src/generated/**'
 
 jobs:
   cypress-run:
@@ -24,22 +32,15 @@ jobs:
         uses: supercharge/mongodb-github-action@1.8.0
         with:
           mongodb-port: 27018        
-          mongodb-db: grapevine-db
           mongodb-username: root
           mongodb-password: secret
-          # mongodb-version: ${{ matrix.mongodb-version }}
+          mongodb-db: grapevine-db
+          mongodb-version: ${{ matrix.mongodb-version }}
 
-      # Performs a clean installation of all dependencies in the `package.json` file
-      - name: Install root dependencies 
-        uses: cypress-io/github-action@v4
-        with:
-          # just perform install
-          runTests: false
-
-      # Performs a clean installation of all dependencies
-      - name: Install nested dependencies
-        run: npm run clean-install
-
+      # Performs a clean installation of dependencies
+      - run: npm ci
+      - run: npm run clean-install
+        
       # Runs all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v4
@@ -48,18 +49,18 @@ jobs:
           install: false
           # let's make sure our tests pass on Chrome browser
           browser: chrome
-          # wait for all services to respond
-          wait-on: 'http://localhost:4000, http://localhost:3000'
           # API runs on port 4000
           # Web server runs on port 3000
-          start: npm run start
+          start: npm run dev
+          # wait for all services to respond
+          wait-on: 'http://localhost:4000, http://localhost:3000'
           # overwrite the Cypress run command 
-          command: npm run cy:run
+          # command: npm run cy:run
         # Environment variables used to connect to the database
         env:      
-          DB_NAME: 'grapevine-db'
-          AUTH_USER: 'root'
-          AUTH_PASS: 'secret'
+          AUTH_USER: root
+          AUTH_PASS: secret
+          DB_NAME: grapevine-db
           # pass GitHub token to allow accurately detecting a build vs a re-run build
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # uses the debug module to output additional verbose logs
