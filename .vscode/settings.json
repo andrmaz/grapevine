@@ -12,5 +12,6 @@
     "cSpell.words": [
         "INITDB"
     ],
-    "editor.fontFamily": ""
+    "editor.fontFamily": "",
+    "workbench.productIconTheme": "fluent-icons"
 }
