@@ -21,10 +21,7 @@ import {makeExecutableSchema} from '@graphql-tools/schema'
 import resolvers from './resolvers'
 import typeDefs from './schema'
 import {useServer} from 'graphql-ws/lib/use/ws'
-
-;
-
-(async function startApolloServer(typeDefs, resolvers) {
+;(async function startApolloServer(typeDefs, resolvers) {
   // Create an Express app and HTTP server; we will attach both the WebSocket
   // server and the ApolloServer to this HTTP server.
   const app = express()
@@ -61,8 +58,9 @@ import {useServer} from 'graphql-ws/lib/use/ws'
     dataSources: () => {
       return {
         /* specialistAPI: new SpecialistAPI(), */
-        customers: new Customers(new CustomerModel()),
-        specialists: new Specialists(new SpecialistModel()),
+        //? https://github.com/GraphQLGuide/apollo-datasource-mongodb/pull/110
+        customers: new Customers(CustomerModel as any),
+        specialists: new Specialists(SpecialistModel as any),
       }
     },
     context: ({req}) => {

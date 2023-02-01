@@ -13,7 +13,6 @@ import {
 import jwtDecode, {JwtPayload} from 'jwt-decode'
 import {prepareTypeMessage, prepareTypeSpecialist} from '../utils/type'
 
-import {HydratedDocument} from 'mongoose'
 import {MessageModel} from '../models/message'
 import {MongoDataSource} from 'apollo-datasource-mongodb'
 import {SpecialistModel} from '../models/specialist'
@@ -33,8 +32,7 @@ export default class Specialists extends MongoDataSource<
     input: SpecialistInput
   ): Promise<AuthenticationResult> {
     validateSpecialistInput(input)
-    const newSpecialist: HydratedDocument<Omit<SpecialistDbObject, '_id'>> =
-      new SpecialistModel(input)
+    const newSpecialist = new SpecialistModel(input)
     if (!newSpecialist) {
       throw new GenericServerError()
     }
@@ -60,7 +58,9 @@ export default class Specialists extends MongoDataSource<
     if (!specialists) {
       throw new NotFoundError()
     }
-    return specialists.map(specialist => prepareTypeSpecialist(specialist))
+    return specialists.map(specialist =>
+      prepareTypeSpecialist(specialist as any)
+    )
   }
   async getMessages(from: string, to: string): Promise<Message[]> {
     const messages = await MessageModel.find<MessageDbObject>({
@@ -74,7 +74,7 @@ export default class Specialists extends MongoDataSource<
     if (!messages) {
       throw new NotFoundError()
     }
-    return messages.map(message => prepareTypeMessage(message))
+    return messages.map(message => prepareTypeMessage(message as any))
   }
   async incrementRecommendations(id: string): Promise<Specialist> {
     const specialist =
