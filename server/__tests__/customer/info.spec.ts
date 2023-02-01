@@ -16,8 +16,8 @@ const query =
   'query CustomerForProfile($id: ID!){customerForProfile(id: $id){id name}}'
 
 describe('customer for profile query', () => {
-  const customers = new Customers(new CustomerModel())
-  const specialists = new Specialists(new SpecialistModel())
+  const customers = new Customers(CustomerModel as any)
+  const specialists = new Specialists(SpecialistModel as any)
   let schema = makeExecutableSchema({
     typeDefs: [DIRECTIVES, typeDefs],
     resolvers,

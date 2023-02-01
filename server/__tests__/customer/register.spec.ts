@@ -17,8 +17,8 @@ const query =
   'mutation RegisterCustomer($input: CustomerInput!) {registerCustomer(input: $input) {code success message user {userInfo {name id email role} token expiresAt}}}'
 
 describe('register customer mutation', () => {
-  const customers = new Customers(new CustomerModel())
-  const specialists = new Specialists(new SpecialistModel())
+  const customers = new Customers(CustomerModel as any)
+  const specialists = new Specialists(SpecialistModel as any)
   let schema = makeExecutableSchema({
     typeDefs: [DIRECTIVES, typeDefs],
     resolvers,

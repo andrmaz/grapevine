@@ -16,8 +16,8 @@ const query =
   'query MessagesForChat($from: String!, $to: String!) {messagesForChat(from: $from, to: $to) { id from to content}}'
 
 describe('message for chat query', () => {
-  const customers = new Customers(new CustomerModel())
-  const specialists = new Specialists(new SpecialistModel())
+  const customers = new Customers(CustomerModel as any)
+  const specialists = new Specialists(SpecialistModel as any)
   let schema = makeExecutableSchema({
     typeDefs: [DIRECTIVES, typeDefs],
     resolvers,

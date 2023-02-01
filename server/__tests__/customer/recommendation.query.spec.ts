@@ -16,8 +16,8 @@ const query =
   'query RecommendationsForDashboard {recommendationsForDashboard {id name}}'
 
 describe('recommendations for dashboard query', () => {
-  const customers = new Customers(new CustomerModel())
-  const specialists = new Specialists(new SpecialistModel())
+  const customers = new Customers(CustomerModel as any)
+  const specialists = new Specialists(SpecialistModel as any)
   let schema = makeExecutableSchema({
     typeDefs: [DIRECTIVES, typeDefs],
     resolvers,

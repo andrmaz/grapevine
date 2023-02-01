@@ -16,8 +16,8 @@ const query =
   'mutation AddRecommendation($id: ID!) {addRecommendation(id: $id) {code success message customer {id name email specialists}}}'
 
 describe('add recommendation mutation', () => {
-  const customers = new Customers(new CustomerModel())
-  const specialists = new Specialists(new SpecialistModel())
+  const customers = new Customers(CustomerModel as any)
+  const specialists = new Specialists(SpecialistModel as any)
   let schema = makeExecutableSchema({
     typeDefs: [DIRECTIVES, typeDefs],
     resolvers,
