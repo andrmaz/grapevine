@@ -47,7 +47,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          # cache: 'npm'
+          cache: 'npm'
       # install NPM dependencies but SKIP Cypress binary installation
       - uses: bahmutov/npm-install@v1
         with:
@@ -57,6 +57,8 @@ jobs:
             server
         env:
           CYPRESS_INSTALL_BINARY: 0
+          ACTIONS_RUNNER_DEBUG: true
+          ACTIONS_STEP_DEBUG: true
 
       # Install system required dependencies
       - run: sudo apt-get install -y xvfb
