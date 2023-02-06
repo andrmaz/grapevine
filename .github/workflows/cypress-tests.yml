@@ -43,6 +43,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      # pick the Node version to use and install it
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
       # install NPM dependencies but SKIP Cypress binary installation
       - uses: bahmutov/npm-install@v1
         with:
