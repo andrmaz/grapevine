@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: ['16.16']
         mongodb-version: ['4.4']
     # Cypress Docker image with Chrome v100
     # and Firefox v98 pre-installed
@@ -43,13 +43,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      # pick the Node version to use and install it
-      - uses: actions/setup-node@v3
+      # Pick the Node version to use and install it
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      # install NPM dependencies but SKIP Cypress binary installation
-      - uses: bahmutov/npm-install@v1
+          
+      # Install NPM dependencies but SKIP Cypress binary installation
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
         with:
           working-directory: |
             ./
