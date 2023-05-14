@@ -8,7 +8,6 @@ import {
 import {
   CustomerDbObject,
   CustomerInput,
-  MessageDbObject,
   MessageInput,
   SpecialistDbObject,
   UserInput,
@@ -20,7 +19,7 @@ import {
   NotFoundError,
   WrongCredentialsError,
 } from '../utils/errors'
-import {HydratedDocument, Types} from 'mongoose'
+import {Types} from 'mongoose'
 import jwtDecode, {JwtPayload} from 'jwt-decode'
 import {
   prepareTypeCustomer,
@@ -52,9 +51,7 @@ export default class Customers extends MongoDataSource<
     if (existingCustomer) {
       throw new EmailFieldError()
     }
-    const newCustomer: HydratedDocument<CustomerDbObject> = new CustomerModel(
-      input
-    )
+    const newCustomer = new CustomerModel(input)
     if (!newCustomer) {
       throw new GenericServerError()
     }
@@ -155,8 +152,8 @@ export default class Customers extends MongoDataSource<
     return prepareTypeCustomer(customer)
   }
   async createMessage(input: MessageInput): Promise<Message> {
-    const message: HydratedDocument<MessageDbObject> = new MessageModel(input)
+    const message = new MessageModel(input)
     const savedMessage = await message.save()
-    return prepareTypeMessage(savedMessage)
+    return prepareTypeMessage(savedMessage as any)
   }
 }

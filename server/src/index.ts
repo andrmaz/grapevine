@@ -20,10 +20,7 @@ import {makeExecutableSchema} from '@graphql-tools/schema'
 import resolvers from './resolvers'
 import typeDefs from './schema'
 import {useServer} from 'graphql-ws/lib/use/ws'
-
-;
-
-(async function startApolloServer(typeDefs, resolvers) {
+;(async function startApolloServer(typeDefs, resolvers) {
   // Create an Express app and HTTP server; we will attach both the WebSocket
   // server and the ApolloServer to this HTTP server.
   const app = express()
@@ -52,7 +49,7 @@ import {useServer} from 'graphql-ws/lib/use/ws'
   })
 
   // Save the returned server's info so we can shutdown this server later
-  const serverCleanup = useServer({schema},wsServer)
+  const serverCleanup = useServer({schema}, wsServer)
 
   // Set up ApolloServer.
   const server = new ApolloServer({
@@ -60,8 +57,8 @@ import {useServer} from 'graphql-ws/lib/use/ws'
     dataSources: () => {
       return {
         /* specialistAPI: new SpecialistAPI(), */
-        customers: new Customers(new CustomerModel()),
-        specialists: new Specialists(new SpecialistModel()),
+        customers: new Customers(new CustomerModel() as any),
+        specialists: new Specialists(new SpecialistModel() as any),
       }
     },
     context: ({req}) => {
@@ -100,7 +97,7 @@ import {useServer} from 'graphql-ws/lib/use/ws'
     // /graphql. Optionally provide this to match apollo-server.
     path: '/',
   })
-  
+
   const PORT = 4000
   // Now that our HTTP server is fully set up, we can listen to it.
   await new Promise<void>(resolve => httpServer.listen(PORT, resolve))

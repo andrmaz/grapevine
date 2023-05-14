@@ -25,8 +25,8 @@ const query =
   'mutation IncrementRecommendations($id: ID!) {incrementRecommendations(id: $id) {code success message specialist {id recommendations}}}'
 
 describe('increment recommendation mutation', () => {
-  const customers = new Customers(new CustomerModel())
-  const specialists = new Specialists(new SpecialistModel())
+  const customers = new Customers(new CustomerModel() as any)
+  const specialists = new Specialists(new SpecialistModel() as any)
   let schema = makeExecutableSchema({
     typeDefs: [DIRECTIVES, typeDefs],
     resolvers,
