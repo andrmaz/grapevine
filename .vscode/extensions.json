@@ -1,11 +1,10 @@
 {
-    "recommendations": [
-        "amatiasq.sort-imports",
-        "aaron-bond.better-comments",
-        "eamodio.gitlens",
-        "streetsidesoftware.code-spell-checker",
-        "christian-kohler.path-intellisense",
-        "2gua.rainbow-brackets",
-        "styled-components.vscode-styled-components"
-    ]
+  "recommendations": [
+    "amatiasq.sort-imports",
+    "aaron-bond.better-comments",
+    "eamodio.gitlens",
+    "streetsidesoftware.code-spell-checker",
+    "christian-kohler.path-intellisense",
+    "styled-components.vscode-styled-components"
+  ]
 }
