@@ -1,12 +1,13 @@
 {
-    "prettier.jsxSingleQuote": true,
-    "prettier.arrowParens": "avoid",
-    "prettier.enableDebugLogs": true,
-    "prettier.singleQuote": true,
-    "prettier.semi": false,
-    "prettier.trailingComma": "none",
-    "prettier.useTabs": true,
-    "prettier.configPath": ".prettierrc",
-    "quokka.automaticRestart": true,
-    "wallaby.useWsl": true
+  "prettier.jsxSingleQuote": true,
+  "prettier.arrowParens": "avoid",
+  "prettier.enableDebugLogs": true,
+  "prettier.singleQuote": true,
+  "prettier.semi": false,
+  "prettier.trailingComma": "none",
+  "prettier.useTabs": true,
+  "prettier.configPath": ".prettierrc",
+  "quokka.automaticRestart": true,
+  "wallaby.useWsl": true,
+  "editor.fontFamily": ""
 }
