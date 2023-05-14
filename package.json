@@ -4,7 +4,7 @@
   "description": "Web-based marketing software application",
   "engineStrict": true,
   "engines": {
-    "node": ">=16.19.1"
+    "node": ">=16.x"
   },
   "dependencies": {
     "concurrently": "^6.5.1",
