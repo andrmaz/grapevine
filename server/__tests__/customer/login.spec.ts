@@ -17,8 +17,8 @@ const query =
   'mutation AuthorizeCustomer($input: UserInput!) { authorizeCustomer(input: $input) {code success message user {userInfo {name id email role}token expiresAt}}}'
 
 describe('authorize customer mutation', () => {
-  const customers = new Customers(new CustomerModel())
-  const specialists = new Specialists(new SpecialistModel())
+  const customers = new Customers(new CustomerModel() as any)
+  const specialists = new Specialists(new SpecialistModel() as any)
   let schema = makeExecutableSchema({
     typeDefs: [DIRECTIVES, typeDefs],
     resolvers,
