@@ -1,0 +1,95 @@
+name: End-to-end tests
+
+on:
+  push:
+    branches: [ development ]
+  pull_request:
+    branches: [development]
+    paths:
+      - 'client/src/**'
+      - 'server/src/**'
+      - '!server/src/generated/**'
+
+jobs:
+  cypress-run:
+    # Containers must run in Linux based operating systems
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['16.19.1']
+        mongodb-version: ['6.0']
+    # Cypress Docker image with Chrome v100
+    # and Firefox v98 pre-installed
+    # container: cypress/browsers:node14.17.6-chrome100-ff98
+
+    env:
+      # prevents extra Cypress installation progress messages
+      CI: 1
+      # avoid warnings like "tput: No value for $TERM and no -T specified"
+      TERM: xterm
+    
+    steps:
+      # Starts a MongoDB server using custom port and credentials
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.8.0
+        with:
+          mongodb-port: 27018        
+          mongodb-username: root
+          mongodb-password: secret
+          mongodb-db: grapevine-db
+          mongodb-version: ${{ matrix.mongodb-version }}
+
+      # Downloads a copy of the code in your repository before running CI tests
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Pick the Node version to use and install it
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          
+      # Install NPM dependencies but SKIP Cypress binary installation
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: |
+            ./
+            client
+            server
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+          ACTIONS_RUNNER_DEBUG: true
+          ACTIONS_STEP_DEBUG: true
+
+      # Install system required dependencies
+      - run: sudo apt-get install -y xvfb
+        # confirm there is no Cypress installed
+      - run: npx cypress cache path
+      # should return empty list of installed versions
+      - run: npx cypress cache list
+      # restore / cache the binary ourselves on Linux
+      # see https://github.com/actions/cache
+      
+      - name: Cache Cypress
+        id: cache-cypress
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-cache-v2-${{ runner.os }}-${{ hashFiles('**/package.json') }}
+      # now let's install Cypress binary
+      - run: npx cypress install
+      - run: npx cypress cache list
+      # and run Cypress tests
+      - run: npm run test:e2e:run
+      # Cypress binary will be cached after successful workflow finish
+
+        env:      
+          AUTH_USER: root
+          AUTH_PASS: secret
+          DB_NAME: grapevine-db
+          # pass GitHub token to allow accurately detecting a build vs a re-run build
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # uses the debug module to output additional verbose logs
+          DEBUG: '@cypress/github-action'

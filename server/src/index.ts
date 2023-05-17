@@ -2,6 +2,7 @@
 import 'dotenv/config'
 
 import {getRole, getUser} from './utils/auth'
+import {options, url} from './config'
 
 import {ApolloServer} from 'apollo-server-express'
 import {ApolloServerPluginDrainHttpServer} from 'apollo-server-core'
@@ -27,7 +28,7 @@ import {useServer} from 'graphql-ws/lib/use/ws'
   const httpServer = createServer(app)
 
   // Connect to MongoDB
-  connector()
+  connector(url, options)
 
   // Create the schema, which will be used separately by ApolloServer and
   // the WebSocket server.
@@ -57,8 +58,9 @@ import {useServer} from 'graphql-ws/lib/use/ws'
     dataSources: () => {
       return {
         /* specialistAPI: new SpecialistAPI(), */
-        customers: new Customers(new CustomerModel() as any),
-        specialists: new Specialists(new SpecialistModel() as any),
+        //? https://github.com/GraphQLGuide/apollo-datasource-mongodb/pull/110
+        customers: new Customers(CustomerModel as any),
+        specialists: new Specialists(SpecialistModel as any),
       }
     },
     context: ({req}) => {

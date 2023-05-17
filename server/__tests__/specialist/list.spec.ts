@@ -13,11 +13,11 @@ import resolvers from '~/resolvers'
 import typeDefs from '~/schema'
 
 const query =
-  'query getSpecialists {specialistsForDashboard {id name address {city} company{bs}}}'
+  'query GetSpecialists {specialistsForDashboard {id name address {city} company{bs}}}'
 
 describe('get specialists query', () => {
-  const customers = new Customers(new CustomerModel() as any)
-  const specialists = new Specialists(new SpecialistModel() as any)
+  const customers = new Customers(CustomerModel as any)
+  const specialists = new Specialists(SpecialistModel as any)
   let schema = makeExecutableSchema({
     typeDefs: [DIRECTIVES, typeDefs],
     resolvers,

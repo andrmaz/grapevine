@@ -7,3 +7,4 @@ client/__generated__
 client/**/__generated__
 server/src/generated/**
 scripts/**
+cli/**

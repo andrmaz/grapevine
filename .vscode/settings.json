@@ -9,5 +9,7 @@
   "prettier.configPath": ".prettierrc",
   "quokka.automaticRestart": true,
   "wallaby.useWsl": true,
-  "editor.fontFamily": ""
+  "cSpell.words": ["INITDB"],
+  "editor.fontFamily": "",
+  "workbench.productIconTheme": "fluent-icons"
 }

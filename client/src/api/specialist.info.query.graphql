@@ -1,6 +1,6 @@
 #import "./specialist.location.fragment.graphql"
 # Query to get all the information about the specialist 
-query getSpecialist($id: ID!) {
+query GetSpecialist($id: ID!) {
   specialistForAbout(id: $id) {
     id
     name

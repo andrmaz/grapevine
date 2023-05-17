@@ -1,0 +1,19 @@
+{
+  "data": {
+    "authorizeCustomer": {
+      "code": 200,
+      "success": true,
+      "message": "Successfully authenticated as a customer",
+      "user": {
+        "userInfo": {
+          "role": "USER",
+          "email": "address@email",
+          "name": "John Doe",
+          "id": "62e3055ba2b31a174438f9c3"
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MmUzMDU1YmEyYjMxYTE3NDQzOGY5YzMiLCJlbWFpbCI6ImVtYWlsQGFkZHJlc3MiLCJyb2xlIjoiVVNFUiIsImlhdCI6MTY2MDMzNTA2OSwiZXhwIjoxNjYwMzM4NjY5fQ.Q9iweD_xNiK-RKYbG5SuoYp61o23llbQqjUtcAot8Mg",
+        "expiresAt": 1660338669
+      }
+    }
+  }
+}
